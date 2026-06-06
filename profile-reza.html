@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reza Dwi | OZ Creative</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* BASE CSS */
+        :root { --bg-main: #0a0b0e; --text-main: #f3f4f6; --text-muted: #71717a; --accent: #0052ff; --border-color: #1f222c; --font-display: 'Syne', sans-serif; --font-body: 'Plus Jakarta Sans', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+        body { background-color: var(--bg-main); color: var(--text-main); overflow-x: hidden; }
+
+        /* CURSOR & PRELOADER */
+        .custom-cursor { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background-color: var(--text-main); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.1s, width 0.3s, height 0.3s, background-color 0.3s; }
+        .custom-cursor-follower { position: fixed; top: 0; left: 0; width: 32px; height: 32px; border: 1px solid var(--text-muted); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1); }
+        body.hovered .custom-cursor { width: 40px; height: 40px; background-color: transparent; border: 1px solid var(--accent); }
+        body.hovered .custom-cursor-follower { opacity: 0; }
+        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1); }
+        .preloader-wrap { overflow: hidden; }
+        .preloader-text { font-family: var(--font-display); font-size: 2rem; font-weight: 800; letter-spacing: 2px; transform: translateY(100%); animation: preloaderReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes preloaderReveal { to { transform: translateY(0); } }
+
+        /* NAVBAR */
+        nav { position: fixed; top: 0; width: 100%; padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 900; border-bottom: 1px solid var(--border-color); background: rgba(10, 11, 14, 0.8); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
+        .logo { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; }
+        .logo span { color: var(--accent); }
+        nav ul { display: flex; gap: 40px; list-style: none; }
+        nav ul li a { color: var(--text-main); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s; }
+        nav ul li a:hover { color: var(--accent); }
+
+        /* PROFILE LAYOUT MENGGUNAKAN MAGNETIC BUTTON */
+        .page-wrapper { padding: 180px 5% 100px; display: flex; flex-direction: column; align-items: center; text-align: center; min-height: 100vh; }
+        .profile-img { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent); margin-bottom: 30px; }
+        h1.section-title { font-family: var(--font-display); font-size: 4rem; font-weight: 800; text-transform: uppercase; letter-spacing: -2px; margin-bottom: 5px; }
+        .role { color: var(--accent); font-weight: 600; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; }
+        .desc { color: var(--text-muted); font-size: 1.1rem; line-height: 1.7; max-width: 600px; margin-bottom: 50px; }
+
+        .social-flex { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 50px; }
+        .magnetic-btn { padding: 15px 30px; border: 1px solid var(--border-color); border-radius: 100px; color: var(--text-main); text-decoration: none; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
+        .magnetic-btn:hover { border-color: var(--text-main); background-color: var(--text-main); color: var(--bg-main); }
+    </style>
+</head>
+<body>
+
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-follower"></div>
+    <div id="preloader"><div class="preloader-wrap"><div class="preloader-text">REZA.</div></div></div>
+
+    <nav>
+        <div class="logo">OZ<span>.</span></div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-wrapper">
+        <img src="gambar/nftReza.jpg" alt="Reza" class="profile-img">
+        <h1 class="section-title">Reza Dwi W.</h1>
+        <div class="role">Blockchain Developer</div>
+        <p class="desc">Spesialisasi saya ada pada dunia Web3. Saya merancang arsitektur sistem terdesentralisasi, mengembangkan Smart Contracts yang aman, dan mengintegrasikan ekosistem DApps ke dalam platform modern.</p>
+
+        <div class="social-flex">
+            <a href="#" class="magnetic-btn">LinkedIn</a>
+            <a href="#" class="magnetic-btn">GitHub</a>
+            <a href="#" class="magnetic-btn">X</a>
+            <a href="#" class="magnetic-btn">Instagram</a>
+        </div>
+
+        <a href="about.html" class="magnetic-btn" style="border-color: transparent; color: var(--text-muted);">[ Back to About ]</a>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => { setTimeout(() => { document.getElementById('preloader').style.transform = 'translateY(-100%)'; }, 1000); });
+        const cursor = document.querySelector('.custom-cursor'); const follower = document.querySelector('.custom-cursor-follower');
+        document.addEventListener('mousemove', (e) => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; follower.style.left = e.clientX + 'px'; follower.style.top = e.clientY + 'px'; });
+        document.querySelectorAll('a').forEach(link => { link.addEventListener('mouseenter', () => document.body.classList.add('hovered')); link.addEventListener('mouseleave', () => document.body.classList.remove('hovered')); });
+    </script>
+</body>
+</html>
