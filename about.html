@@ -4,56 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About | OZ Creative Agency</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
     <style>
-        :root { --bg-color: #0f172a; --text-color: #f8fafc; --accent-color: #3b82f6; --secondary-color: #1e293b; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; }
-        
-        /* FIX: Menambahkan -webkit-backdrop-filter */
-        nav { 
-            position: fixed; top: 0; width: 100%; padding: 1.5rem 5%; 
-            display: flex; justify-content: space-between; align-items: center; 
-            background: rgba(15, 23, 42, 0.8); 
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px); 
-            z-index: 1000; animation: slideDown 0.8s ease-out forwards; 
+        /* --- UTILITIES & VARIABLES DARI LU BRO --- */
+        :root {
+            --bg-main: #0a0b0e;       /* Warna latar belakang utama (Gelap Elegan) */
+            --text-main: #f3f4f6;     /* Warna teks utama */
+            --text-muted: #71717a;    /* Warna teks sekunder/redup */
+            --accent: #0052ff;        /* Warna aksen khas Web3/Blockchain (Electric Blue) */
+            --border-color: #1f222c;  /* Warna garis pembatas bento */
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
         }
-        nav .logo { font-size: 1.5rem; font-weight: bold; color: var(--accent-color); }
-        nav ul { list-style: none; display: flex; gap: 2rem; }
-        nav ul li a { color: var(--text-color); text-decoration: none; transition: color 0.3s; }
-        nav ul li a:hover { color: var(--accent-color); }
-        h1, h2 { font-weight: 700; margin-bottom: 1rem; } p { line-height: 1.6; margin-bottom: 1rem; color: #cbd5e1; }
-        @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        .page-header { padding: 120px 5% 60px; text-align: center; background: var(--secondary-color); }
-        .page-header h1 { font-size: 3rem; animation: fadeInUp 0.8s ease-out forwards; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+        body { background-color: var(--bg-main); color: var(--text-main); overflow-x: hidden; }
 
-        .team-section { padding: 80px 5%; max-width: 1200px; margin: 0 auto; display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+        /* --- CUSTOM CURSOR --- */
+        .custom-cursor { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background-color: var(--text-main); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.1s, width 0.3s, height 0.3s, background-color 0.3s; }
+        .custom-cursor-follower { position: fixed; top: 0; left: 0; width: 32px; height: 32px; border: 1px solid var(--text-muted); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1); }
+        body.hovered .custom-cursor { width: 40px; height: 40px; background-color: transparent; border: 1px solid var(--accent); }
+        body.hovered .custom-cursor-follower { opacity: 0; }
+
+        /* --- PRELOADER ANIMATION --- */
+        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1); }
+        .preloader-wrap { overflow: hidden; }
+        .preloader-text { font-family: var(--font-display); font-size: 2rem; font-weight: 800; letter-spacing: 2px; transform: translateY(100%); animation: preloaderReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        /* --- NAVIGATION --- */
+        nav { position: fixed; top: 0; width: 100%; padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 900; border-bottom: 1px solid var(--border-color); background: rgba(10, 11, 14, 0.8); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
+        .logo { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; }
+        .logo span { color: var(--accent); }
+        nav ul { display: flex; gap: 40px; list-style: none; }
+        nav ul li a { color: var(--text-main); text-decoration: none; font-weight: 500; font-size: 0.95rem; letter-spacing: 0.5px; transition: color 0.3s; }
+        nav ul li a:hover { color: var(--accent); }
+
+        /* --- TAMBAHAN CSS KHUSUS ABOUT / PROFILE --- */
+        .page-wrapper { padding: 160px 5% 100px; display: flex; flex-direction: column; align-items: center; text-align: center; min-height: 100vh; }
+        .section-title { font-family: var(--font-display); font-size: 4rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; letter-spacing: -2px; }
+        .section-subtitle { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 70px; max-width: 500px; line-height: 1.6; }
         
-        .team-card {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px; padding: 30px; width: 300px; text-align: center;
-            transition: transform 0.4s, box-shadow 0.4s;
-            opacity: 0; transform: translateY(50px); animation: fadeInUp 0.8s ease-out forwards;
-        }
-        .team-card:nth-child(1) { animation-delay: 0.2s; }
-        .team-card:nth-child(2) { animation-delay: 0.4s; }
-        .team-card:hover { transform: translateY(-10px); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2); }
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; width: 100%; max-width: 1000px; }
+        .team-card { padding: 50px 30px; border: 1px solid var(--border-color); border-radius: 20px; background: rgba(255, 255, 255, 0.01); transition: all 0.4s ease; text-decoration: none; color: var(--text-main); display: block; }
+        .team-card:hover { transform: translateY(-10px); border-color: var(--text-main); background: rgba(255, 255, 255, 0.03); }
+        .profile-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin-bottom: 25px; border: 1px solid var(--border-color); transition: border-color 0.4s; }
+        .team-card:hover .profile-img { border-color: var(--text-main); }
         
-        .profile-img {
-            width: 150px; height: 150px; border-radius: 50%; margin: 0 auto 20px;
-            background-color: var(--secondary-color); border: 3px solid var(--accent-color);
-            object-fit: cover;
-        }
-        
-        .role { color: var(--accent-color); font-weight: bold; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 15px;}
+        .team-card h3 { font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 10px; font-weight: 800; }
+        .team-card p.role { color: var(--accent); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+        .team-card p.desc { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
+
+        @keyframes preloaderReveal { to { transform: translateY(0); } }
     </style>
 </head>
 <body>
 
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-follower"></div>
+
+    <div id="preloader">
+        <div class="preloader-wrap">
+            <div class="preloader-text">OZ.</div>
+        </div>
+    </div>
+
     <nav>
-        <div class="logo">OZ Creative.</div>
+        <div class="logo">OZ<span>.</span></div>
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
@@ -62,26 +82,47 @@
         </ul>
     </nav>
 
-    <div class="page-header">
-        <h1>Tentang Kami</h1>
-        <p>Kenali otak di balik kode.</p>
+    <div class="page-wrapper">
+        <h1 class="section-title">The Brains</h1>
+        <p class="section-subtitle">Kenali otak di balik setiap arsitektur kode dan ekosistem terdesentralisasi yang kami bangun.</p>
+
+        <div class="team-grid">
+            <a href="profile-naufal.html" class="team-card">
+                <img src="gambar/nftNopal.jpg" alt="Naufal" class="profile-img">
+                <h3>Naufal Aufaa</h3>
+                <p class="role">Full Stack Developer</p>
+                <p class="desc">Ahli dalam membangun arsitektur web dari frontend hingga backend yang efisien dan scalable.</p>
+            </a>
+
+            <a href="profile-reza.html" class="team-card">
+                <img src="gambar/nftReza.jpg" alt="Reza" class="profile-img">
+                <h3>Reza Dwi W.</h3>
+                <p class="role">Blockchain Developer</p>
+                <p class="desc">Spesialis dalam Smart Contracts, Web3 integration, dan pengembangan DApps.</p>
+            </a>
+        </div>
     </div>
 
-    <section class="team-section">
-        <div class="team-card">
-            <img src="https://via.placeholder.com/150/3b82f6/ffffff?text=Foto+Anda" alt="Foto Anda" class="profile-img">
-            <h2>[Nama Anda]</h2>
-            <div class="role">Full Stack Developer</div>
-            <p>Ahli dalam membangun arsitektur web dari frontend hingga backend yang efisien dan *scalable*.</p>
-        </div>
+    <script>
+        // Ngilangin preloader
+        window.addEventListener('load', () => {
+            setTimeout(() => { document.getElementById('preloader').style.transform = 'translateY(-100%)'; }, 1000);
+        });
 
-        <div class="team-card">
-            <img src="https://via.placeholder.com/150/8b5cf6/ffffff?text=Foto+Teman" alt="Foto Teman" class="profile-img">
-            <h2>[Nama Teman]</h2>
-            <div class="role">Blockchain Developer</div>
-            <p>Spesialis dalam *Smart Contracts*, Web3 integration, dan pengembangan *Decentralized Applications* (DApps).</p>
-        </div>
-    </section>
+        // Kursor Mouse
+        const cursor = document.querySelector('.custom-cursor');
+        const follower = document.querySelector('.custom-cursor-follower');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
+            follower.style.left = e.clientX + 'px'; follower.style.top = e.clientY + 'px';
+        });
 
+        // Hover Kursor (Kursor membesar kalau kena link)
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('mouseenter', () => document.body.classList.add('hovered'));
+            link.addEventListener('mouseleave', () => document.body.classList.remove('hovered'));
+        });
+    </script>
 </body>
 </html>
