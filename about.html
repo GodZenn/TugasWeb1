@@ -5,11 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About | OZ Creative Agency</title>
     <style>
-        /* ... (Copy CSS Reset, Navbar, Animations dari index.html) ... */
         :root { --bg-color: #0f172a; --text-color: #f8fafc; --accent-color: #3b82f6; --secondary-color: #1e293b; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; }
-        nav { position: fixed; top: 0; width: 100%; padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); z-index: 1000; animation: slideDown 0.8s ease-out forwards; }
+        
+        /* FIX: Menambahkan -webkit-backdrop-filter */
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 1.5rem 5%; 
+            display: flex; justify-content: space-between; align-items: center; 
+            background: rgba(15, 23, 42, 0.8); 
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px); 
+            z-index: 1000; animation: slideDown 0.8s ease-out forwards; 
+        }
         nav .logo { font-size: 1.5rem; font-weight: bold; color: var(--accent-color); }
         nav ul { list-style: none; display: flex; gap: 2rem; }
         nav ul li a { color: var(--text-color); text-decoration: none; transition: color 0.3s; }
@@ -18,7 +26,6 @@
         @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* About Section Styles */
         .page-header { padding: 120px 5% 60px; text-align: center; background: var(--secondary-color); }
         .page-header h1 { font-size: 3rem; animation: fadeInUp 0.8s ease-out forwards; }
 
@@ -37,7 +44,7 @@
         .profile-img {
             width: 150px; height: 150px; border-radius: 50%; margin: 0 auto 20px;
             background-color: var(--secondary-color); border: 3px solid var(--accent-color);
-            object-fit: cover; /* Pastikan gambar proporsional */
+            object-fit: cover;
         }
         
         .role { color: var(--accent-color); font-weight: bold; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 15px;}

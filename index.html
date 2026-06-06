@@ -5,25 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OZ Creative Agency | Full Stack & Blockchain</title>
     <style>
-        /* CSS Reset & Variabel */
         :root {
-            --bg-color: #0f172a; /* Slate 900 */
-            --text-color: #f8fafc; /* Slate 50 */
-            --accent-color: #3b82f6; /* Blue 500 */
-            --secondary-color: #1e293b; /* Slate 800 */
+            --bg-color: #0f172a; 
+            --text-color: #f8fafc; 
+            --accent-color: #3b82f6; 
+            --secondary-color: #1e293b; 
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; }
 
-        /* Typography */
         h1, h2, h3 { font-weight: 700; margin-bottom: 1rem; }
         p { line-height: 1.6; margin-bottom: 1rem; color: #cbd5e1; }
 
-        /* Navbar */
+        /* FIX: Menambahkan -webkit-backdrop-filter untuk dukungan Safari */
         nav {
             position: fixed; top: 0; width: 100%; padding: 1.5rem 5%;
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.8); 
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
             z-index: 1000; animation: slideDown 0.8s ease-out forwards;
         }
         nav .logo { font-size: 1.5rem; font-weight: bold; color: var(--accent-color); }
@@ -31,7 +31,6 @@
         nav ul li a { color: var(--text-color); text-decoration: none; transition: color 0.3s; }
         nav ul li a:hover { color: var(--accent-color); }
 
-        /* Hero Section */
         header {
             height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
             text-align: center; padding: 0 20px;
@@ -55,7 +54,6 @@
         }
         .cta-btn:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4); }
 
-        /* Floating Elements Animation */
         .floating-shape {
             position: absolute; border-radius: 50%;
             background: linear-gradient(45deg, var(--accent-color), transparent);
@@ -65,13 +63,11 @@
         .shape1 { width: 300px; height: 300px; top: 10%; left: 5%; }
         .shape2 { width: 400px; height: 400px; bottom: 10%; right: 5%; animation-delay: -5s; }
 
-        /* Animations Keyframes */
         @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, 50px) scale(1.1); } }
 
-        /* Reveal on Scroll (Class to be added by JS) */
         .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
@@ -99,22 +95,5 @@
         </div>
     </header>
 
-    <script>
-        // Simple script for reveal on scroll (optional for index, but good to have)
-        function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 150;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
-                } else {
-                    reveals[i].classList.remove("active");
-                }
-            }
-        }
-        window.addEventListener("scroll", reveal);
-    </script>
 </body>
 </html>
