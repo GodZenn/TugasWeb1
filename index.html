@@ -3,97 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OZ Creative Agency | Full Stack & Blockchain</title>
+    <title>OZ Creative Agency | Digital Architects</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    
     <style>
+        /* --- UTILITIES & VARIABLES (MODIF WARNA DI SINI) --- */
         :root {
-            --bg-color: #0f172a; 
-            --text-color: #f8fafc; 
-            --accent-color: #3b82f6; 
-            --secondary-color: #1e293b; 
+            --bg-main: #0a0b0e;       /* Warna latar belakang utama (Gelap Elegan) */
+            --text-main: #f3f4f6;     /* Warna teks utama */
+            --text-muted: #71717a;    /* Warna teks sekunder/redup */
+            --accent: #0052ff;        /* Warna aksen khas Web3/Blockchain (Electric Blue) */
+            --border-color: #1f222c;  /* Warna garis pembatas bento */
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; }
 
-        h1, h2, h3 { font-weight: 700; margin-bottom: 1rem; }
-        p { line-height: 1.6; margin-bottom: 1rem; color: #cbd5e1; }
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: var(--font-body);
+            -webkit-font-smoothing: antialiased;
+        }
 
-        /* FIX: Menambahkan -webkit-backdrop-filter untuk dukungan Safari */
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* --- CUSTOM CURSOR (Animasi interaksi kursor) --- */
+        .custom-cursor {
+            position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+            background-color: var(--text-main); border-radius: 50%;
+            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+            transition: transform 0.1s, width 0.3s, height 0.3s, background-color 0.3s;
+        }
+        .custom-cursor-follower {
+            position: fixed; top: 0; left: 0; width: 32px; height: 32px;
+            border: 1px solid var(--text-muted); border-radius: 50%;
+            pointer-events: none; z-index: 9998; transform: translate(-50%, -50%);
+            transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        /* Efek saat hover elemen interaktif */
+        body.hovered .custom-cursor { width: 40px; height: 40px; background-color: transparent; border: 1px solid var(--accent); }
+        body.hovered .custom-cursor-follower { opacity: 0; }
+
+        /* --- PRELOADER ANIMATION --- */
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background-color: #000; z-index: 10000; display: flex;
+            justify-content: center; align-items: center;
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+        .preloader-wrap { overflow: hidden; }
+        .preloader-text {
+            font-family: var(--font-display); font-size: 2rem; font-weight: 800;
+            letter-spacing: 2px; transform: translateY(100%);
+            animation: preloaderReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* --- NAVIGATION --- */
         nav {
-            position: fixed; top: 0; width: 100%; padding: 1.5rem 5%;
+            position: fixed; top: 0; width: 100%; padding: 30px 5%;
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(15, 23, 42, 0.8); 
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
-            z-index: 1000; animation: slideDown 0.8s ease-out forwards;
+            z-index: 900; border-bottom: 1px solid var(--border-color);
+            background: rgba(10, 11, 14, 0.8); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
         }
-        nav .logo { font-size: 1.5rem; font-weight: bold; color: var(--accent-color); }
-        nav ul { list-style: none; display: flex; gap: 2rem; }
-        nav ul li a { color: var(--text-color); text-decoration: none; transition: color 0.3s; }
-        nav ul li a:hover { color: var(--accent-color); }
+        .logo { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; }
+        .logo span { color: var(--accent); }
+        nav ul { display: flex; gap: 40px; list-style: none; }
+        nav ul li a { color: var(--text-main); text-decoration: none; font-weight: 500; font-size: 0.95rem; letter-spacing: 0.5px; transition: color 0.3s; }
+        nav ul li a:hover { color: var(--accent); }
 
-        header {
-            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding: 0 20px;
-            background: radial-gradient(circle at center, var(--secondary-color) 0%, var(--bg-color) 100%);
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; padding: 0 5%; position: relative;
         }
-        .hero-text h1 {
-            font-size: 4rem; opacity: 0; transform: translateY(30px);
-            animation: fadeInUp 1s ease-out 0.5s forwards;
+        
+        /* Teks Masking (Memunculkan teks dari balik garis potong secara estetik) */
+        .title-line { overflow: hidden; margin-bottom: 10px; }
+        .hero h1 {
+            font-family: var(--font-display); font-size: 6vw; font-weight: 800;
+            line-height: 1.1; letter-spacing: -2px; text-transform: uppercase;
         }
-        .hero-text h1 span { color: var(--accent-color); }
-        .hero-text p {
-            font-size: 1.2rem; max-width: 600px; margin: 0 auto 2rem;
-            opacity: 0; transform: translateY(30px);
-            animation: fadeInUp 1s ease-out 0.8s forwards;
+        .hero h1 span {
+            display: block; transform: translateY(100%) skewY(7deg);
+            opacity: 0; animation: textReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
         }
-        .cta-btn {
-            padding: 15px 30px; background-color: var(--accent-color); color: white;
-            text-decoration: none; border-radius: 30px; font-weight: bold;
-            transition: transform 0.3s, box-shadow 0.3s;
-            opacity: 0; animation: fadeIn 1s ease-out 1.2s forwards;
+        .hero h1 .accent-text { color: transparent; -webkit-text-stroke: 1px var(--text-main); }
+        
+        .hero-footer {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-top: 60px; border-top: 1px solid var(--border-color); padding-top: 40px;
+            opacity: 0; animation: fadeIn 1s ease 2s forwards;
         }
-        .cta-btn:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4); }
+        .hero-desc { max-width: 450px; color: var(--text-muted); font-size: 1.1rem; line-height: 1.6; }
+        
+        /* Button Magnetic Style */
+        .magnetic-btn {
+            padding: 20px 40px; border: 1px solid var(--text-main); border-radius: 100px;
+            color: var(--text-main); text-decoration: none; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;
+            position: relative; overflow: hidden; transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+        .magnetic-btn:hover {
+            background-color: var(--text-main); color: var(--bg-main);
+        }
 
-        .floating-shape {
-            position: absolute; border-radius: 50%;
-            background: linear-gradient(45deg, var(--accent-color), transparent);
-            filter: blur(50px); opacity: 0.5; z-index: -1;
-            animation: float 10s infinite ease-in-out alternate;
-        }
-        .shape1 { width: 300px; height: 300px; top: 10%; left: 5%; }
-        .shape2 { width: 400px; height: 400px; bottom: 10%; right: 5%; animation-delay: -5s; }
-
-        @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, 50px) scale(1.1); } }
-
-        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        /* --- ANIMATION KEYFRAMES --- */
+        @keyframes preloaderReveal { to { transform: translateY(0); } }
+        @keyframes textReveal { to { transform: translateY(0) skewY(0); opacity: 1; } }
+        @keyframes fadeIn { to { opacity: 1; } }
     </style>
 </head>
 <body>
 
+    <div id="preloader">
+        <div class="preloader-wrap">
+            <div class="preloader-text">OZ CREATIVE AGENCY.</div>
+        </div>
+    </div>
+
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-follower"></div>
+
     <nav>
-        <div class="logo">OZ Creative.</div>
+        <div class="logo">OZ<span>.</span></div>
         <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="services.html" class="nav-link">Services</a></li>
+            <li><a href="about.html" class="nav-link">About</a></li>
+            <li><a href="contact.html" class="nav-link">Contact</a></li>
         </ul>
     </nav>
 
-    <div class="floating-shape shape1"></div>
-    <div class="floating-shape shape2"></div>
+    <section class="hero">
+        <h1>
+            <div class="title-line"><span>We Engineer</span></div>
+            <div class="title-line"><span class="accent-text">Bespoke Web3</span></div>
+            <div class="title-line"><span>& Architectures.</span></div>
+        </h1>
 
-    <header>
-        <div class="hero-text">
-            <h1>Membangun Masa Depan Digital bersama <span>OZ Creative</span></h1>
-            <p>Kami adalah Full Stack & Blockchain Developer yang siap mengubah visi Anda menjadi realitas teknologi.</p>
-            <a href="contact.html" class="cta-btn">Mulai Proyek Anda</a>
+        <div class="hero-footer">
+            <p class="hero-desc">Kami adalah tim Full Stack & Blockchain Developer yang fokus membangun infrastruktur digital transparan, berkecepatan tinggi, dan kaya interaksi animasi.</p>
+            <a href="services.html" class="magnetic-btn">Explore Services</a>
         </div>
-    </header>
+    </section>
 
+    <script>
+        // Hilangkan Preloader saat halaman selesai di-load
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.style.transform = 'translateY(-100%)';
+            }, 800);
+        });
+
+        // Efek Logika Kursor Kustom & Interaksi Hovering
+        const cursor = document.querySelector('.custom-cursor');
+        const follower = document.querySelector('.custom-cursor-follower');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            // Efek pengikut kursor agak lambat (smooth delay)
+            setTimeout(() => {
+                follower.style.left = e.clientX + 'px';
+                follower.style.top = e.clientY + 'px';
+            }, 50);
+        });
+
+        // Tambah efek kelas hover jika kursor menyentuh link/tombol
+        const interactiveElements = document.querySelectorAll('a, .magnetic-btn');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hovered'));
+        });
+    </script>
 </body>
 </html>
