@@ -1,649 +1,503 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact | OZ CREATIVE</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Transmission // OZ Creative Architecture</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
     <style>
-      /* --- CORE VARIABLES --- */
-      :root {
-        --bg: #0a0a0a;
-        --fg: #e8e8e3;
-        --accent: #ff3300;
-        --line: rgba(232, 232, 227, 0.15);
-        --font-head: "Anton", sans-serif;
-        --font-body: "Manrope", sans-serif;
-        --font-code: "JetBrains Mono", monospace;
-        --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-      }
-
-      /* --- RESET & SETUP --- */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        cursor: none;
-      }
-      html {
-        scroll-behavior: smooth;
-        background: var(--bg);
-      }
-      body {
-        background: var(--bg);
-        color: var(--fg);
-        font-family: var(--font-body);
-        -webkit-font-smoothing: antialiased;
-        overflow-x: hidden;
-      }
-      ::selection {
-        background: var(--fg);
-        color: var(--bg);
-      }
-
-      /* --- UTILITIES --- */
-      .noise {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        pointer-events: none;
-        opacity: 0.04;
-        mix-blend-mode: overlay;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-      }
-      .wrapper {
-        padding: 0 2vw;
-      }
-      .font-code {
-        font-family: var(--font-code);
-        font-size: 0.85vw;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-      .text-accent {
-        color: var(--accent);
-      }
-      .mb-small {
-        margin-bottom: 2vh;
-      }
-
-      .delay-1 {
-        transition-delay: 0.1s;
-      }
-      .delay-2 {
-        transition-delay: 0.2s;
-      }
-
-      /* --- CUSTOM CURSOR --- */
-      .cursor-dot {
-        position: fixed;
-        width: 5px;
-        height: 5px;
-        background: var(--fg);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 10000;
-        transform: translate(-50%, -50%);
-        transition: background 0.3s;
-      }
-      .cursor-ring {
-        position: fixed;
-        width: 40px;
-        height: 40px;
-        border: 1px solid rgba(232, 232, 227, 0.5);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 9999;
-        transform: translate(-50%, -50%);
-        transition:
-          width 0.3s var(--ease-out),
-          height 0.3s var(--ease-out),
-          border-color 0.3s,
-          background 0.3s;
-        mix-blend-mode: difference;
-      }
-      body.is-hovering .cursor-ring {
-        width: 80px;
-        height: 80px;
-        background: var(--fg);
-        border-color: transparent;
-      }
-      body.is-hovering .cursor-dot {
-        opacity: 0;
-      }
-
-      /* --- PRELOADER --- */
-      .preloader {
-        position: fixed;
-        inset: 0;
-        background: var(--bg);
-        z-index: 9000;
-        display: flex;
-        align-items: flex-end;
-        justify-content: flex-end;
-        padding: 2vw;
-        transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
-      }
-      .preloader-count {
-        font-family: var(--font-head);
-        font-size: 25vw;
-        line-height: 0.75;
-        color: var(--fg);
-      }
-      .preloader.hide {
-        transform: translateY(-100%);
-      }
-
-      /* --- NAVIGATION --- */
-      nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        padding: 2vw;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        z-index: 100;
-        mix-blend-mode: difference;
-      }
-      .logo {
-        font-family: var(--font-head);
-        font-size: 2vw;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        color: var(--fg);
-        text-decoration: none;
-      }
-      .nav-links {
-        display: flex;
-        gap: 3vw;
-        list-style: none;
-        font-family: var(--font-code);
-        font-size: 0.85vw;
-        text-transform: uppercase;
-      }
-      .nav-links a {
-        color: var(--fg);
-        text-decoration: none;
-        position: relative;
-        overflow: hidden;
-        display: block;
-        padding-bottom: 4px;
-      }
-      .nav-links a::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 1px;
-        background: var(--fg);
-        transform: translateX(-101%);
-        transition: transform 0.4s var(--ease-out);
-      }
-      .nav-links a:hover::after {
-        transform: translateX(0);
-      }
-      .nav-links a.active::after {
-        transform: translateX(0);
-      }
-
-      /* --- ANIMATIONS --- */
-      .mask-wrap {
-        overflow: hidden;
-        display: inline-block;
-        vertical-align: bottom;
-      }
-      .mask-text {
-        display: inline-block;
-        transform: translateY(110%);
-        transition: transform 1.2s var(--ease-out);
-      }
-      .mask-text.is-visible {
-        transform: translateY(0);
-      }
-      .fade-up {
-        opacity: 0;
-        transform: translateY(40px);
-        transition:
-          opacity 1s var(--ease-out),
-          transform 1s var(--ease-out);
-      }
-      .fade-up.is-visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      /* --- CONTACT LAYOUT --- */
-      .contact-section {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 5vw;
-        padding-top: 25vh;
-        padding-bottom: 15vh;
-        min-height: 100vh;
-      }
-
-      /* Left: Title & Info */
-      .c-title {
-        font-family: var(--font-head);
-        font-size: 10vw;
-        line-height: 0.85;
-        text-transform: uppercase;
-        letter-spacing: -2px;
-        margin-bottom: 5vh;
-      }
-      .c-info-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 3vw;
-        margin-top: 5vh;
-        border-top: 1px solid var(--line);
-        padding-top: 5vh;
-      }
-      .c-label {
-        font-family: var(--font-code);
-        font-size: 0.85vw;
-        color: rgba(232, 232, 227, 0.5);
-        margin-bottom: 1vh;
-      }
-      .c-value {
-        font-size: 1.2vw;
-        color: var(--fg);
-        text-decoration: none;
-        display: inline-block;
-        transition: color 0.3s;
-      }
-      a.c-value:hover {
-        color: var(--accent);
-      }
-
-      /* Right: Form */
-      .form-wrap {
-        padding-top: 2vh;
-      }
-      .input-group {
-        margin-bottom: 5vh;
-        position: relative;
-      }
-      .input-label {
-        font-family: var(--font-code);
-        font-size: 0.85vw;
-        color: var(--accent);
-        display: block;
-        margin-bottom: 1.5vh;
-      }
-      .form-input {
-        width: 100%;
-        background: transparent;
-        border: none;
-        border-bottom: 1px solid var(--line);
-        color: var(--fg);
-        font-family: var(--font-body);
-        font-size: 2vw;
-        padding-bottom: 1.5vh;
-        outline: none;
-        border-radius: 0;
-        transition: border-color 0.3s;
-      }
-      .form-input:focus {
-        border-color: var(--fg);
-      }
-      textarea.form-input {
-        resize: none;
-        min-height: 10vh;
-      }
-
-      .btn-submit {
-        font-family: var(--font-head);
-        font-size: 3vw;
-        text-transform: uppercase;
-        color: var(--bg);
-        background: var(--fg);
-        border: none;
-        padding: 2vh 4vw;
-        border-radius: 50px;
-        transition:
-          background 0.3s,
-          color 0.3s,
-          transform 0.3s;
-        outline: none;
-        display: inline-block;
-        margin-top: 2vh;
-      }
-      .btn-submit:hover {
-        background: var(--accent);
-        color: var(--fg);
-        transform: scale(0.98);
-      }
-
-      /* --- MEGA FOOTER --- */
-      footer {
-        padding: 10vh 2vw 2vh;
-        background: var(--bg);
-        position: relative;
-        border-top: 1px solid var(--line);
-      }
-      .footer-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 10vh;
-      }
-      .f-col h4 {
-        font-family: var(--font-code);
-        font-size: 0.85vw;
-        color: rgba(232, 232, 227, 0.4);
-        margin-bottom: 2vh;
-        text-transform: uppercase;
-      }
-      .f-col ul {
-        list-style: none;
-      }
-      .f-col ul li {
-        margin-bottom: 1vh;
-      }
-      .f-col ul li a {
-        color: var(--fg);
-        text-decoration: none;
-        font-size: 1.2vw;
-        transition: color 0.3s;
-      }
-      .f-col ul li a:hover {
-        color: var(--accent);
-      }
-
-      .giant-footer {
-        font-family: var(--font-head);
-        font-size: 15vw;
-        line-height: 0.75;
-        text-align: center;
-        color: var(--fg);
-        margin-bottom: 5vh;
-      }
-      .f-bottom {
-        display: flex;
-        justify-content: space-between;
-        border-top: 1px solid var(--line);
-        padding-top: 2vh;
-        font-family: var(--font-code);
-        font-size: 0.8vw;
-        color: rgba(232, 232, 227, 0.5);
-        text-transform: uppercase;
-      }
-
-      /* --- RESPONSIVE --- */
-      @media (max-width: 1024px) {
-        .nav-links {
-          display: none;
+        /* --- CORE CONFIGURATION VARIABLE ENGINE --- */
+        :root {
+            --bg: #030307;
+            --bg-card: #080811;
+            --bg-card-hover: #0d0d1f;
+            --fg: #ffffff;
+            --fg-muted: rgba(255, 255, 255, 0.55);
+            --accent: #ff3c00;
+            --accent-glow: rgba(255, 60, 0, 0.15);
+            --neon-cyan: #00f3ff;
+            --neon-purple: #bd00ff;
+            --neon-green: #00ff66;
+            --line: rgba(255, 255, 255, 0.06);
+            --line-active: rgba(255, 255, 255, 0.18);
+            --font-head: 'Anton', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-expo: cubic-bezier(0.85, 0, 0.15, 1);
         }
-        .logo {
-          font-size: 4vw;
+
+        /* --- IMMACULATE RESET & HUD STYLE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; outline: none; }
+        html { scroll-behavior: smooth; background: var(--bg); }
+        body { background: var(--bg); color: var(--fg); font-family: var(--font-body); -webkit-font-smoothing: antialiased; overflow-x: hidden; position: relative; }
+        body.no-scroll { overflow: hidden; height: 100vh; touch-action: none; }
+        ::selection { background: var(--neon-cyan); color: #000; }
+
+        /* --- BACKGROUND MODULES --- */
+        #canvas-matrix-grid { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.18; }
+        .grain-layer { position: fixed; inset: 0; z-index: 9998; pointer-events: none; opacity: 0.02; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
+        .dynamic-glow-orb { position: fixed; width: 55vw; height: 55vw; background: radial-gradient(circle, var(--accent-glow) 0%, rgba(3, 3, 7, 0) 70%); border-radius: 50%; pointer-events: none; z-index: 0; transform: translate(-50%, -50%); opacity: 0.7; mix-blend-mode: screen; filter: blur(60px); transition: background 0.8s var(--ease-out); }
+        body::before { content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02)); z-index: 9999; background-size: 100% 4px, 4px 100%; pointer-events: none; }
+
+        /* --- TECH TELEMETRY HUD --- */
+        .scroll-progress-wire { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple), var(--accent)); z-index: 10001; width: 0%; }
+        .cursor-pixel { position: fixed; width: 4px; height: 4px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
+        .cursor-radar { position: fixed; width: 38px; height: 38px; border: 1px dashed var(--neon-cyan); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width 0.4s var(--ease-out), height 0.4s var(--ease-out), border-color 0.4s; animation: spinRadar 20s linear infinite; }
+        body.is-hovering .cursor-radar { width: 70px; height: 70px; background-color: rgba(255, 255, 255, 0.02); border-color: var(--accent); border-style: solid; }
+        @keyframes spinRadar { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        @media (hover: none) and (pointer: coarse) {
+            * { cursor: auto !important; }
+            .cursor-pixel, .cursor-radar { display: none !important; }
         }
-        .contact-section {
-          grid-template-columns: 1fr;
-          padding-top: 20vh;
-          gap: 8vh;
+
+        .telemetry-node { position: fixed; top: 2vw; left: 3vw; display: flex; align-items: center; gap: 10px; z-index: 101; font-family: var(--font-code); font-size: 10px; color: var(--fg); letter-spacing: 1.5px; }
+        .telemetry-pulse { width: 6px; height: 6px; background: var(--neon-cyan); border-radius: 50%; animation: telemetryBlink 1.2s infinite; box-shadow: 0 0 8px var(--neon-cyan); }
+        @keyframes telemetryBlink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+        /* --- BOOT PRELOADER --- */
+        .preloader-screen { position: fixed; inset: 0; background: #010103; z-index: 9000; display: flex; flex-direction: column; justify-content: flex-end; padding: 4vw; transition: transform 1s var(--ease-expo); }
+        .loading-text { font-family: var(--font-code); font-size: 12px; letter-spacing: 3px; color: var(--neon-cyan); margin-bottom: auto; text-transform: uppercase; }
+        .preloader-count-frame { font-family: var(--font-head); font-size: clamp(80px, 18vw, 220px); line-height: 0.7; color: var(--fg); text-align: right; letter-spacing: -2px; background: linear-gradient(180deg, #fff, rgba(255,255,255,0.05)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .preloader-wire-rail { width: 100%; height: 1px; background: rgba(255,255,255,0.06); margin-top: 2vh; position: relative; }
+        .preloader-wire-active { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: var(--neon-cyan); }
+        .preloader-screen.hide { transform: translateY(-100%); pointer-events: none; }
+
+        /* --- STRUCTURE LAYOUT WRAPPER --- */
+        .main-wrapper { max-width: 1400px; margin: 0 auto; padding: 0 4vw; position: relative; z-index: 2; }
+        .matrix-header-tag { font-family: var(--font-code); font-size: 11px; color: var(--neon-cyan); margin-bottom: 5vh; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; gap: 15px; }
+        .matrix-header-tag::after { content: ''; height: 1px; flex-grow: 1; background: var(--line); }
+
+        .tech-crosshair { position: absolute; font-family: var(--font-code); font-size: 12px; color: rgba(255,255,255,0.1); pointer-events: none; }
+        .tc-tl { top: 0; left: 0; } .tc-tr { top: 0; right: 0; }
+
+        /* --- NAV DESIGN --- */
+        nav { position: fixed; top: 0; left: 0; width: 100%; padding: 2vw 4vw; display: flex; justify-content: space-between; align-items: center; z-index: 8999; mix-blend-mode: difference; }
+        .nav-logo { font-family: var(--font-head); font-size: clamp(24px, 2.5vw, 36px); letter-spacing: 1px; text-transform: uppercase; color: var(--fg); text-decoration: none;}
+        .nav-list { display: flex; gap: 3vw; list-style: none; }
+        .nav-list a { font-family: var(--font-code); font-size: 12px; color: var(--fg); text-decoration: none; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; transition: all 0.3s; }
+        .nav-list a:hover, .nav-list a.active { opacity: 1; color: var(--neon-cyan); }
+
+        /* --- ANIMATION INBOUND SYSTEM --- */
+        .mask-container { overflow: hidden; display: inline-block; vertical-align: bottom; }
+        .mask-node { display: inline-block; transform: translateY(115%); transition: transform 1.2s var(--ease-out); }
+        .mask-node.is-visible { transform: translateY(0); }
+        .reveal-node { opacity: 0; transform: translateY(40px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
+        .reveal-node.is-visible { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+
+        /* --- HERO SECTOR --- */
+        .contact-hero { padding: 22vh 0 10vh; position: relative; }
+        .contact-headline { font-family: var(--font-head); font-size: clamp(55px, 9vw, 140px); line-height: 0.85; text-transform: uppercase; letter-spacing: -2px; margin-bottom: 4vh; color: var(--fg); }
+        .contact-headline span.outline { color: transparent; -webkit-text-stroke: 1.5px var(--fg); }
+
+        /* --- MISSION SPLIT DESK INTERFACE --- */
+        .transmission-matrix-sector { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 6vw; padding-bottom: 15vh; }
+        
+        /* Form Field Mapping Engine */
+        .secure-form-node { display: flex; flex-direction: column; gap: 5vh; }
+        .input-group-wire { position: relative; display: flex; flex-direction: column; }
+        
+        .input-meta-label { font-family: var(--font-code); font-size: 10px; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .input-meta-label span { color: var(--neon-cyan); }
+        
+        .terminal-field { background: transparent; border: none; border-bottom: 1px solid var(--line); padding: 12px 0; font-family: var(--font-body); font-size: 18px; color: #fff; transition: all 0.4s var(--ease-out); font-weight: 300; }
+        .terminal-field:focus { border-color: var(--neon-cyan); padding-left: 10px; }
+        textarea.terminal-field { min-height: 140px; resize: none; }
+        
+        .field-focus-rail { position: absolute; bottom: 0; left: 0; width: 0%; height: 1px; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple)); transition: width 0.5s var(--ease-out); }
+        .terminal-field:focus ~ .field-focus-rail { width: 100%; }
+
+        /* Dynamic Options Grid */
+        .param-selection-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 10px; }
+        .custom-checker-node { position: relative; }
+        .custom-checker-node input { position: absolute; opacity: 0; width: 0; height: 0; }
+        .checker-hud-label { display: block; padding: 16px; border: 1px solid var(--line); font-family: var(--font-code); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--fg-muted); background: rgba(8,8,17,0.4); transition: all 0.3s; }
+        .custom-checker-node input:checked + .checker-hud-label { border-color: var(--neon-cyan); color: #fff; background: rgba(0, 243, 255, 0.04); box-shadow: inset 0 0 15px rgba(0,243,255,0.05); }
+
+        /* Submission System */
+        .transmission-trigger-btn { background: none; border: 1px solid var(--neon-cyan); color: #fff; padding: 22px; font-family: var(--font-code); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; text-align: center; margin-top: 4vh; transition: all 0.4s var(--ease-out); position: relative; overflow: hidden; }
+        .transmission-trigger-btn::before { content: ''; position: absolute; inset: 0; background: var(--neon-cyan); transform: scaleX(0); transform-origin: right; transition: transform 0.5s var(--ease-out); z-index: -1; }
+        .transmission-trigger-btn:hover { color: #000; box-shadow: 0 0 30px rgba(0,243,255,0.25); }
+        .transmission-trigger-btn:hover::before { transform: scaleX(1); transform-origin: left; }
+
+        /* Terminal Console Monitor */
+        .terminal-console-output { background: #04040a; border: 1px solid var(--line); border-radius: 4px; padding: 20px; font-family: var(--font-code); font-size: 11px; color: rgba(0, 255, 102, 0.85); min-height: 100px; display: flex; flex-direction: column; gap: 6px; box-shadow: inset 0 0 20px rgba(0,0,0,0.6); }
+        .console-line span.stamp { color: var(--fg-muted); margin-right: 10px; }
+        .console-line span.error { color: var(--accent); }
+
+        /* --- ENDPOINT TELEMETRY SIDEBAR --- */
+        .secure-endpoints-sidebar { display: flex; flex-direction: column; gap: 6vh; }
+        .endpoint-card-cluster { background: var(--bg-card); border: 1px solid var(--line); padding: 40px; position: relative; }
+        .endpoint-card-cluster::after { content: ''; position: absolute; top: -1px; right: 25px; width: 40px; height: 1px; background: var(--neon-cyan); }
+        
+        .endpoint-node-title { font-family: var(--font-code); font-size: 10px; color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2.5vh; display: flex; align-items: center; gap: 8px; }
+        .endpoint-node-title::before { content: '//'; color: var(--neon-purple); }
+        
+        .endpoint-data-payload { font-size: clamp(16px, 1.4vw, 22px); font-weight: 400; color: #fff; line-height: 1.4; text-decoration: none; display: block; margin-bottom: 1.5vh; transition: color 0.3s; }
+        .endpoint-data-payload:hover { color: var(--neon-cyan); }
+        .endpoint-desc-memo { font-size: 13px; color: var(--fg-muted); font-weight: 300; line-height: 1.6; }
+        
+        .pgp-hex-block { font-family: var(--font-code); font-size: 11px; color: var(--fg-muted); background: rgba(0,0,0,0.3); padding: 12px; border-left: 2px solid var(--line-active); word-break: break-all; margin-top: 1.5vh; line-height: 1.5; }
+
+        /* --- FOOTER SYSTEMS --- */
+        footer { padding: 4vh 0; border-top: 1px solid var(--line); }
+        .footer-flex-row { display: flex; justify-content: space-between; font-family: var(--font-code); font-size: 11px; color: rgba(255, 255, 255, 0.3); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- RESPONSIVE MECHANICS --- */
+        @media(max-width: 1200px) {
+            .transmission-matrix-sector { grid-template-columns: 1fr; gap: 8vh; }
+            .secure-endpoints-sidebar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3vh; }
         }
-        .c-title {
-          font-size: 18vw;
+        @media(max-width: 1024px) { nav { padding: 4vw; } .nav-list { display: none; } }
+        @media(max-width: 768px) {
+            .secure-endpoints-sidebar { grid-template-columns: 1fr; }
+            .param-selection-grid { grid-template-columns: 1fr; }
+            .footer-flex-row { flex-direction: column; gap: 1.5vh; text-align: center; }
         }
-        .c-value {
-          font-size: 4vw;
-        }
-        .c-label {
-          font-size: 3vw;
-        }
-        .form-input {
-          font-size: 5vw;
-        }
-        .input-label {
-          font-size: 3vw;
-        }
-        .btn-submit {
-          font-size: 6vw;
-          width: 100%;
-        }
-        .f-col ul li a {
-          font-size: 4vw;
-        }
-        .f-col h4,
-        .f-bottom {
-          font-size: 3vw;
-        }
-      }
     </style>
-  </head>
-  <body>
-    <!-- UTILITIES -->
-    <div class="noise"></div>
-    <div class="cursor-dot"></div>
-    <div class="cursor-ring"></div>
+</head>
+<body class="no-scroll">
 
-    <!-- PRELOADER -->
-    <div class="preloader" id="preloader">
-      <div class="preloader-count" id="counter">00</div>
+    <!-- HUD SYSTEM MODULES -->
+    <div class="scroll-progress-wire" id="wire-progress"></div>
+    <div class="telemetry-node">
+        <div class="telemetry-pulse"></div> 
+        <span>OZ_CORE_SYS // SECURE_TRANSMISSION_INTERFACE v2.4</span>
+    </div>
+    
+    <!-- LATTICE CORE BACKGROUNDS -->
+    <canvas id="canvas-matrix-grid"></canvas>
+    <div class="grain-layer"></div>
+    <div class="dynamic-glow-orb" id="glow-orb"></div>
+    
+    <!-- LIGHT INTERFACE CURSORS -->
+    <div class="cursor-pixel"></div>
+    <div class="cursor-radar"></div>
+
+    <!-- MAIN BOOT UP DISPLAY -->
+    <div class="preloader-screen" id="preloader">
+        <div class="loading-text scramble" data-value="OPENING SECURE ENCRYPTED CHANNELS...">OPENING SECURE ENCRYPTED CHANNELS...</div>
+        <div class="preloader-count-frame" id="counter-box">00</div>
+        <div class="preloader-wire-rail"><div class="preloader-wire-active" id="progress-wire"></div></div>
     </div>
 
-    <!-- NAVIGATION -->
+    <!-- NAVIGATION COMPONENT -->
     <nav>
-      <a href="index.html" class="logo hover-target">OZ.</a>
-      <ul class="nav-links">
-        <li><a href="index.html" class="hover-target">Home</a></li>
-        <li><a href="about.html" class="hover-target">Team</a></li>
-        <li><a href="services.html" class="hover-target">Expertise</a></li>
-        <li><a href="contact.html" class="active hover-target">Contact</a></li>
-      </ul>
+        <a href="index.html" class="nav-logo is-hoverable scramble" data-value="OZ.">OZ.</a>
+        <ul class="nav-list">
+            <li><a href="works.html" class="is-hoverable">Works</a></li>
+            <li><a href="about.html" class="is-hoverable">About</a></li>
+            <li><a href="service.html" class="is-hoverable">Services</a></li>
+            <li><a href="contact.html" class="active is-hoverable">Contact</a></li>
+        </ul>
     </nav>
 
-    <div class="wrapper">
-      <section class="contact-section">
-        <!-- LEFT COLUMN -->
-        <div class="c-left">
-          <div class="font-code text-accent fade-up load-anim mb-small">
-            [ INITIATE SEQUENCE ]
-          </div>
-          <h1 class="c-title">
-            <span class="mask-wrap"
-              ><span class="mask-text load-anim delay-1">LET'S</span></span
-            ><br />
-            <span class="mask-wrap"
-              ><span class="mask-text load-anim delay-2">TALK.</span></span
-            >
-          </h1>
+    <!-- WRAPPER RUNTIME CONTENT -->
+    <div class="main-wrapper">
+        
+        <!-- SECTOR: HERO REVEAL -->
+        <section class="contact-hero">
+            <div class="tech-crosshair tc-tl">+ CH_ALLOC_09</div>
+            <div class="tech-crosshair tc-tr">PORT_STATUS_OPEN +</div>
+            <div class="matrix-header-tag reveal-node">[ INITIATING_COMMUNICATION_PROTOCOL ]</div>
+            <h1 class="contact-headline">
+                <span class="mask-container"><span class="mask-node boot-sequence">ESTABLISH</span></span><br>
+                <span class="mask-container"><span class="mask-node outline boot-sequence delay-1">TRANSMISSION.</span></span>
+            </h1>
+        </section>
 
-          <div class="c-info-grid fade-up load-anim delay-2">
-            <div>
-              <div class="c-label">EMAIL</div>
-              <a href="mailto:hello@ozcreative.dev" class="c-value hover-target"
-                >hello@ozcreative.dev</a
-              >
-            </div>
-            <div>
-              <div class="c-label">LOCATION</div>
-              <div class="c-value">Jambi, Indonesia<br />ID (GMT+7)</div>
-            </div>
-          </div>
-        </div>
+        <!-- SECTOR: MISSION SPLIT DESK INTERFACE -->
+        <section class="transmission-matrix-sector">
+            
+            <!-- CODESPACE INPUT SECTOR -->
+            <div class="secure-form-node reveal-node delay-1">
+                
+                <div class="input-group-wire">
+                    <label class="input-meta-label"><span>[01]</span> Client Identity / Entity Name</label>
+                    <input type="text" id="form-name" class="terminal-field is-hoverable" placeholder="e.g., NEXUS LABS INC." autocomplete="off">
+                    <div class="field-focus-rail"></div>
+                </div>
 
-        <!-- RIGHT COLUMN (FORM) -->
-        <div class="c-right form-wrap fade-up load-anim delay-2">
-          <form action="#" method="POST">
-            <div class="input-group">
-              <label class="input-label">01 / WHAT'S YOUR NAME?</label>
-              <input
-                type="text"
-                class="form-input hover-target"
-                placeholder="John Doe"
-                required
-              />
+                <div class="input-group-wire">
+                    <label class="input-meta-label"><span>[02]</span> Secure Callback Endpoint (Email)</label>
+                    <input type="email" id="form-email" class="terminal-field is-hoverable" placeholder="identity@endpoint.xyz" autocomplete="off">
+                    <div class="field-focus-rail"></div>
+                </div>
+
+                <div class="input-group-wire">
+                    <label class="input-meta-label"><span>[03]</span> Target Vector (Required Capability)</label>
+                    <div class="param-selection-grid">
+                        <div class="custom-checker-node is-hoverable">
+                            <input type="checkbox" name="vector" id="v1" value="Cinematic Frontend">
+                            <label for="v1" class="checker-hud-label">Immersive Frontend Engine</label>
+                        </div>
+                        <div class="custom-checker-node is-hoverable">
+                            <input type="checkbox" name="vector" id="v2" value="Smart Contracts">
+                            <label for="v2" class="checker-hud-label">EVM Cryptographic Protocol</label>
+                        </div>
+                        <div class="custom-checker-node is-hoverable">
+                            <input type="checkbox" name="vector" id="v3" value="Distributed Backend">
+                            <label for="v3" class="checker-hud-label">High-Velocity Data Ingestion</label>
+                        </div>
+                        <div class="custom-checker-node is-hoverable">
+                            <input type="checkbox" name="vector" id="v4" value="Protocol Audit">
+                            <label for="v4" class="checker-hud-label">System Security Auditing</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group-wire">
+                    <label class="input-meta-label"><span>[04]</span> Operational Scope Parameters</label>
+                    <textarea id="form-message" class="terminal-field is-hoverable" placeholder="Provide system parameters, technical challenges, or architectural deployment timelines..."></textarea>
+                    <div class="field-focus-rail"></div>
+                </div>
+
+                <button class="transmission-trigger-btn is-hoverable" id="submit-btn">Execute Transmission Protocol</button>
+                
+                <!-- Terminal Console Diagnostic Window -->
+                <div class="terminal-console-output" id="terminal-log">
+                    <div class="console-line"><span class="stamp">> SYSTEM:</span> Ready for inbound parameters. Awaiting interaction...</div>
+                </div>
+
             </div>
 
-            <div class="input-group">
-              <label class="input-label">02 / YOUR EMAIL</label>
-              <input
-                type="email"
-                class="form-input hover-target"
-                placeholder="john@company.com"
-                required
-              />
+            <!-- STATIC DATA ENDPOINTS SIDEBAR -->
+            <div class="secure-endpoints-sidebar reveal-node delay-2">
+                
+                <!-- NODE A: DIRECT LINE -->
+                <div class="endpoint-card-cluster">
+                    <div class="endpoint-node-title">COMMS_ROUTING // DIRECT</div>
+                    <a href="mailto:hello@ozarchitecture.io" class="endpoint-data-payload is-hoverable">hello@ozarchitecture.io</a>
+                    <div class="endpoint-desc-memo">Global secure project ingestion node. Checked synchronously on every block execution. Response turnaround inside 12-hour windows.</div>
+                </div>
+
+                <!-- NODE B: GEOGRAPHIC DATA -->
+                <div class="endpoint-card-cluster">
+                    <div class="endpoint-node-title">GRID_COORDINATES // PHYSICAL</div>
+                    <div class="endpoint-data-payload">6.2088° S, 106.8456° E</div>
+                    <div class="endpoint-desc-memo">HQ Base Module Cluster Alpha.<br>Jakarta, Indonesia // Global Remote Deployment Active.</div>
+                </div>
+
+                <!-- NODE C: CRYPTO ASYMMETRIC KEY -->
+                <div class="endpoint-card-cluster">
+                    <div class="endpoint-node-title">PUBLIC_KEY // PGP_ENCRYPTION</div>
+                    <div class="pgp-hex-block">
+                        sec-256k1 // OZ_ARCH_PUB_KEY_2026<br>
+                        9F8E 7D6C 5B4A 3F2E 1D0C 9B8A 7F6E 5D4C 3B2A 1F0E
+                    </div>
+                    <div class="endpoint-desc-memo" style="margin-top: 15px;">Use this fingerprint profile to encode high-value files or classified corporate architectural mandates before file hand-off.</div>
+                </div>
+
             </div>
 
-            <div class="input-group">
-              <label class="input-label">03 / PROJECT DETAILS</label>
-              <textarea
-                class="form-input hover-target"
-                placeholder="Tell us about the architecture you need..."
-                required
-              ></textarea>
-            </div>
+        </section>
 
-            <button type="submit" class="btn-submit hover-target">
-              SEND MESSAGE
-            </button>
-          </form>
-        </div>
-      </section>
+        <!-- FOOTER SYSTEMS -->
+        <footer>
+            <div class="footer-flex-row">
+                <div>© 2026 OZ CREATIVE ARCHITECTURE // ALL RIGHTS RESERVED. SECURE CORRIDOR.</div>
+                <div id="telemetry-clock">00:00:00</div>
+            </div>
+        </footer>
+
     </div>
 
-    <!-- FOOTER -->
-    <footer>
-      <div class="footer-top wrapper">
-        <div class="f-col">
-          <h4>Navigation</h4>
-          <ul>
-            <li><a href="index.html" class="hover-target">Home</a></li>
-            <li>
-              <a href="about.html" class="hover-target">The Architects</a>
-            </li>
-            <li>
-              <a href="services.html" class="hover-target">Capabilities</a>
-            </li>
-          </ul>
-        </div>
-
-        <div class="f-col">
-          <h4>Socials</h4>
-          <ul>
-            <li>
-              <a
-                href="https://x.com/stackyourblock"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="hover-target"
-                >X (Stack Block)</a
-              >
-            </li>
-            <li>
-              <a
-                href="https://x.com/axeonprotocol"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="hover-target"
-                >X (Axeon)</a
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="giant-footer">OZ CREATIVE</div>
-
-      <div class="f-bottom wrapper">
-        <div>© 2026 OZ CREATIVE. ALL RIGHTS RESERVED.</div>
-        <div id="clock">00:00:00</div>
-      </div>
-    </footer>
-
+    <!-- MAIN INTERACTIVE ENGINE SCRIPT -->
     <script>
-      // 1. FAST PRELOADER
-      let count = 0;
-      const counterEl = document.getElementById("counter");
-      const loader = document.getElementById("preloader");
-      let interval = setInterval(() => {
-        count += Math.floor(Math.random() * 8) + 2;
-        if (count >= 100) {
-          count = 100;
-          counterEl.innerText = count;
-          clearInterval(interval);
-          setTimeout(() => {
-            loader.classList.add("hide");
-            document
-              .querySelectorAll(".load-anim")
-              .forEach((el) => el.classList.add("is-visible"));
-          }, 400);
-        } else {
-          counterEl.innerText = count < 10 ? "0" + count : count;
-        }
-      }, 30);
-
-      // 2. SMOOTH CURSOR
-      const dot = document.querySelector(".cursor-dot"),
-        ring = document.querySelector(".cursor-ring");
-      let mX = 0,
-        mY = 0,
-        rX = 0,
-        rY = 0;
-      document.addEventListener("mousemove", (e) => {
-        mX = e.clientX;
-        mY = e.clientY;
-        dot.style.left = mX + "px";
-        dot.style.top = mY + "px";
-      });
-      function renderCursor() {
-        rX += (mX - rX) * 0.15;
-        rY += (mY - rY) * 0.15;
-        ring.style.left = rX + "px";
-        ring.style.top = rY + "px";
-        requestAnimationFrame(renderCursor);
-      }
-      renderCursor();
-
-      document.querySelectorAll(".hover-target").forEach((el) => {
-        el.addEventListener("mouseenter", () =>
-          document.body.classList.add("is-hovering"),
-        );
-        el.addEventListener("mouseleave", () =>
-          document.body.classList.remove("is-hovering"),
-        );
-      });
-
-      // 3. SCROLL OBSERVER
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("is-visible");
-              const texts = entry.target.querySelectorAll(".mask-text");
-              texts.forEach((t) => t.classList.add("is-visible"));
-              observer.unobserve(entry.target);
+        // Preloader Loading Simulation Engine
+        let loadValueProgress = 0; 
+        const counterBox = document.getElementById('counter-box');
+        const progressWire = document.getElementById('progress-wire');
+        const preloaderFrame = document.getElementById('preloader');
+        
+        let bootSequenceTimer = setInterval(() => {
+            loadValueProgress += Math.floor(Math.random() * 8) + 5;
+            if(loadValueProgress >= 100) { 
+                loadValueProgress = 100; 
+                counterBox.innerText = loadValueProgress; 
+                progressWire.style.width = '100%'; 
+                clearInterval(bootSequenceTimer);
+                setTimeout(() => { 
+                    preloaderFrame.classList.add('hide'); 
+                    document.body.classList.remove('no-scroll');
+                    document.querySelectorAll('.boot-sequence').forEach(el => el.classList.add('is-visible')); 
+                }, 350);
+            } else { 
+                counterBox.innerText = loadValueProgress < 10 ? '0' + loadValueProgress : loadValueProgress; 
+                progressWire.style.width = loadValueProgress + '%'; 
             }
-          });
-        },
-        { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
-      );
+        }, 25);
 
-      document
-        .querySelectorAll(".fade-up")
-        .forEach((el) => observer.observe(el));
+        // Background Particle Lattice System
+        const canvas = document.getElementById('canvas-matrix-grid');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-      // 4. CLOCK
-      setInterval(() => {
-        const d = new Date();
-        document.getElementById("clock").innerText =
-          d.toLocaleTimeString("en-US", {
-            hour12: false,
-            timeZone: "Asia/Jakarta",
-          }) + " WIB";
-      }, 1000);
+        class ParticleNode {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.speedX = (Math.random() - 0.5) * 0.35;
+                this.speedY = (Math.random() - 0.5) * 0.35;
+                this.size = Math.random() * 1.5 + 0.5;
+            }
+            update(mX, mY) {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+                let dx = mX - this.x;
+                let dy = mY - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 200) { this.x += dx * 0.002; this.y += dy * 0.002; }
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        for (let i = 0; i < 60; i++) { particles.push(new ParticleNode()); }
+
+        // Precision Mouse HUD Coordinates Tracker
+        const curPixel = document.querySelector('.cursor-pixel');
+        const curRadar = document.querySelector('.cursor-radar');
+        const glowOrbLayer = document.getElementById('glow-orb');
+        let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2, radarX = mouseX, radarY = mouseY;
+        
+        document.addEventListener('mousemove', event => { 
+            mouseX = event.clientX; 
+            mouseY = event.clientY; 
+            curPixel.style.left = mouseX + 'px'; 
+            curPixel.style.top = mouseY + 'px'; 
+        });
+        
+        function globalAnimationPipelineLoop() { 
+            radarX += (mouseX - radarX) * 0.12; 
+            radarY += (mouseY - radarY) * 0.12; 
+            curRadar.style.left = radarX + 'px'; 
+            curRadar.style.top = radarY + 'px'; 
+            if(glowOrbLayer) { glowOrbLayer.style.left = radarX + 'px'; glowOrbLayer.style.top = radarY + 'px'; } 
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(radarX, radarY); p.draw(); });
+
+            ctx.strokeStyle = 'rgba(0, 243, 255, 0.015)';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    let dist = Math.sqrt(Math.pow(particles[i].x - particles[j].x, 2) + Math.pow(particles[i].y - particles[j].y, 2));
+                    if (dist < 140) {
+                        ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(globalAnimationPipelineLoop); 
+        }
+        globalAnimationPipelineLoop();
+
+        // Top Scroll Wire Tracking
+        const topScrollWire = document.getElementById('wire-progress');
+        window.addEventListener('scroll', () => {
+            const documentScrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercentage = (window.scrollY / documentScrollHeight) * 100;
+            topScrollWire.style.width = scrollPercentage + '%';
+        });
+        
+        document.querySelectorAll('.is-hoverable').forEach(nodeTrigger => {
+            nodeTrigger.addEventListener('mouseenter', () => document.body.classList.add('is-hovering'));
+            nodeTrigger.addEventListener('mouseleave', () => document.body.classList.remove('is-hovering'));
+        });
+
+        // Alpha Cipher Scramble Effect Module
+        const alphaGlyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ//\\\\<>-[]{}*#0123456789";
+        document.querySelectorAll('.scramble').forEach(targetNode => {
+            targetNode.addEventListener('mouseenter', e => {
+                let textIterations = 0; const originalValueString = e.target.dataset.value; if(!originalValueString) return;
+                clearInterval(targetNode.scrambleId);
+                targetNode.scrambleId = setInterval(() => {
+                    e.target.innerText = originalValueString.split("").map((glyph, index) => {
+                        if(index < textIterations) return originalValueString[index];
+                        return alphaGlyphs[Math.floor(Math.random() * alphaGlyphs.length)];
+                    }).join("");
+                    if(textIterations >= originalValueString.length) { clearInterval(targetNode.scrambleId); e.target.innerText = originalValueString; }
+                    textIterations += 1 / 2; 
+                }, 20);
+            });
+            targetNode.addEventListener('mouseleave', e => { clearInterval(targetNode.scrambleId); e.target.innerText = e.target.dataset.value; });
+        });
+
+        // Live Mock Terminal Processing Logs Logic
+        const submitBtn = document.getElementById('submit-btn');
+        const terminalLog = document.getElementById('terminal-log');
+
+        function appendLogLine(message, isError = false) {
+            const timeStr = new Date().toLocaleTimeString('en-US', { hour12: false });
+            const logLine = document.createElement('div');
+            logLine.classList.add('console-line');
+            logLine.innerHTML = `<span class="stamp">[${timeStr}]</span> ${isError ? `<span class="error">${message}</span>` : message}`;
+            terminalLog.appendChild(logLine);
+            terminalLog.scrollTop = terminalLog.scrollHeight;
+        }
+
+        submitBtn.addEventListener('click', () => {
+            const clientName = document.getElementById('form-name').value.trim();
+            const clientEmail = document.getElementById('form-email').value.trim();
+            
+            if (!clientName || !clientEmail) {
+                appendLogLine("ABORTED: Mission-critical data missing. Check Node_[01] and Node_[02].", true);
+                return;
+            }
+
+            submitBtn.innerText = "COMPILING CHANNELS...";
+            submitBtn.style.pointerEvents = "none";
+            submitBtn.style.borderColor = "var(--neon-purple)";
+
+            appendLogLine(`INITIALIZING: Encrypting packet payload for client "${clientName}"...`);
+            
+            setTimeout(() => {
+                appendLogLine("ROUTING: Mapping dynamic proxy arrays via Asia/Jakarta core pipelines...");
+            }, 800);
+
+            setTimeout(() => {
+                appendLogLine("SUCCESS: Cryptographic handshake validated. Data packet safely broadcasted.", false);
+                submitBtn.innerText = "TRANSMISSION SECURED";
+                submitBtn.style.borderColor = "var(--neon-green)";
+                submitBtn.style.color = "var(--neon-green)";
+            }, 2000);
+        });
+
+        // Scroll Inbound Element Observer Reveal
+        const textElementObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    entry.target.querySelectorAll('.mask-node').forEach(t => t.classList.add('is-visible'));
+                    textElementObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.05 });
+        document.querySelectorAll('.reveal-node').forEach(node => textElementObserver.observe(node));
+
+        // Real-time HUD Clock Sync
+        setInterval(() => {
+            document.getElementById('telemetry-clock').innerText = new Date().toLocaleTimeString('en-US', { hour12: false, timeZone: 'Asia/Jakarta' }) + ' WIB';
+        }, 1000);
     </script>
-  </body>
+</body>
 </html>

@@ -3,50 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services // OZ Creative Architecture</title>
+    <title>Capabilities & Systems // OZ Creative Architecture</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- CORE CONFIGURATION ENGINE VARIABLES --- */
+        /* --- CORE CONFIGURATION VARIABLE ENGINE --- */
         :root {
-            --bg: #030306;
-            --bg-card: #08080f;
-            --bg-card-hover: #0c0c16;
+            --bg: #030307;
+            --bg-card: #080811;
+            --bg-card-hover: #0d0d1f;
             --fg: #ffffff;
-            --fg-muted: rgba(255, 255, 255, 0.65);
+            --fg-muted: rgba(255, 255, 255, 0.55);
             --accent: #ff3c00;
-            --accent-glow: rgba(255, 60, 0, 0.25);
-            --neon-blue: #00f3ff;
-            --neon-blue-glow: rgba(0, 243, 255, 0.2);
-            --line: rgba(255, 255, 255, 0.1);
+            --accent-glow: rgba(255, 60, 0, 0.15);
+            --neon-cyan: #00f3ff;
+            --neon-purple: #bd00ff;
+            --neon-green: #00ff66;
+            --line: rgba(255, 255, 255, 0.06);
+            --line-active: rgba(255, 255, 255, 0.18);
             --font-head: 'Anton', sans-serif;
-            --font-body: 'Manrope', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
             --font-code: 'JetBrains Mono', monospace;
             --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
             --ease-expo: cubic-bezier(0.85, 0, 0.15, 1);
         }
 
-        /* --- IMMACULATE LAYOUT RESET --- */
+        /* --- IMMACULATE RESET & HUD STYLE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         html { scroll-behavior: smooth; background: var(--bg); }
         body { background: var(--bg); color: var(--fg); font-family: var(--font-body); -webkit-font-smoothing: antialiased; overflow-x: hidden; position: relative; }
         body.no-scroll { overflow: hidden; height: 100vh; touch-action: none; }
         ::selection { background: var(--accent); color: var(--fg); }
 
-        /* --- INTERACTIVE BACKGROUND ENGINE --- */
-        #canvas-matrix-grid { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.35; }
-        .grain-layer { position: fixed; inset: 0; z-index: 9998; pointer-events: none; opacity: 0.03; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
-        .dynamic-glow-orb { position: fixed; width: 50vw; height: 50vw; background: radial-gradient(circle, var(--accent-glow) 0%, rgba(3, 3, 6, 0) 70%); border-radius: 50%; pointer-events: none; z-index: 0; transform: translate(-50%, -50%); opacity: 0.5; mix-blend-mode: screen; filter: blur(60px); transition: background 0.5s; }
-        body::before { content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.04)); z-index: 9999; background-size: 100% 3px, 3px 100%; pointer-events: none; }
+        /* --- BACKGROUND MODULES --- */
+        #canvas-matrix-grid { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.18; }
+        .grain-layer { position: fixed; inset: 0; z-index: 9998; pointer-events: none; opacity: 0.02; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
+        .dynamic-glow-orb { position: fixed; width: 55vw; height: 55vw; background: radial-gradient(circle, var(--accent-glow) 0%, rgba(3, 3, 7, 0) 70%); border-radius: 50%; pointer-events: none; z-index: 0; transform: translate(-50%, -50%); opacity: 0.7; mix-blend-mode: screen; filter: blur(60px); transition: background 0.8s var(--ease-out); }
+        body::before { content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02)); z-index: 9999; background-size: 100% 4px, 4px 100%; pointer-events: none; }
 
-        /* --- ADVANCED HUD SYSTEMS --- */
-        .scroll-progress-wire { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--neon-blue)); z-index: 10001; width: 0%; box-shadow: 0 0 15px var(--accent); }
-        .cursor-pixel { position: fixed; width: 6px; height: 6px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
-        .cursor-radar { position: fixed; width: 40px; height: 40px; border: 1px dashed var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width 0.4s var(--ease-out), height 0.4s var(--ease-out), background-color 0.4s, border-color 0.4s; animation: spinRadar 8s linear infinite; }
-        body.is-hovering .cursor-radar { width: 80px; height: 80px; background-color: rgba(255, 60, 0, 0.04); border-color: var(--neon-blue); border-style: solid; }
+        /* --- TECH TELEMETRY HUD --- */
+        .scroll-progress-wire { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--neon-cyan), var(--neon-purple)); z-index: 10001; width: 0%; }
+        .cursor-pixel { position: fixed; width: 4px; height: 4px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
+        .cursor-radar { position: fixed; width: 38px; height: 38px; border: 1px dashed var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width 0.4s var(--ease-out), height 0.4s var(--ease-out), border-color 0.4s; animation: spinRadar 20s linear infinite; }
+        body.is-hovering .cursor-radar { width: 70px; height: 70px; background-color: rgba(255, 255, 255, 0.02); border-color: var(--neon-cyan); border-style: solid; }
         @keyframes spinRadar { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
 
         @media (hover: none) and (pointer: coarse) {
@@ -54,152 +56,196 @@
             .cursor-pixel, .cursor-radar { display: none !important; }
         }
 
-        .telemetry-node { position: fixed; top: 2.5vw; left: 3vw; display: flex; align-items: center; gap: 10px; z-index: 101; font-family: var(--font-code); font-size: 10px; color: var(--fg); text-transform: uppercase; letter-spacing: 2px; }
-        .telemetry-pulse { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: telemetryBlink 1s infinite; box-shadow: 0 0 8px var(--accent); }
-        @keyframes telemetryBlink { 0%, 100% { opacity: 0.2; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.2); } }
+        .telemetry-node { position: fixed; top: 2vw; left: 3vw; display: flex; align-items: center; gap: 10px; z-index: 101; font-family: var(--font-code); font-size: 10px; color: var(--fg); letter-spacing: 1.5px; }
+        .telemetry-pulse { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: telemetryBlink 1.2s infinite; box-shadow: 0 0 8px var(--accent); }
+        @keyframes telemetryBlink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
-        /* --- PRELOADER --- */
-        .preloader-count-frame { font-family: var(--font-head); font-size: clamp(80px, 20vw, 250px); line-height: 0.7; color: var(--fg); text-align: right; letter-spacing: -2px; font-weight: 900; background: linear-gradient(180deg, #fff, rgba(255,255,255,0.1)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-        .preloader-screen { position: fixed; inset: 0; background: #020204; z-index: 9000; display: flex; flex-direction: column; justify-content: flex-end; padding: 4vw; transition: transform 1.2s var(--ease-expo); }
-        .preloader-wire-rail { width: 100%; height: 2px; background: rgba(255,255,255,0.05); margin-top: 2vh; position: relative; overflow: hidden; }
-        .preloader-wire-active { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--neon-blue)); }
+        /* --- BOOT PRELOADER --- */
+        .preloader-screen { position: fixed; inset: 0; background: #010103; z-index: 9000; display: flex; flex-direction: column; justify-content: flex-end; padding: 4vw; transition: transform 1s var(--ease-expo); }
+        .loading-text { font-family: var(--font-code); font-size: 12px; letter-spacing: 3px; color: var(--accent); margin-bottom: auto; text-transform: uppercase; }
+        .preloader-count-frame { font-family: var(--font-head); font-size: clamp(80px, 18vw, 220px); line-height: 0.7; color: var(--fg); text-align: right; letter-spacing: -2px; background: linear-gradient(180deg, #fff, rgba(255,255,255,0.05)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .preloader-wire-rail { width: 100%; height: 1px; background: rgba(255,255,255,0.06); margin-top: 2vh; position: relative; }
+        .preloader-wire-active { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: var(--accent); }
         .preloader-screen.hide { transform: translateY(-100%); pointer-events: none; }
-        .loading-text { font-family: var(--font-code); font-size: 14px; letter-spacing: 4px; color: var(--accent); margin-bottom: auto; text-transform: uppercase; }
 
-        /* --- CORE WRAPPER --- */
+        /* --- STRUCTURE LAYOUT WRAPPER --- */
         .main-wrapper { max-width: 1400px; margin: 0 auto; padding: 0 4vw; position: relative; z-index: 2; }
-        .matrix-header-tag { font-family: var(--font-code); font-size: 12px; color: var(--accent); margin-bottom: 4vh; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; gap: 15px; }
+        
+        .matrix-header-tag { font-family: var(--font-code); font-size: 11px; color: var(--accent); margin-bottom: 5vh; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; gap: 15px; }
         .matrix-header-tag::after { content: ''; height: 1px; flex-grow: 1; background: var(--line); }
 
-        /* --- VIEWPORT REVEAL LOGIC --- */
-        .mask-container { overflow: hidden; display: inline-block; vertical-align: bottom; }
-        .mask-node { display: inline-block; transform: translateY(115%); transition: transform 1.4s var(--ease-out); }
-        .mask-node.is-visible { transform: translateY(0); }
-        .reveal-node { opacity: 0; transform: translateY(50px); transition: opacity 1.2s var(--ease-out), transform 1.2s var(--ease-out); }
-        .reveal-node.is-visible { opacity: 1; transform: translateY(0); }
-        .delay-1 { transition-delay: 0.15s; }
-        .delay-2 { transition-delay: 0.3s; }
-        .delay-3 { transition-delay: 0.45s; }
+        .tech-crosshair { position: absolute; font-family: var(--font-code); font-size: 12px; color: rgba(255,255,255,0.1); pointer-events: none; }
+        .tc-tl { top: 0; left: 0; } .tc-tr { top: 0; right: 0; }
 
-        /* --- NAVIGATION LAYOUT --- */
-        nav { position: fixed; top: 0; left: 0; width: 100%; padding: 2.5vw 4vw; display: flex; justify-content: space-between; align-items: center; z-index: 8999; mix-blend-mode: difference; }
-        .nav-logo { font-family: var(--font-head); font-size: clamp(24px, 2.5vw, 40px); letter-spacing: 1px; text-transform: uppercase; color: var(--fg); text-decoration: none;}
+        /* --- NAV DESIGN --- */
+        nav { position: fixed; top: 0; left: 0; width: 100%; padding: 2vw 4vw; display: flex; justify-content: space-between; align-items: center; z-index: 8999; mix-blend-mode: difference; }
+        .nav-logo { font-family: var(--font-head); font-size: clamp(24px, 2.5vw, 36px); letter-spacing: 1px; text-transform: uppercase; color: var(--fg); text-decoration: none;}
         .nav-list { display: flex; gap: 3vw; list-style: none; }
-        .nav-list a { font-family: var(--font-code); font-size: 12px; color: var(--fg); text-decoration: none; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; transition: all 0.3s; }
-        .nav-list a:hover, .nav-list a.active { opacity: 1; color: var(--accent); text-shadow: 0 0 10px var(--accent-glow); }
+        .nav-list a { font-family: var(--font-code); font-size: 12px; color: var(--fg); text-decoration: none; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; transition: all 0.3s; }
+        .nav-list a:hover, .nav-list a.active { opacity: 1; color: var(--accent); }
 
-        /* --- SERVICES HERO SECTOR --- */
-        .srv-hero { padding: 25vh 0 10vh; border-bottom: 1px solid var(--line); position: relative; }
-        .srv-headline { font-family: var(--font-head); font-size: clamp(60px, 10vw, 150px); line-height: 0.9; text-transform: uppercase; letter-spacing: -2px; margin-bottom: 4vh; color: var(--fg); }
+        /* --- ANIMATION INBOUND SYSTEM --- */
+        .mask-container { overflow: hidden; display: inline-block; vertical-align: bottom; }
+        .mask-node { display: inline-block; transform: translateY(115%); transition: transform 1.2s var(--ease-out); }
+        .mask-node.is-visible { transform: translateY(0); }
+        .reveal-node { opacity: 0; transform: translateY(40px); transition: opacity 1s var(--ease-out), transform 1s var(--ease-out); }
+        .reveal-node.is-visible { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* --- HERO SECTOR --- */
+        .srv-hero { padding: 22vh 0 12vh; border-bottom: 1px solid var(--line); position: relative; }
+        .srv-headline { font-family: var(--font-head); font-size: clamp(55px, 9vw, 140px); line-height: 0.85; text-transform: uppercase; letter-spacing: -2px; margin-bottom: 4vh; color: var(--fg); }
         .srv-headline span.outline { color: transparent; -webkit-text-stroke: 1.5px var(--fg); }
-        .hero-statement { font-size: clamp(16px, 1.6vw, 24px); line-height: 1.6; font-weight: 300; color: var(--fg-muted); max-width: 900px; }
-        .hero-statement span.white { color: var(--fg); font-weight: 600; }
+        .hero-statement { font-size: clamp(16px, 1.6vw, 22px); line-height: 1.6; font-weight: 300; color: var(--fg-muted); max-width: 900px; }
+        .hero-statement span.white { color: var(--fg); font-weight: 500; }
 
-        /* --- DEEP-DIVE CAPABILITIES MATRIX --- */
-        .services-detail-viewport { padding: 15vh 0; border-bottom: 1px solid var(--line); }
+        /* --- CORE SERVICES QUANTUM GRID --- */
+        .services-detail-viewport { padding: 12vh 0; }
         
-        .service-block { display: grid; grid-template-columns: 0.3fr 1fr; gap: 4vw; padding: 10vh 0; border-bottom: 1px dashed var(--line); position: relative; transition: all 0.5s var(--ease-out); }
-        .service-block:first-of-type { border-top: 1px solid var(--line); }
+        .service-layout-grid { display: grid; grid-template-columns: 200px 1fr; gap: 4vw; padding: 10vh 0; border-bottom: 1px dashed var(--line); position: relative; transition: background 0.4s var(--ease-out); }
+        .service-layout-grid:first-of-type { border-top: 1px solid var(--line); }
+        .service-layout-grid:hover { background: linear-gradient(90deg, rgba(255, 255, 255, 0.01) 0%, transparent 100%); }
         
-        /* Interactive left bar indicator */
-        .service-block::before { content: ''; position: absolute; left: -4vw; top: 0; width: 4px; height: 0%; background: var(--accent); transition: height 0.5s var(--ease-out); }
-        .service-block:hover::before { height: 100%; }
-        .service-block:hover { background: linear-gradient(90deg, rgba(255, 60, 0, 0.03), transparent); }
+        .service-layout-grid::before { content: ''; position: absolute; left: -4vw; top: 0; width: 4px; height: 0%; transition: height 0.5s var(--ease-out); }
+        .srv-frontend:hover::before { height: 100%; background: var(--neon-cyan); box-shadow: 0 0 15px var(--neon-cyan); }
+        .srv-contracts:hover::before { height: 100%; background: var(--accent); box-shadow: 0 0 15px var(--accent); }
+        .srv-backend:hover::before { height: 100%; background: var(--neon-purple); box-shadow: 0 0 15px var(--neon-purple); }
+        .srv-audit:hover::before { height: 100%; background: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); }
 
-        .srv-meta { display: flex; flex-direction: column; gap: 1vh; position: sticky; top: 15vh; align-self: start; }
-        .srv-num { font-family: var(--font-code); font-size: clamp(24px, 2.5vw, 40px); color: var(--neon-blue); font-weight: 700; line-height: 1; }
-        .srv-label { font-family: var(--font-code); font-size: 11px; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 2px; }
+        .srv-sticky-index { position: sticky; top: 12vh; align-self: start; display: flex; flex-direction: column; }
+        .srv-sys-id { font-family: var(--font-code); font-size: clamp(24px, 2.5vw, 36px); font-weight: 700; }
+        .srv-frontend .srv-sys-id { color: var(--neon-cyan); }
+        .srv-contracts .srv-sys-id { color: var(--accent); }
+        .srv-backend .srv-sys-id { color: var(--neon-purple); }
+        .srv-audit .srv-sys-id { color: var(--neon-green); }
+        .srv-sys-label { font-family: var(--font-code); font-size: 10px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
 
-        .srv-content { display: flex; flex-direction: column; gap: 5vh; }
-        .srv-title { font-family: var(--font-head); font-size: clamp(40px, 5vw, 80px); color: var(--fg); text-transform: uppercase; line-height: 0.95; letter-spacing: -1px; }
-        .srv-desc { font-size: clamp(16px, 1.2vw, 20px); color: var(--fg-muted); line-height: 1.8; font-weight: 300; max-width: 90%; }
+        .srv-main-panel { display: flex; flex-direction: column; gap: 4vh; }
+        .srv-sys-title { font-family: var(--font-head); font-size: clamp(38px, 5vw, 75px); text-transform: uppercase; line-height: 0.95; letter-spacing: -1px; }
+        .srv-sys-desc { font-size: clamp(15px, 1.2vw, 19px); color: var(--fg-muted); line-height: 1.7; font-weight: 300; max-width: 95%; }
+
+        /* Parameter Layout Grid */
+        .srv-param-architecture { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5vw; margin-top: 2vh; }
+        .param-column h4 { font-family: var(--font-code); font-size: 11px; color: var(--fg); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 2vh; border-bottom: 1px solid var(--line); padding-bottom: 8px; position: relative; }
+        .param-column h4::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 25px; height: 1px; background: #fff; }
         
-        .srv-sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4vw; margin-top: 2vh; }
-        .sub-box h4 { font-family: var(--font-code); font-size: 13px; color: var(--fg); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2vh; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1vh; }
-        .sub-box ul { list-style: none; display: flex; flex-direction: column; gap: 1.5vh; }
-        .sub-box ul li { font-size: 15px; color: var(--fg-muted); display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; font-weight: 300; }
-        .sub-box ul li::before { content: '>'; color: var(--accent); font-family: var(--font-code); font-weight: bold; }
+        .param-column ul { list-style: none; display: flex; flex-direction: column; gap: 1.5vh; }
+        .param-column ul li { font-size: 13.5px; color: var(--fg-muted); line-height: 1.4; font-weight: 300; }
+        .param-column ul li strong { color: var(--fg); font-family: var(--font-code); font-size: 11px; text-transform: uppercase; display: flex; align-items: center; gap: 6px; margin-bottom: 2px; }
+        .param-column ul li strong::before { content: '//'; font-size: 10px; color: var(--accent); }
+        .srv-frontend .param-column ul li strong::before { color: var(--neon-cyan); }
+        .srv-backend .param-column ul li strong::before { color: var(--neon-purple); }
+        .srv-audit .param-column ul li strong::before { color: var(--neon-green); }
 
-        .tech-pill-group { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 2vh; }
-        .t-pill { padding: 10px 20px; border: 1px solid var(--line); font-family: var(--font-code); font-size: 11px; color: var(--fg); text-transform: uppercase; letter-spacing: 1px; border-radius: 2px; background: rgba(255,255,255,0.02); transition: all 0.3s; }
-        .service-block:hover .t-pill { border-color: rgba(255, 60, 0, 0.3); background: rgba(255, 60, 0, 0.05); }
+        .tech-pill-matrix { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5px; }
+        .tech-node-tag { padding: 6px 12px; border: 1px solid var(--line); font-family: var(--font-code); font-size: 11px; color: var(--fg-muted); text-transform: uppercase; background: rgba(0,0,0,0.2); }
+        .service-layout-grid:hover .tech-node-tag { border-color: var(--line-active); color: #fff; }
 
-        /* --- THE ENGINEERING PROTOCOL (METHODOLOGY PIPELINE) --- */
-        .protocol-viewport { padding: 15vh 0; border-bottom: 1px solid var(--line); }
-        .protocol-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2vw; margin-top: 8vh; }
+        /* --- INFRASTRUCTURE FLOW MAP --- */
+        .infra-schema-viewport { padding: 12vh 0; border-bottom: 1px solid var(--line); }
+        .infra-flow-map { display: flex; justify-content: space-between; align-items: center; gap: 1.5vw; margin-top: 8vh; }
         
-        .step-card { background: var(--bg-card); border: 1px solid var(--line); padding: 3vw 2vw; position: relative; transition: all 0.4s; }
-        .step-card:hover { border-color: var(--neon-blue); transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,243,255,0.05); }
+        .infra-node-box { background: var(--bg-card); border: 1px solid var(--line); padding: 20px; flex: 1; border-radius: 2px; position: relative; }
+        .infra-node-box::before { content: ' '; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--line); transition: background 0.3s; }
+        .infra-node-box:hover::before { background: var(--neon-cyan); }
+        .infra-node-box h5 { font-family: var(--font-code); font-size: 10px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .infra-node-box h6 { font-size: 15px; font-weight: 600; text-transform: uppercase; margin-bottom: 10px; letter-spacing: -0.5px; }
+        .infra-node-box p { font-size: 12.5px; color: var(--fg-muted); font-weight: 300; line-height: 1.5; }
         
-        .step-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--line); transition: background 0.4s; }
-        .step-card:hover::before { background: var(--neon-blue); }
+        .infra-vector-arrow { font-family: var(--font-code); font-size: 14px; color: rgba(255,255,255,0.15); animation: pulseArrow 2s infinite ease-in-out; }
+        @keyframes pulseArrow { 0%, 100% { transform: translateX(-2px); opacity: 0.4; } 50% { transform: translateX(2px); opacity: 1; } }
 
-        .step-phase { font-family: var(--font-code); font-size: 11px; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 3vh; }
-        .step-title { font-family: var(--font-head); font-size: clamp(24px, 2.5vw, 40px); color: var(--fg); text-transform: uppercase; line-height: 1.1; margin-bottom: 2vh; }
-        .step-desc { font-size: 14px; color: var(--fg-muted); line-height: 1.7; font-weight: 300; }
-
-        /* --- PRODUCTION STANDARDS (SLA) --- */
-        .standards-viewport { padding: 15vh 0; border-bottom: 1px solid var(--line); background: radial-gradient(circle at 50% 100%, rgba(255,60,0,0.05), transparent 70%); }
-        .standards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3vw; margin-top: 6vh; }
+        /* --- ENGAGEMENT MATRICES (PRICING) --- */
+        .pricing-viewport { padding: 12vh 0; border-bottom: 1px solid var(--line); }
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2vw; margin-top: 8vh; }
         
-        .std-box { padding: 3vw; border-left: 2px solid var(--accent); background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); transition: all 0.3s; }
-        .std-box:hover { border-left-color: var(--neon-blue); background: rgba(255,255,255,0.02); }
-        .std-val { font-family: var(--font-head); font-size: clamp(40px, 5vw, 80px); color: var(--fg); line-height: 1; margin-bottom: 1vh; }
-        .std-label { font-family: var(--font-code); font-size: 12px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 2vh; }
-        .std-desc { font-size: 14px; color: var(--fg-muted); line-height: 1.6; font-weight: 300; }
+        .price-tier-card { background: var(--bg-card); border: 1px solid var(--line); padding: 3vw 2vw; display: flex; flex-direction: column; gap: 3.5vh; border-radius: 2px; position: relative; transition: all 0.4s var(--ease-out); }
+        .price-tier-card:hover { border-color: var(--line-active); transform: translateY(-5px); background: #06060f; }
+        .price-tier-card.featured-tier { border-color: var(--accent); background: linear-gradient(180deg, #070710 0%, #030307 100%); }
+        
+        .tier-header span { font-family: var(--font-code); font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 1vh; }
+        .price-tier-card.featured-tier .tier-header span { color: var(--neon-cyan); }
+        .tier-header h3 { font-family: var(--font-head); font-size: clamp(28px, 2.5vw, 44px); text-transform: uppercase; line-height: 1; }
+        
+        .tier-metrics { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 2.5vh 0; display: flex; flex-direction: column; gap: 1.5vh; }
+        .metric-line { display: flex; justify-content: space-between; font-size: 13.5px; font-weight: 300; color: var(--fg-muted); }
+        .metric-line span { font-family: var(--font-code); font-size: 12px; color: var(--fg); font-weight: 500; }
+        
+        .tier-features-list { list-style: none; display: flex; flex-direction: column; gap: 1.5vh; font-size: 13.5px; color: var(--fg-muted); font-weight: 300; }
+        .tier-features-list li { display: flex; align-items: flex-start; gap: 10px; line-height: 1.4; }
+        .tier-features-list li::before { content: '->'; color: var(--accent); font-family: var(--font-code); font-size: 11px; }
+
+        .tier-btn { margin-top: auto; display: block; width: 100%; text-align: center; border: 1px solid var(--line); padding: 15px; font-family: var(--font-code); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; text-decoration: none; color: #fff; background: rgba(255,255,255,0.01); transition: all 0.3s; }
+        .tier-btn:hover { background: #fff; color: #000; border-color: #fff; }
+        .featured-tier .tier-btn { background: var(--accent); border-color: var(--accent); }
+        .featured-tier .tier-btn:hover { background: transparent; color: var(--accent); border-color: var(--accent); }
+
+        /* --- HIGH-TECH FAQ ACCORDION --- */
+        .faq-viewport { padding: 12vh 0; border-bottom: 1px solid var(--line); }
+        .faq-container { margin-top: 6vh; max-width: 900px; display: flex; flex-direction: column; }
+        .faq-item { border-bottom: 1px solid var(--line); padding: 3vh 0; transition: all 0.3s; }
+        .faq-item:first-of-type { border-top: 1px solid var(--line); }
+        .faq-trigger { width: 100%; background: none; border: none; text-align: left; color: var(--fg); font-family: var(--font-body); font-size: clamp(16px, 1.5vw, 22px); font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
+        .faq-status { font-family: var(--font-code); font-size: 12px; color: var(--accent); letter-spacing: 1px; transition: color 0.3s; }
+        .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.5s var(--ease-out); color: var(--fg-muted); font-size: 14.5px; line-height: 1.6; font-weight: 300; }
+        .faq-content p { padding-top: 2vh; max-width: 90%; }
+        
+        .faq-item.active .faq-content { max-height: 250px; }
+        .faq-item.active .faq-status { color: var(--neon-cyan); }
 
         /* --- TRANSMISSION ACTION MATRIX --- */
-        .cta-viewport { padding: 25vh 0 15vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border-bottom: 1px solid var(--line); position: relative; }
-        .cta-tagline { font-family: var(--font-code); font-size: 12px; color: var(--accent); text-transform: uppercase; margin-bottom: 3vh; letter-spacing: 2px; }
-        .cta-headline-link { font-family: var(--font-head); font-size: clamp(50px, 10vw, 150px); text-transform: uppercase; line-height: 0.85; letter-spacing: -2px; color: var(--fg); text-decoration: none; transition: all 0.4s; position: relative; }
-        .cta-headline-link:hover { color: var(--neon-blue); text-shadow: 0 0 40px rgba(0,243,255,0.25); }
+        .cta-viewport { padding: 22vh 0 14vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border-bottom: 1px solid var(--line); position: relative; }
+        .cta-tagline { font-family: var(--font-code); font-size: 11px; color: var(--accent); text-transform: uppercase; margin-bottom: 3vh; letter-spacing: 2px; }
+        .cta-headline-link { font-family: var(--font-head); font-size: clamp(45px, 9vw, 130px); text-transform: uppercase; line-height: 0.85; letter-spacing: -2px; color: var(--fg); text-decoration: none; transition: all 0.4s; }
+        .cta-headline-link:hover { color: var(--neon-cyan); text-shadow: 0 0 30px rgba(0,243,255,0.2); }
 
         /* --- FOOTER SYSTEMS --- */
-        footer { padding: 5vh 0; }
-        .footer-flex-row { display: flex; justify-content: space-between; font-family: var(--font-code); font-size: 12px; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+        footer { padding: 4vh 0; }
+        .footer-flex-row { display: flex; justify-content: space-between; font-family: var(--font-code); font-size: 11px; color: rgba(255, 255, 255, 0.3); text-transform: uppercase; letter-spacing: 1px; }
 
-        /* --- RESPONSIVE LAPTOP & MOBILE --- */
+        /* --- RESPONSIVE MECHANICS --- */
+        @media(max-width: 1200px) {
+            .service-layout-grid { grid-template-columns: 1fr; gap: 3vh; padding: 6vh 0; }
+            .srv-sticky-index { position: relative; top: 0; flex-direction: row; justify-content: space-between; border-bottom: 1px solid var(--line); padding-bottom: 1.5vh; }
+            .pricing-grid { grid-template-columns: 1fr; gap: 3vh; }
+            .infra-flow-map { flex-direction: column; gap: 2.5vh; }
+            .infra-vector-arrow { transform: rotate(90deg); margin: 0.5vh 0; }
+        }
         @media(max-width: 1024px) {
             .nav-list { display: none; }
-            .hero-viewport { padding-top: 18vh; }
-            
-            .service-block { grid-template-columns: 1fr; padding: 6vh 0; gap: 3vh; }
-            .service-block::before { left: -4vw; width: 2px; }
-            .srv-meta { position: relative; top: 0; border-bottom: 1px solid var(--line); padding-bottom: 2vh; flex-direction: row; align-items: baseline; justify-content: space-between; }
-            .srv-sub-grid { grid-template-columns: 1fr; }
-            
-            .protocol-grid { grid-template-columns: 1fr 1fr; }
-            .standards-grid { grid-template-columns: 1fr; }
-            
-            .footer-flex-row { flex-direction: column; gap: 2vh; text-align: center; }
-        }
-
-        @media(max-width: 600px) {
-            .protocol-grid { grid-template-columns: 1fr; }
+            .srv-param-architecture { grid-template-columns: 1fr; gap: 3.5vh; }
+            .footer-flex-row { flex-direction: column; gap: 1.5vh; text-align: center; }
         }
     </style>
 </head>
 <body class="no-scroll">
 
+    <!-- HUD SYSTEM MODULES -->
     <div class="scroll-progress-wire" id="wire-progress"></div>
     <div class="telemetry-node">
         <div class="telemetry-pulse"></div> 
-        <span>OZ_SYSTEM // CAPABILITIES_MATRIX // SECURE</span>
+        <span>OZ_CORE_SYS // PRODUCTION_CAPABILITIES_MANIFEST v2.4</span>
     </div>
     
+    <!-- LATTICE CORE BACKGROUNDS -->
     <canvas id="canvas-matrix-grid"></canvas>
     <div class="grain-layer"></div>
     <div class="dynamic-glow-orb" id="glow-orb"></div>
     
+    <!-- LIGHT INTERFACE CURSORS -->
     <div class="cursor-pixel"></div>
     <div class="cursor-radar"></div>
 
+    <!-- MAIN BOOT UP DISPLAY -->
     <div class="preloader-screen" id="preloader">
-        <div class="loading-text scramble" data-value="INITIALIZING CAPABILITIES...">INITIALIZING CAPABILITIES...</div>
+        <div class="loading-text scramble" data-value="ESTABLISHING OZ DIGITAL MATRIX...">ESTABLISHING OZ DIGITAL MATRIX...</div>
         <div class="preloader-count-frame" id="counter-box">00</div>
         <div class="preloader-wire-rail"><div class="preloader-wire-active" id="progress-wire"></div></div>
     </div>
 
+    <!-- NAVIGATION COMPONENT -->
     <nav>
         <a href="index.html" class="nav-logo is-hoverable scramble" data-value="OZ.">OZ.</a>
         <ul class="nav-list">
@@ -210,151 +256,189 @@
         </ul>
     </nav>
 
+    <!-- WRAPPER RUNTIME CONTENT -->
     <div class="main-wrapper">
         
+        <!-- SECTOR: HERO REVEAL -->
         <section class="srv-hero">
-            <div class="matrix-header-tag reveal-node">[ ARCHITECTURAL_SERVICES_INDEX ]</div>
+            <div class="tech-crosshair tc-tl">+ IN_SPECT_01</div>
+            <div class="tech-crosshair tc-tr">SYS_MANIFEST +</div>
+            <div class="matrix-header-tag reveal-node">[ DEPLOYED_CORE_CAPABILITIES ]</div>
             <h1 class="srv-headline">
-                <span class="mask-container"><span class="mask-node boot-sequence">ENGINEERING</span></span><br>
-                <span class="mask-container"><span class="mask-node outline boot-sequence delay-1">THE IMPOSSIBLE.</span></span>
+                <span class="mask-container"><span class="mask-node boot-sequence">PRODUCTION</span></span><br>
+                <span class="mask-container"><span class="mask-node outline boot-sequence delay-1">CAPABILITIES.</span></span>
             </h1>
             <p class="hero-statement reveal-node delay-2">
-                We provide end-to-end digital architecture for elite Web3 protocols and future-facing tech brands. From <span class="white">hyper-optimized smart contracts</span> to <span class="white">cinematic WebGL interfaces</span>, we build systems explicitly designed for absolute market dominance.
+                We design, build, and validate high-risk digital infrastructure. We replace conventional agency templates with <span class="white">mathematical rendering systems</span> and <span class="white">fail-safe cryptographic architectures</span> to secure absolute business performance.
             </p>
         </section>
 
+        <!-- SECTOR: SYSTEMS CORE COMPONENTS MATRIX -->
         <section class="services-detail-viewport">
+            <div class="matrix-header-tag reveal-node">[ CAPABILITIES_LOGIC_MATRIX ]</div>
             
-            <div class="service-block is-hoverable reveal-node">
-                <div class="srv-meta">
-                    <span class="srv-num">01</span>
-                    <span class="srv-label">Visual Synthesis</span>
+            <!-- MODULE 01: REZA'S SYSTEM (FRONTEND) -->
+            <div class="service-layout-grid srv-frontend is-hoverable reveal-node" data-theme="cyan">
+                <div class="srv-sticky-index">
+                    <span class="srv-sys-id">0x01</span>
+                    <span class="srv-sys-label">Visual Core Layer</span>
                 </div>
-                <div class="srv-content">
-                    <h2 class="srv-title">Immersive<br>Frontend Architecture</h2>
-                    <p class="srv-desc">
-                        We don't build standard websites; we architect interactive digital environments. Directed by advanced visual engineering, our frontend systems utilize mathematical rendering and custom shaders to deliver cinematic, high-framerate experiences that command immediate user authority.
+                <div class="srv-main-panel">
+                    <h2 class="srv-sys-title">Immersive WebGL &<br>Cinematic Frontend</h2>
+                    <p class="srv-sys-desc">
+                        Driven by Reza's vision of visual engineering, we map complex vector rendering directly onto hardware GPU acceleration. We produce high-value interactive interfaces with flawless framerate optimizations to ensure complete brand dominance and premium market conversion.
                     </p>
                     
-                    <div class="srv-sub-grid">
-                        <div class="sub-box">
-                            <h4>Deliverables</h4>
+                    <div class="srv-param-architecture">
+                        <div class="param-column">
+                            <h4>Vector Targets</h4>
                             <ul>
-                                <li>Award-winning UI/UX Design</li>
-                                <li>Interactive 3D Web Experiences</li>
-                                <li>Kinetic Typography & Layouts</li>
-                                <li>Seamless Page Transitions</li>
+                                <li><strong>GPU Acceleration</strong> Real-time, pure GLSL shader rendering loops.</li>
+                                <li><strong>Kinetic Mechanics</strong> Fluid physics systems & micro-friction interactions.</li>
+                                <li><strong>Fluid Adaptive Layout</strong> Ultra-wide display aspect ratio matrix syncing.</li>
                             </ul>
                         </div>
-                        <div class="sub-box">
-                            <h4>Core Stack</h4>
-                            <div class="tech-pill-group">
-                                <span class="t-pill">WebGL / Three.js</span>
-                                <span class="t-pill">GLSL Shaders</span>
-                                <span class="t-pill">GSAP Engine</span>
-                                <span class="t-pill">Next.js Core</span>
+                        <div class="param-column">
+                            <h4>SLA Metrics</h4>
+                            <ul>
+                                <li><strong>Refresh Boundaries</strong> Locked performance at 60/120 FPS thresholds.</li>
+                                <li><strong>Core Web Vitals</strong> Sub-1.2 second LCP performance scores.</li>
+                                <li><strong>Payload Compression</strong> Lightweight canvas bundle sizing under 2MB.</li>
+                            </ul>
+                        </div>
+                        <div class="param-column">
+                            <h4>Tech Integration</h4>
+                            <div class="tech-pill-matrix">
+                                <span class="tech-node-tag">Three.js / WebGL</span>
+                                <span class="tech-node-tag">GLSL Shaders</span>
+                                <span class="tech-node-tag">Next.js Engine</span>
+                                <span class="tech-node-tag">GSAP Physics</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="service-block is-hoverable reveal-node">
-                <div class="srv-meta">
-                    <span class="srv-num">02</span>
-                    <span class="srv-label">Cryptographic Logic</span>
+            <!-- MODULE 02: NAUFAL'S SYSTEM (SMART CONTRACT) -->
+            <div class="service-layout-grid srv-contracts is-hoverable reveal-node" data-theme="orange">
+                <div class="srv-sticky-index">
+                    <span class="srv-sys-id">0x02</span>
+                    <span class="srv-sys-label">On-Chain Layer</span>
                 </div>
-                <div class="srv-content">
-                    <h2 class="srv-title">Decentralized<br>Smart Contracts</h2>
-                    <p class="srv-desc">
-                        Security and efficiency dictate survival on-chain. We engineer impenetrable, gas-optimized decentralized logic. Every contract architecture is subjected to extreme fuzzing algorithms and adversarial simulations to guarantee zero vulnerabilities before mainnet deployment.
+                <div class="srv-main-panel">
+                    <h2 class="srv-sys-title">Gas-Optimized & Fail-Safe<br>Smart Contracts</h2>
+                    <p class="srv-sys-desc">
+                        Under Naufal's architectural oversight, we deliver highly efficient, low-level EVM-compatible bytecode. Every line of protocol logic is executed with strict gas optimizations to drastically decrease operational costs without compromising data integrity.
                     </p>
                     
-                    <div class="srv-sub-grid">
-                        <div class="sub-box">
-                            <h4>Deliverables</h4>
+                    <div class="srv-param-architecture">
+                        <div class="param-column">
+                            <h4>Vector Targets</h4>
                             <ul>
-                                <li>Custom Protocol Architecture (DeFi, DEX)</li>
-                                <li>Gas-Optimized EVM Code</li>
-                                <li>MEV Shielding Protocols</li>
-                                <li>Comprehensive Security Testing</li>
+                                <li><strong>Low-Level Yul Assembly</strong> Manual byte-by-byte compilation profiling.</li>
+                                <li><strong>Economic Shielding</strong> Robust flash-loan and arbitrage exploit mitigation.</li>
+                                <li><strong>Custom Protocol Maps</strong> Bespoke AMM routing, vaults, and staking mechanics.</li>
                             </ul>
                         </div>
-                        <div class="sub-box">
-                            <h4>Core Stack</h4>
-                            <div class="tech-pill-group">
-                                <span class="t-pill">Solidity / Yul</span>
-                                <span class="t-pill">Foundry Suite</span>
-                                <span class="t-pill">Hardhat</span>
-                                <span class="t-pill">Assembly (EVM)</span>
+                        <div class="param-column">
+                            <h4>SLA Metrics</h4>
+                            <ul>
+                                <li><strong>Gas Constraints</strong> Standard transfer calls optimized under 21k gas limits.</li>
+                                <li><strong>Fuzzing Coverage</strong> Absolute 100% invariant checking targets via Foundry.</li>
+                                <li><strong>Compilation Target</strong> Pure multi-compiler EVM interoperability.</li>
+                            </ul>
+                        </div>
+                        <div class="param-column">
+                            <h4>Tech Integration</h4>
+                            <div class="tech-pill-matrix">
+                                <span class="tech-node-tag">Solidity / Yul</span>
+                                <span class="tech-node-tag">Foundry Framework</span>
+                                <span class="tech-node-tag">Hardhat Environment</span>
+                                <span class="tech-node-tag">Slither AST</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="service-block is-hoverable reveal-node">
-                <div class="srv-meta">
-                    <span class="srv-num">03</span>
-                    <span class="srv-label">Data Infrastructure</span>
+            <!-- MODULE 03: DISTRIBUTED INGESTION NODES (BACKEND) -->
+            <div class="service-layout-grid srv-backend is-hoverable reveal-node" data-theme="purple">
+                <div class="srv-sticky-index">
+                    <span class="srv-sys-id">0x03</span>
+                    <span class="srv-sys-label">Data Engine Layer</span>
                 </div>
-                <div class="srv-content">
-                    <h2 class="srv-title">High-Velocity<br>Backend Systems</h2>
-                    <p class="srv-desc">
-                        A cinematic frontend requires an engine that never stalls. We engineer aggressive server architectures and custom distributed indexers designed to ingest, process, and route massive volumes of data with absolute zero-latency execution.
+                <div class="srv-main-panel">
+                    <h2 class="srv-sys-title">High-Velocity APIs &<br>Distributed Indexers</h2>
+                    <p class="srv-sys-desc">
+                        We deploy blazingly fast, async Rust-based backend pipelines to bridge real-time blockchain mutations directly to your client layer. Our infrastructure smoothly digests millions of telemetry queries with zero latency through fine-tuned memory allocation architectures.
                     </p>
                     
-                    <div class="srv-sub-grid">
-                        <div class="sub-box">
-                            <h4>Deliverables</h4>
+                    <div class="srv-param-architecture">
+                        <div class="param-column">
+                            <h4>Vector Targets</h4>
                             <ul>
-                                <li>Custom Blockchain Indexers</li>
-                                <li>Ultra-low Latency APIs</li>
-                                <li>Scalable Cloud Microservices</li>
-                                <li>Real-time Data Sockets</li>
+                                <li><strong>Event Log Tracking</strong> High-throughput block mutation decoding.</li>
+                                <li><strong>Memory Cache Layers</strong> Ultra-low latency Redis in-memory cluster configurations.</li>
+                                <li><strong>Load Distribution</strong> Auto-scaling microservices with zero deployment friction.</li>
                             </ul>
                         </div>
-                        <div class="sub-box">
-                            <h4>Core Stack</h4>
-                            <div class="tech-pill-group">
-                                <span class="t-pill">Rust Language</span>
-                                <span class="t-pill">Node.js Engine</span>
-                                <span class="t-pill">PostgreSQL / Redis</span>
-                                <span class="t-pill">The Graph Protocol</span>
+                        <div class="param-column">
+                            <h4>SLA Metrics</h4>
+                            <ul>
+                                <li><strong>Latency Boundaries</strong> Stable sub-150ms roundtrip query response times.</li>
+                                <li><strong>Uptime Commitment</strong> Guaranteed 99.99% high-availability core uptime.</li>
+                                <li><strong>Block Synchronicity</strong> Immediate state synchronization within single-block cycles.</li>
+                            </ul>
+                        </div>
+                        <div class="param-column">
+                            <h4>Tech Integration</h4>
+                            <div class="tech-pill-matrix">
+                                <span class="tech-node-tag">Rust Async Architecture</span>
+                                <span class="tech-node-tag">The Graph Subgraphs</span>
+                                <span class="tech-node-tag">Redis Cache Cluster</span>
+                                <span class="tech-node-tag">GraphQL Systems</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="service-block is-hoverable reveal-node">
-                <div class="srv-meta">
-                    <span class="srv-num">04</span>
-                    <span class="srv-label">Ecosystem Bridging</span>
+            <!-- MODULE 04: SECURITY & AUDITING -->
+            <div class="service-layout-grid srv-audit is-hoverable reveal-node" data-theme="green">
+                <div class="srv-sticky-index">
+                    <span class="srv-sys-id">0x04</span>
+                    <span class="srv-sys-label">Defense Layer</span>
                 </div>
-                <div class="srv-content">
-                    <h2 class="srv-title">Web3 & dApp<br>Integration</h2>
-                    <p class="srv-desc">
-                        Bridging the complex on-chain reality with seamless user interaction. We build frictionless dApp interfaces capable of handling complex wallet states, zero-knowledge proofs, and cross-chain bridging architectures without compromising user experience.
+                <div class="srv-main-panel">
+                    <h2 class="srv-sys-title">Cryptographic Security &<br>Invariant Auditing</h2>
+                    <p class="srv-sys-desc">
+                        We execute rigorous, multi-layered static code reviews, automated lint analysis, and adversarial economic stress testing before production launch to thoroughly validate your system's overall posture against complex external vectors.
                     </p>
                     
-                    <div class="srv-sub-grid">
-                        <div class="sub-box">
-                            <h4>Deliverables</h4>
+                    <div class="srv-param-architecture">
+                        <div class="param-column">
+                            <h4>Vector Targets</h4>
                             <ul>
-                                <li>Custom Wallet Connectors</li>
-                                <li>Cross-chain Bridge UI</li>
-                                <li>Real-time Transaction Tracking</li>
-                                <li>ZKP Identity Dashboards</li>
+                                <li><strong>Static Code Audits</strong> Reentrancy, overflow, and compiler bugs exposure.</li>
+                                <li><strong>Invariant Modeling</strong> Mathematical validation of underlying business rules.</li>
+                                <li><strong>Economic Stressing</strong> Advanced oracle manipulation and liquidity attack routing.</li>
                             </ul>
                         </div>
-                        <div class="sub-box">
-                            <h4>Core Stack</h4>
-                            <div class="tech-pill-group">
-                                <span class="t-pill">Ethers.js / Viem</span>
-                                <span class="t-pill">Wagmi Hooks</span>
-                                <span class="t-pill">WebSockets</span>
-                                <span class="t-pill">React Context APIs</span>
+                        <div class="param-column">
+                            <h4>SLA Metrics</h4>
+                            <ul>
+                                <li><strong>Zero Miss Rate</strong> Complete vulnerability indexing across OWASP/Web3 Top 10.</li>
+                                <li><strong>Validation Speed</strong> Deep diagnostic technical reports within 7 business days.</li>
+                                <li><strong>Remediation Pipeline</strong> Post-patch code validation with zero compounding costs.</li>
+                            </ul>
+                        </div>
+                        <div class="param-column">
+                            <h4>Tech Integration</h4>
+                            <div class="tech-pill-matrix">
+                                <span class="tech-node-tag">Echidna Fuzzing</span>
+                                <span class="tech-node-tag">Mythril Analysis</span>
+                                <span class="tech-node-tag">Formal Verification</span>
+                                <span class="tech-node-tag">Solhint Engine</span>
                             </div>
                         </div>
                     </div>
@@ -363,87 +447,167 @@
 
         </section>
 
-        <section class="protocol-viewport">
-            <div class="matrix-header-tag reveal-node">[ THE_ENGINEERING_PROTOCOL ]</div>
+        <!-- SECTOR: SYSTEM ARCHITECTURE FLOW MAP (PURE CSS) -->
+        <section class="infra-schema-viewport reveal-node">
+            <div class="matrix-header-tag">[ ARCHITECTURAL_DATA_FLOW_MAP ]</div>
             
-            <div class="protocol-grid">
-                
-                <div class="step-card reveal-node">
-                    <span class="step-phase">PHASE_01</span>
-                    <h3 class="step-title">Blueprint</h3>
-                    <p class="step-desc">Rigorous technical discovery. We map out the entire smart contract logic, backend architecture, and visual wireframes to eliminate blind spots before a single line of code is written.</p>
+            <div class="infra-flow-map">
+                <div class="infra-node-box">
+                    <h5>Node_01 // Interface</h5>
+                    <h6>WebGL Render Loop</h6>
+                    <p>The visual client maps and runs rich graphics at 60/120 FPS thresholds via custom shaders.</p>
                 </div>
-                
-                <div class="step-card reveal-node delay-1">
-                    <span class="step-phase">PHASE_02</span>
-                    <h3 class="step-title">Synthesis</h3>
-                    <p class="step-desc">Simultaneous dual-track engineering. The cryptographic logic is written and optimized in isolation, while the WebGL frontend is mathematically constructed to ensure fluid rendering.</p>
+                <div class="infra-vector-arrow">>></div>
+                <div class="infra-node-box">
+                    <h5>Node_02 // Gateway</h5>
+                    <h6>Edge Computing</h6>
+                    <p>Sub-millisecond geographic routing processes and validates client-side payload signatures.</p>
                 </div>
-                
-                <div class="step-card reveal-node delay-2">
-                    <span class="step-phase">PHASE_03</span>
-                    <h3 class="step-title">Fuzzing</h3>
-                    <p class="step-desc">Extreme adversarial testing. Contracts are pushed to their breaking points via algorithmic fuzzing (Foundry), while the UI undergoes severe cross-device stress testing for framerate stability.</p>
+                <div class="infra-vector-arrow">>></div>
+                <div class="infra-node-box">
+                    <h5>Node_03 // Logic</h5>
+                    <h6>Rust API Engine</h6>
+                    <p>High-concurrency processing pipelines ingestion streams and syncs cache records directly.</p>
                 </div>
-                
-                <div class="step-card reveal-node delay-3">
-                    <span class="step-phase">PHASE_04</span>
-                    <h3 class="step-title">Deployment</h3>
-                    <p class="step-desc">Calculated mainnet execution. Systems are migrated to production environments with heavily monitored indexing pipelines, ensuring flawless live operations from the first block.</p>
+                <div class="infra-vector-arrow">>></div>
+                <div class="infra-node-box">
+                    <h5>Node_04 // Consensus</h5>
+                    <h6>EVM Node Ledger</h6>
+                    <p>Fail-safe smart contracts secure transactions and record permanent state updates globally.</p>
                 </div>
-
             </div>
         </section>
 
-        <section class="standards-viewport">
-            <div class="matrix-header-tag reveal-node">[ UNYIELDING_PRODUCTION_STANDARDS ]</div>
+        <!-- SECTOR: DEPLOYMENT COLLABORATION MATRIX -->
+        <section class="pricing-viewport">
+            <div class="matrix-header-tag reveal-node">[ PROTOCOL_ENGAGEMENT_MODELS ]</div>
             
-            <div class="standards-grid">
+            <div class="pricing-grid">
+                <!-- TIER 01 -->
+                <div class="price-tier-card reveal-node">
+                    <div class="tier-header">
+                        <span>Model_01 // Isolated Development</span>
+                        <h3>Fixed-Scope Sprint</h3>
+                    </div>
+                    <div class="tier-metrics">
+                        <div class="metric-line">Time Allocation <span>2 — 4 Weeks</span></div>
+                        <div class="metric-line">Code Scope <span>Isolated Components</span></div>
+                        <div class="metric-line">Security Validation <span>Internal Static Analysis</span></div>
+                    </div>
+                    <ul class="tier-features-list">
+                        <li>Engineering of stand-alone premium interface modules or smart contracts.</li>
+                        <li>Basic functional unit testing inside fully simulated local sandbox vectors.</li>
+                        <li>Complete codebase and deployment architecture documentation ready for handoff.</li>
+                        <li>Best suited for rapid, isolated feature expansion and precise feature patches.</li>
+                    </ul>
+                    <a href="contact.html" class="tier-btn is-hoverable">Initiate Sprint</a>
+                </div>
                 
-                <div class="std-box reveal-node">
-                    <div class="std-val">60 FPS</div>
-                    <span class="std-label">Minimum Render Baseline</span>
-                    <p class="std-desc">Every 3D scene, shader, and kinetic transition is mathematically optimized to run at a flawless 60 frames per second across standard modern devices.</p>
+                <!-- TIER 02 -->
+                <div class="price-tier-card featured-tier reveal-node delay-1">
+                    <div class="tier-header">
+                        <span>Model_02 // Full Integration</span>
+                        <h3>Ecosystem Architecture</h3>
+                    </div>
+                    <div class="tier-metrics">
+                        <div class="metric-line">Time Allocation <span>2 — 4 Months</span></div>
+                        <div class="metric-line">Code Scope <span>End-to-End System Build</span></div>
+                        <div class="metric-line">Security Validation <span>Fuzzing & Full Audit Reporting</span></div>
+                    </div>
+                    <ul class="tier-features-list">
+                        <li>Complete architecture design scaling from front-end frameworks down to database systems.</li>
+                        <li>Bespoke EVM smart contracts engineered with intensive gas-saving profiles.</li>
+                        <li>Real-time custom data subgraph indexing and state ingestion nodes setup.</li>
+                        <li>Full automated adversarial attack simulation performed prior to production deployment.</li>
+                    </ul>
+                    <a href="contact.html" class="tier-btn is-hoverable">Deploy Ecosystem</a>
                 </div>
-
-                <div class="std-box reveal-node delay-1">
-                    <div class="std-val">ZERO</div>
-                    <span class="std-label">Vulnerability Tolerance</span>
-                    <p class="std-desc">We do not deploy unverified code. Every EVM contract must pass rigorous internal auditing and automated property-based testing before reaching mainnet.</p>
+                
+                <!-- TIER 03 -->
+                <div class="price-tier-card reveal-node delay-2">
+                    <div class="tier-header">
+                        <span>Model_03 // Continuous Core</span>
+                        <h3>Retainer Production Pod</h3>
+                    </div>
+                    <div class="tier-metrics">
+                        <div class="metric-line">Time Allocation <span>Quarterly Commitments</span></div>
+                        <div class="metric-line">Code Scope <span>Continuous Full-Scale Iterations</span></div>
+                        <div class="metric-line">Security Validation <span>Continuous Security Auditing</span></div>
+                    </div>
+                    <ul class="tier-features-list">
+                        <li>Dedicated core engineers acting as an active extension of your internal dev team.</li>
+                        <li>Routine rendering loop profile audits to maximize client browser runtime speed.</li>
+                        <li>Continuous smart contract maintenance and adjustment as protocol needs change.</li>
+                        <li>Priority mission-critical pipeline intervention and 24/7 technical infrastructure monitoring.</li>
+                    </ul>
+                    <a href="contact.html" class="tier-btn is-hoverable">Secure Retainer Pod</a>
                 </div>
-
-                <div class="std-box reveal-node delay-2">
-                    <div class="std-val">< 1s</div>
-                    <span class="std-label">Latency Architecture</span>
-                    <p class="std-desc">Backend pipelines and custom indexers are constructed using low-level languages (Rust) to ensure data fetching operations resolve in sub-second timeframes.</p>
-                </div>
-
             </div>
         </section>
 
+        <!-- SECTOR: ACCORDION RESOLUTION (FAQ) -->
+        <section class="faq-viewport">
+            <div class="matrix-header-tag reveal-node">[ STRATEGIC_FAQ_SUBSYSTEM ]</div>
+            
+            <div class="faq-container">
+                <div class="faq-item reveal-node">
+                    <button class="faq-trigger">
+                        <span>What is OZ's methodology for securing smart contracts?</span>
+                        <span class="faq-status">[ OPEN_NODE ]</span>
+                    </button>
+                    <div class="faq-content">
+                        <p>Every line of smart contract code we write goes through three distinct layers of strict validation: automated static AST checking via specialized tools, rigorous invariant fuzzing scripts inside Foundry to map out millions of edge-case system paths, and final deep manual peer reviews before delivery to third-party audit firms.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal-node delay-1">
+                    <button class="faq-trigger">
+                        <span>Is the WebGL front-end rendering smooth on mobile platforms?</span>
+                        <span class="faq-status">[ OPEN_NODE ]</span>
+                    </button>
+                    <div class="faq-content">
+                        <p>Yes, optimization is central to our frontend philosophy. We construct highly clean, targeted GLSL shaders and use modern mesh-compression techniques to reduce overhead. This guarantees rendering frame loops remain safely locked at 60+ FPS bounds on modern iOS and Android devices alike.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal-node delay-2">
+                    <button class="faq-trigger">
+                        <span>How is intellectual property and repo ownership handed over?</span>
+                        <span class="faq-status">[ OPEN_NODE ]</span>
+                    </button>
+                    <div class="faq-content">
+                        <p>Upon final sign-off and project milestone completion, all code repositories, assets, and absolute IP rights are completely migrated to your control via secure encrypted endpoints. We also hand off an in-depth architectural manual to ensure clear integration pathing for your long-term internal teams.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CALL TO ACTION TERMINAL -->
         <section class="cta-viewport">
-            <span class="cta-tagline">[ INITIATE_COLLABORATION_PROTOCOL ]</span>
+            <span class="cta-tagline">[ INITIATE_TRANSMISSION_PROTOCOL ]</span>
             <a href="contact.html" class="cta-headline-link is-hoverable scramble" data-value="START A PROJECT.">START A PROJECT.</a>
         </section>
 
+        <!-- FOOTER SYSTEMS -->
         <footer>
             <div class="footer-flex-row">
-                <div>© 2026 OZ CREATIVE // ALL RIGHTS RESERVED. SECURE CONNECTION ESTABLISHED.</div>
+                <div>© 2026 OZ CREATIVE ARCHITECTURE // ALL RIGHTS RESERVED. ENCRYPTED LINK SECURED.</div>
                 <div id="telemetry-clock">00:00:00</div>
             </div>
         </footer>
 
     </div>
 
+    <!-- MAIN INTERACTIVE ENGINE SCRIPT -->
     <script>
-        // Preloader Logic
+        // Preloader Count Matrix Loader Loop
         let loadValueProgress = 0; 
         const counterBox = document.getElementById('counter-box');
         const progressWire = document.getElementById('progress-wire');
         const preloaderFrame = document.getElementById('preloader');
         
         let bootSequenceTimer = setInterval(() => {
-            loadValueProgress += Math.floor(Math.random() * 6) + 4;
+            loadValueProgress += Math.floor(Math.random() * 9) + 4;
             if(loadValueProgress >= 100) { 
                 loadValueProgress = 100; 
                 counterBox.innerText = loadValueProgress; 
@@ -453,14 +617,14 @@
                     preloaderFrame.classList.add('hide'); 
                     document.body.classList.remove('no-scroll');
                     document.querySelectorAll('.boot-sequence').forEach(el => el.classList.add('is-visible')); 
-                }, 500);
+                }, 350);
             } else { 
                 counterBox.innerText = loadValueProgress < 10 ? '0' + loadValueProgress : loadValueProgress; 
                 progressWire.style.width = loadValueProgress + '%'; 
             }
-        }, 30);
+        }, 20);
 
-        // Canvas Data Lattice Particle Streams Animation Engine
+        // Background Particle Lattice System
         const canvas = document.getElementById('canvas-matrix-grid');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -476,8 +640,8 @@
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.speedX = (Math.random() - 0.5) * 0.5;
-                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.35;
+                this.speedY = (Math.random() - 0.5) * 0.35;
                 this.size = Math.random() * 1.5 + 0.5;
             }
             update(mX, mY) {
@@ -491,21 +655,21 @@
                 let dy = mY - this.y;
                 let distance = Math.sqrt(dx * dx + dy * dy);
                 if (distance < 200) {
-                    this.x += dx * 0.003;
-                    this.y += dy * 0.003;
+                    this.x += dx * 0.002;
+                    this.y += dy * 0.002;
                 }
             }
             draw() {
-                ctx.fillStyle = Math.random() > 0.98 ? '#ff3c00' : 'rgba(255, 255, 255, 0.15)';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
 
-        for (let i = 0; i < 80; i++) { particles.push(new ParticleNode()); }
+        for (let i = 0; i < 75; i++) { particles.push(new ParticleNode()); }
 
-        // Precision Coordinate Mouse Tracker Physics Engine
+        // Precision Mouse HUD Coordinates Tracker
         const curPixel = document.querySelector('.cursor-pixel');
         const curRadar = document.querySelector('.cursor-radar');
         const glowOrbLayer = document.getElementById('glow-orb');
@@ -518,17 +682,31 @@
             curPixel.style.top = mouseY + 'px'; 
         });
         
-        // Service block specific glow interaction
-        document.querySelectorAll('.service-block').forEach(block => {
+        // INTERACTIVE RE-THEME OF ORB GLOWS ON GRID INTERSECT
+        document.querySelectorAll('.service-layout-grid').forEach(block => {
             block.addEventListener('mouseenter', () => {
-                glowOrbLayer.style.background = 'radial-gradient(circle, rgba(0, 243, 255, 0.15) 0%, rgba(3, 3, 6, 0) 70%)';
+                const theme = block.getAttribute('data-theme');
+                if (theme === 'cyan') {
+                    glowOrbLayer.style.background = 'radial-gradient(circle, rgba(0, 243, 255, 0.18) 0%, rgba(3, 3, 7, 0) 70%)';
+                    curRadar.style.borderColor = 'var(--neon-cyan)';
+                } else if (theme === 'orange') {
+                    glowOrbLayer.style.background = 'radial-gradient(circle, rgba(255, 60, 0, 0.18) 0%, rgba(3, 3, 7, 0) 70%)';
+                    curRadar.style.borderColor = 'var(--accent)';
+                } else if (theme === 'purple') {
+                    glowOrbLayer.style.background = 'radial-gradient(circle, rgba(189, 0, 255, 0.18) 0%, rgba(3, 3, 7, 0) 70%)';
+                    curRadar.style.borderColor = 'var(--neon-purple)';
+                } else if (theme === 'green') {
+                    glowOrbLayer.style.background = 'radial-gradient(circle, rgba(0, 255, 102, 0.15) 0%, rgba(3, 3, 7, 0) 70%)';
+                    curRadar.style.borderColor = 'var(--neon-green)';
+                }
             });
             block.addEventListener('mouseleave', () => {
-                glowOrbLayer.style.background = 'radial-gradient(circle, var(--accent-glow) 0%, rgba(3, 3, 6, 0) 70%)';
+                glowOrbLayer.style.background = 'radial-gradient(circle, var(--accent-glow) 0%, rgba(3, 3, 7, 0) 70%)';
+                curRadar.style.borderColor = 'var(--accent)';
             });
         });
         
-        function continuousGlobalAnimationLoop() { 
+        function globalAnimationPipelineLoop() { 
             radarX += (mouseX - radarX) * 0.12; 
             radarY += (mouseY - radarY) * 0.12; 
             curRadar.style.left = radarX + 'px'; 
@@ -544,7 +722,7 @@
                 p.draw();
             });
 
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.012)';
             ctx.lineWidth = 0.5;
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
@@ -557,12 +735,11 @@
                     }
                 }
             }
-
-            requestAnimationFrame(continuousGlobalAnimationLoop); 
+            requestAnimationFrame(globalAnimationPipelineLoop); 
         }
-        continuousGlobalAnimationLoop();
+        globalAnimationPipelineLoop();
 
-        // Wire progress timeline scroll tracker
+        // Top Scroll Wire Tracking
         const topScrollWire = document.getElementById('wire-progress');
         window.addEventListener('scroll', () => {
             const documentScrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -575,8 +752,27 @@
             nodeTrigger.addEventListener('mouseleave', () => document.body.classList.remove('is-hovering'));
         });
 
-        // Cipher Scramble Text Loop FX
-        const alphaGlyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ/\\<>-_[]{}*^?#0123456789";
+        // High Tech Accordion System Logic
+        document.querySelectorAll('.faq-trigger').forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                const parent = trigger.parentElement;
+                const statusIndicator = trigger.querySelector('.faq-status');
+                const isCurrentlyActive = parent.classList.contains('active');
+                
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                    item.querySelector('.faq-status').innerText = '[ OPEN_NODE ]';
+                });
+                
+                if (!isCurrentlyActive) {
+                    parent.classList.add('active');
+                    statusIndicator.innerText = '[ CLOSE_NODE ]';
+                }
+            });
+        });
+
+        // Alpha Cipher Scramble Effect Module
+        const alphaGlyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ//\\\\<>-[]{}*#0123456789";
         document.querySelectorAll('.scramble').forEach(targetNode => {
             targetNode.addEventListener('mouseenter', e => {
                 let textIterations = 0; 
@@ -594,7 +790,7 @@
                         e.target.innerText = originalValueString; 
                     }
                     textIterations += 1 / 2; 
-                }, 25);
+                }, 20);
             });
             targetNode.addEventListener('mouseleave', e => { 
                 clearInterval(targetNode.scrambleId); 
@@ -602,7 +798,7 @@
             });
         });
 
-        // Global Elements Scroll Inbound Observer
+        // Scroll Inbound Element Observer Reveal
         const textElementObserver = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if(entry.isIntersecting) {
@@ -611,7 +807,7 @@
                     textElementObserver.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.05 });
         document.querySelectorAll('.reveal-node').forEach(node => textElementObserver.observe(node));
 
         // Real-time HUD Clock Sync
