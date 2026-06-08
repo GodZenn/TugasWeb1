@@ -1,166 +1,649 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact | OZ Creative Agency</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact | OZ CREATIVE</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
-        /* --- UTILITIES & VARIABLES --- */
-        :root {
-            --bg-main: #0a0b0e;
-            --text-main: #f3f4f6;
-            --text-muted: #71717a;
-            --accent: #0052ff;
-            --border-color: #1f222c;
-            --purple: #6c5ce7;
-            --font-display: 'Syne', sans-serif;
-            --font-body: 'Plus Jakarta Sans', sans-serif;
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
-        body { background-color: var(--bg-main); color: var(--text-main); overflow-x: hidden; }
-        
-        /* --- CUSTOM CURSOR --- */
-        .custom-cursor { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background-color: var(--text-main); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.1s, width 0.3s, height 0.3s, background-color 0.3s; }
-        .custom-cursor-follower { position: fixed; top: 0; left: 0; width: 32px; height: 32px; border: 1px solid var(--text-muted); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1); }
-        body.hovered .custom-cursor { width: 40px; height: 40px; background-color: transparent; border: 1px solid var(--accent); }
-        body.hovered .custom-cursor-follower { opacity: 0; }
-        
-        /* --- PRELOADER --- */
-        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1); }
-        .preloader-wrap { overflow: hidden; }
-        .preloader-text { font-family: var(--font-display); font-size: 2rem; font-weight: 800; letter-spacing: 2px; transform: translateY(100%); animation: preloaderReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        
-        /* --- NAVIGATION --- */
-        nav { position: fixed; top: 0; width: 100%; padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 900; border-bottom: 1px solid var(--border-color); background: rgba(10, 11, 14, 0.8); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
-        .logo { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; }
-        .logo span { color: var(--accent); }
-        nav ul { display: flex; gap: 40px; list-style: none; }
-        nav ul li a { color: var(--text-main); text-decoration: none; font-weight: 500; font-size: 0.95rem; letter-spacing: 0.5px; transition: color 0.3s; }
-        nav ul li a:hover { color: var(--accent); }
-        
-        /* --- LAYOUT WRAPPER --- */
-        .page-wrapper { padding: 160px 5% 100px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        .section-title { font-family: var(--font-display); font-size: 4rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; letter-spacing: -2px; text-align: center; }
-        .section-subtitle { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 50px; max-width: 500px; line-height: 1.6; text-align: center; }
-        
-        /* --- FORM STYLING (BENTO CONTAINER STYLE) --- */
-        .contact-form {
-            padding: 50px 40px; 
-            border: 1px solid var(--border-color); 
-            border-radius: 20px; 
-            background: rgba(255, 255, 255, 0.01); 
-            width: 100%; 
-            max-width: 600px;
-            transition: border-color 0.4s ease;
-        }
-        .contact-form:hover {
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .input-group { margin-bottom: 25px; position: relative; text-align: left; }
-        
-        .input-group input, .input-group textarea {
-            width: 100%; padding: 18px; 
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-color); 
-            border-radius: 12px;
-            color: var(--text-main); font-size: 1rem; outline: none; 
-            transition: all 0.3s ease;
-        }
-        .input-group input:focus, .input-group textarea:focus { 
-            border-color: var(--accent); 
-            background: rgba(255, 255, 255, 0.04);
-        }
-        
-        /* --- BUTTON PREMIUM STYLE --- */
-        button.submit-btn {
-            width: 100%; padding: 18px; 
-            background: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--text-main); 
-            border-radius: 100px; 
-            font-size: 0.9rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1.5px;
-            cursor: pointer; 
-            transition: background-color 0.3s, border-color 0.3s, color 0.3s, transform 0.2s;
-        }
-        button.submit-btn:hover {
-            background-color: var(--text-main); 
-            color: var(--bg-main);
-            transform: translateY(-2px);
-        }
-        button.submit-btn:active {
-            transform: translateY(0);
-        }
+      /* --- CORE VARIABLES --- */
+      :root {
+        --bg: #0a0a0a;
+        --fg: #e8e8e3;
+        --accent: #ff3300;
+        --line: rgba(232, 232, 227, 0.15);
+        --font-head: "Anton", sans-serif;
+        --font-body: "Manrope", sans-serif;
+        --font-code: "JetBrains Mono", monospace;
+        --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      }
 
-        @keyframes preloaderReveal { to { transform: translateY(0); } }
+      /* --- RESET & SETUP --- */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        cursor: none;
+      }
+      html {
+        scroll-behavior: smooth;
+        background: var(--bg);
+      }
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--font-body);
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+      ::selection {
+        background: var(--fg);
+        color: var(--bg);
+      }
+
+      /* --- UTILITIES --- */
+      .noise {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        pointer-events: none;
+        opacity: 0.04;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      }
+      .wrapper {
+        padding: 0 2vw;
+      }
+      .font-code {
+        font-family: var(--font-code);
+        font-size: 0.85vw;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .text-accent {
+        color: var(--accent);
+      }
+      .mb-small {
+        margin-bottom: 2vh;
+      }
+
+      .delay-1 {
+        transition-delay: 0.1s;
+      }
+      .delay-2 {
+        transition-delay: 0.2s;
+      }
+
+      /* --- CUSTOM CURSOR --- */
+      .cursor-dot {
+        position: fixed;
+        width: 5px;
+        height: 5px;
+        background: var(--fg);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 10000;
+        transform: translate(-50%, -50%);
+        transition: background 0.3s;
+      }
+      .cursor-ring {
+        position: fixed;
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(232, 232, 227, 0.5);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.3s var(--ease-out),
+          height 0.3s var(--ease-out),
+          border-color 0.3s,
+          background 0.3s;
+        mix-blend-mode: difference;
+      }
+      body.is-hovering .cursor-ring {
+        width: 80px;
+        height: 80px;
+        background: var(--fg);
+        border-color: transparent;
+      }
+      body.is-hovering .cursor-dot {
+        opacity: 0;
+      }
+
+      /* --- PRELOADER --- */
+      .preloader {
+        position: fixed;
+        inset: 0;
+        background: var(--bg);
+        z-index: 9000;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        padding: 2vw;
+        transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+      }
+      .preloader-count {
+        font-family: var(--font-head);
+        font-size: 25vw;
+        line-height: 0.75;
+        color: var(--fg);
+      }
+      .preloader.hide {
+        transform: translateY(-100%);
+      }
+
+      /* --- NAVIGATION --- */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 2vw;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 100;
+        mix-blend-mode: difference;
+      }
+      .logo {
+        font-family: var(--font-head);
+        font-size: 2vw;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--fg);
+        text-decoration: none;
+      }
+      .nav-links {
+        display: flex;
+        gap: 3vw;
+        list-style: none;
+        font-family: var(--font-code);
+        font-size: 0.85vw;
+        text-transform: uppercase;
+      }
+      .nav-links a {
+        color: var(--fg);
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+        display: block;
+        padding-bottom: 4px;
+      }
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: var(--fg);
+        transform: translateX(-101%);
+        transition: transform 0.4s var(--ease-out);
+      }
+      .nav-links a:hover::after {
+        transform: translateX(0);
+      }
+      .nav-links a.active::after {
+        transform: translateX(0);
+      }
+
+      /* --- ANIMATIONS --- */
+      .mask-wrap {
+        overflow: hidden;
+        display: inline-block;
+        vertical-align: bottom;
+      }
+      .mask-text {
+        display: inline-block;
+        transform: translateY(110%);
+        transition: transform 1.2s var(--ease-out);
+      }
+      .mask-text.is-visible {
+        transform: translateY(0);
+      }
+      .fade-up {
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 1s var(--ease-out),
+          transform 1s var(--ease-out);
+      }
+      .fade-up.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* --- CONTACT LAYOUT --- */
+      .contact-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5vw;
+        padding-top: 25vh;
+        padding-bottom: 15vh;
+        min-height: 100vh;
+      }
+
+      /* Left: Title & Info */
+      .c-title {
+        font-family: var(--font-head);
+        font-size: 10vw;
+        line-height: 0.85;
+        text-transform: uppercase;
+        letter-spacing: -2px;
+        margin-bottom: 5vh;
+      }
+      .c-info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3vw;
+        margin-top: 5vh;
+        border-top: 1px solid var(--line);
+        padding-top: 5vh;
+      }
+      .c-label {
+        font-family: var(--font-code);
+        font-size: 0.85vw;
+        color: rgba(232, 232, 227, 0.5);
+        margin-bottom: 1vh;
+      }
+      .c-value {
+        font-size: 1.2vw;
+        color: var(--fg);
+        text-decoration: none;
+        display: inline-block;
+        transition: color 0.3s;
+      }
+      a.c-value:hover {
+        color: var(--accent);
+      }
+
+      /* Right: Form */
+      .form-wrap {
+        padding-top: 2vh;
+      }
+      .input-group {
+        margin-bottom: 5vh;
+        position: relative;
+      }
+      .input-label {
+        font-family: var(--font-code);
+        font-size: 0.85vw;
+        color: var(--accent);
+        display: block;
+        margin-bottom: 1.5vh;
+      }
+      .form-input {
+        width: 100%;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid var(--line);
+        color: var(--fg);
+        font-family: var(--font-body);
+        font-size: 2vw;
+        padding-bottom: 1.5vh;
+        outline: none;
+        border-radius: 0;
+        transition: border-color 0.3s;
+      }
+      .form-input:focus {
+        border-color: var(--fg);
+      }
+      textarea.form-input {
+        resize: none;
+        min-height: 10vh;
+      }
+
+      .btn-submit {
+        font-family: var(--font-head);
+        font-size: 3vw;
+        text-transform: uppercase;
+        color: var(--bg);
+        background: var(--fg);
+        border: none;
+        padding: 2vh 4vw;
+        border-radius: 50px;
+        transition:
+          background 0.3s,
+          color 0.3s,
+          transform 0.3s;
+        outline: none;
+        display: inline-block;
+        margin-top: 2vh;
+      }
+      .btn-submit:hover {
+        background: var(--accent);
+        color: var(--fg);
+        transform: scale(0.98);
+      }
+
+      /* --- MEGA FOOTER --- */
+      footer {
+        padding: 10vh 2vw 2vh;
+        background: var(--bg);
+        position: relative;
+        border-top: 1px solid var(--line);
+      }
+      .footer-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 10vh;
+      }
+      .f-col h4 {
+        font-family: var(--font-code);
+        font-size: 0.85vw;
+        color: rgba(232, 232, 227, 0.4);
+        margin-bottom: 2vh;
+        text-transform: uppercase;
+      }
+      .f-col ul {
+        list-style: none;
+      }
+      .f-col ul li {
+        margin-bottom: 1vh;
+      }
+      .f-col ul li a {
+        color: var(--fg);
+        text-decoration: none;
+        font-size: 1.2vw;
+        transition: color 0.3s;
+      }
+      .f-col ul li a:hover {
+        color: var(--accent);
+      }
+
+      .giant-footer {
+        font-family: var(--font-head);
+        font-size: 15vw;
+        line-height: 0.75;
+        text-align: center;
+        color: var(--fg);
+        margin-bottom: 5vh;
+      }
+      .f-bottom {
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid var(--line);
+        padding-top: 2vh;
+        font-family: var(--font-code);
+        font-size: 0.8vw;
+        color: rgba(232, 232, 227, 0.5);
+        text-transform: uppercase;
+      }
+
+      /* --- RESPONSIVE --- */
+      @media (max-width: 1024px) {
+        .nav-links {
+          display: none;
+        }
+        .logo {
+          font-size: 4vw;
+        }
+        .contact-section {
+          grid-template-columns: 1fr;
+          padding-top: 20vh;
+          gap: 8vh;
+        }
+        .c-title {
+          font-size: 18vw;
+        }
+        .c-value {
+          font-size: 4vw;
+        }
+        .c-label {
+          font-size: 3vw;
+        }
+        .form-input {
+          font-size: 5vw;
+        }
+        .input-label {
+          font-size: 3vw;
+        }
+        .btn-submit {
+          font-size: 6vw;
+          width: 100%;
+        }
+        .f-col ul li a {
+          font-size: 4vw;
+        }
+        .f-col h4,
+        .f-bottom {
+          font-size: 3vw;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <!-- UTILITIES -->
+    <div class="noise"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
 
-    <div class="custom-cursor"></div>
-    <div class="custom-cursor-follower"></div>
-
-    <div id="preloader">
-        <div class="preloader-wrap">
-            <div class="preloader-text">CONTACT.</div>
-        </div>
+    <!-- PRELOADER -->
+    <div class="preloader" id="preloader">
+      <div class="preloader-count" id="counter">00</div>
     </div>
 
+    <!-- NAVIGATION -->
     <nav>
-        <div class="logo">OZ<span>.</span></div>
-        <ul>
-            <li><a href="index.html">HOME</a></li>
-            <li><a href="about.html">ABOUT</a></li>
-            <li><a href="services.html">EXPERTISE</a></li>
-            <li><a href="contact.html">CONTACT</a></li>
-        </ul>
+      <a href="index.html" class="logo hover-target">OZ.</a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="hover-target">Home</a></li>
+        <li><a href="about.html" class="hover-target">Team</a></li>
+        <li><a href="services.html" class="hover-target">Expertise</a></li>
+        <li><a href="contact.html" class="active hover-target">Contact</a></li>
+      </ul>
     </nav>
 
-    <div class="page-wrapper">
-        <h1 class="section-title">Let’s Discuss</h1>
-        <p class="section-subtitle">Do you have a revolutionary project idea or a Web3 infrastructure you’d like to build? Send us a message.</p>
+    <div class="wrapper">
+      <section class="contact-section">
+        <!-- LEFT COLUMN -->
+        <div class="c-left">
+          <div class="font-code text-accent fade-up load-anim mb-small">
+            [ INITIATE SEQUENCE ]
+          </div>
+          <h1 class="c-title">
+            <span class="mask-wrap"
+              ><span class="mask-text load-anim delay-1">LET'S</span></span
+            ><br />
+            <span class="mask-wrap"
+              ><span class="mask-text load-anim delay-2">TALK.</span></span
+            >
+          </h1>
 
-        <form class="contact-form" onsubmit="event.preventDefault(); alert('Pesan Terkirim! (Simulasi)');">
-            <div class="input-group">
-                <input type="text" placeholder="Name" required>
+          <div class="c-info-grid fade-up load-anim delay-2">
+            <div>
+              <div class="c-label">EMAIL</div>
+              <a href="mailto:hello@ozcreative.dev" class="c-value hover-target"
+                >hello@ozcreative.dev</a
+              >
             </div>
-            <div class="input-group">
-                <input type="email" placeholder="E-mail" required>
+            <div>
+              <div class="c-label">LOCATION</div>
+              <div class="c-value">Jambi, Indonesia<br />ID (GMT+7)</div>
             </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN (FORM) -->
+        <div class="c-right form-wrap fade-up load-anim delay-2">
+          <form action="#" method="POST">
             <div class="input-group">
-                <textarea rows="5" placeholder="Message" required></textarea>
+              <label class="input-label">01 / WHAT'S YOUR NAME?</label>
+              <input
+                type="text"
+                class="form-input hover-target"
+                placeholder="John Doe"
+                required
+              />
             </div>
-            <button type="submit" class="submit-btn">Send Message</button>
-        </form>
+
+            <div class="input-group">
+              <label class="input-label">02 / YOUR EMAIL</label>
+              <input
+                type="email"
+                class="form-input hover-target"
+                placeholder="john@company.com"
+                required
+              />
+            </div>
+
+            <div class="input-group">
+              <label class="input-label">03 / PROJECT DETAILS</label>
+              <textarea
+                class="form-input hover-target"
+                placeholder="Tell us about the architecture you need..."
+                required
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit hover-target">
+              SEND MESSAGE
+            </button>
+          </form>
+        </div>
+      </section>
     </div>
 
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-top wrapper">
+        <div class="f-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="index.html" class="hover-target">Home</a></li>
+            <li>
+              <a href="about.html" class="hover-target">The Architects</a>
+            </li>
+            <li>
+              <a href="services.html" class="hover-target">Capabilities</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="f-col">
+          <h4>Socials</h4>
+          <ul>
+            <li>
+              <a
+                href="https://x.com/stackyourblock"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover-target"
+                >X (Stack Block)</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://x.com/axeonprotocol"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover-target"
+                >X (Axeon)</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="giant-footer">OZ CREATIVE</div>
+
+      <div class="f-bottom wrapper">
+        <div>© 2026 OZ CREATIVE. ALL RIGHTS RESERVED.</div>
+        <div id="clock">00:00:00</div>
+      </div>
+    </footer>
+
     <script>
-        // Efek transisi Preloader pas halaman beres loading
-        window.addEventListener('load', () => {
-            setTimeout(() => { document.getElementById('preloader').style.transform = 'translateY(-100%)'; }, 1000);
-        });
+      // 1. FAST PRELOADER
+      let count = 0;
+      const counterEl = document.getElementById("counter");
+      const loader = document.getElementById("preloader");
+      let interval = setInterval(() => {
+        count += Math.floor(Math.random() * 8) + 2;
+        if (count >= 100) {
+          count = 100;
+          counterEl.innerText = count;
+          clearInterval(interval);
+          setTimeout(() => {
+            loader.classList.add("hide");
+            document
+              .querySelectorAll(".load-anim")
+              .forEach((el) => el.classList.add("is-visible"));
+          }, 400);
+        } else {
+          counterEl.innerText = count < 10 ? "0" + count : count;
+        }
+      }, 30);
 
-        // Kontrol Kursor Mouse
-        const cursor = document.querySelector('.custom-cursor');
-        const follower = document.querySelector('.custom-cursor-follower');
-        
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
-            follower.style.left = e.clientX + 'px'; follower.style.top = e.clientY + 'px';
-        });
+      // 2. SMOOTH CURSOR
+      const dot = document.querySelector(".cursor-dot"),
+        ring = document.querySelector(".cursor-ring");
+      let mX = 0,
+        mY = 0,
+        rX = 0,
+        rY = 0;
+      document.addEventListener("mousemove", (e) => {
+        mX = e.clientX;
+        mY = e.clientY;
+        dot.style.left = mX + "px";
+        dot.style.top = mY + "px";
+      });
+      function renderCursor() {
+        rX += (mX - rX) * 0.15;
+        rY += (mY - rY) * 0.15;
+        ring.style.left = rX + "px";
+        ring.style.top = rY + "px";
+        requestAnimationFrame(renderCursor);
+      }
+      renderCursor();
 
-        // Efek membesar pas kursor berada di elemen interaktif (link & tombol)
-        document.querySelectorAll('a, button, input, textarea').forEach(elem => {
-            elem.addEventListener('mouseenter', () => document.body.classList.add('hovered'));
-            elem.addEventListener('mouseleave', () => document.body.classList.remove('hovered'));
-        });
+      document.querySelectorAll(".hover-target").forEach((el) => {
+        el.addEventListener("mouseenter", () =>
+          document.body.classList.add("is-hovering"),
+        );
+        el.addEventListener("mouseleave", () =>
+          document.body.classList.remove("is-hovering"),
+        );
+      });
+
+      // 3. SCROLL OBSERVER
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              const texts = entry.target.querySelectorAll(".mask-text");
+              texts.forEach((t) => t.classList.add("is-visible"));
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
+      );
+
+      document
+        .querySelectorAll(".fade-up")
+        .forEach((el) => observer.observe(el));
+
+      // 4. CLOCK
+      setInterval(() => {
+        const d = new Date();
+        document.getElementById("clock").innerText =
+          d.toLocaleTimeString("en-US", {
+            hour12: false,
+            timeZone: "Asia/Jakarta",
+          }) + " WIB";
+      }, 1000);
     </script>
-</body>
+  </body>
 </html>

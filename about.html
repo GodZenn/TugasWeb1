@@ -1,101 +1,478 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About | OZ Creative Agency</title>
+    <title>About // OZ Creative</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
     <style>
+        /* --- CORE CONFIGURATION ENGINE VARIABLES --- */
         :root {
-            --bg-main: #0a0b0e;
-            --text-main: #f3f4f6;
-            --text-muted: #71717a;
-            --accent: #0052ff;
-            --border-color: #1f222c;
-            --purple: #6c5ce7;
-            --font-display: 'Syne', sans-serif;
-            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --bg: #030306;
+            --bg-card: #08080f;
+            --fg: #ffffff;
+            --fg-muted: rgba(255, 255, 255, 0.65);
+            --accent: #ff3c00;
+            --accent-glow: rgba(255, 60, 0, 0.25);
+            --neon-blue: #00f3ff;
+            --line: rgba(255, 255, 255, 0.08);
+            --font-head: 'Anton', sans-serif;
+            --font-body: 'Manrope', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-expo: cubic-bezier(0.85, 0, 0.15, 1);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
-        body { background-color: var(--bg-main); color: var(--text-main); overflow-x: hidden; }
-        .custom-cursor { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background-color: var(--text-main); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.1s, width 0.3s, height 0.3s, background-color 0.3s; }
-        .custom-cursor-follower { position: fixed; top: 0; left: 0; width: 32px; height: 32px; border: 1px solid var(--text-muted); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1); }
-        body.hovered .custom-cursor { width: 40px; height: 40px; background-color: transparent; border: 1px solid var(--accent); }
-        body.hovered .custom-cursor-follower { opacity: 0; }
-        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1); }
-        .preloader-wrap { overflow: hidden; }
-        .preloader-text { font-family: var(--font-display); font-size: 2rem; font-weight: 800; letter-spacing: 2px; transform: translateY(100%); animation: preloaderReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        nav { position: fixed; top: 0; width: 100%; padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 900; border-bottom: 1px solid var(--border-color); background: rgba(10, 11, 14, 0.8); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
-        .logo { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; }
-        .logo span { color: var(--accent); }
-        nav ul { display: flex; gap: 40px; list-style: none; }
-        nav ul li a { color: var(--text-main); text-decoration: none; font-weight: 500; font-size: 0.95rem; letter-spacing: 0.5px; transition: color 0.3s; }
-        nav ul li a:hover { color: var(--accent); }
-        .page-wrapper { padding: 160px 5% 100px; display: flex; flex-direction: column; align-items: center; text-align: center; min-height: 100vh; }
-        .section-title { font-family: var(--font-display); font-size: 4rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; letter-spacing: -2px; }
-        .section-subtitle { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 70px; max-width: 500px; line-height: 1.6; }
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; width: 100%; max-width: 1000px; }
-        .team-card { padding: 50px 30px; border: 1px solid var(--border-color); border-radius: 20px; background: rgba(255, 255, 255, 0.01); transition: all 0.4s ease; text-decoration: none; color: var(--text-main); display: block; }
-        .team-card:hover { transform: translateY(-10px); border-color: var(--text-main); background: rgba(255, 255, 255, 0.03); }
-        .profile-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin-bottom: 25px; border: 1px solid var(--border-color); transition: border-color 0.4s; }
-        .team-card:hover .profile-img { border-color: var(--text-main); }
-        .team-card h3 { font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 10px; font-weight: 800; }
-        .team-card p.role { color: var(--accent); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
-        .team-card p.desc { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
-        @keyframes preloaderReveal { to { transform: translateY(0); } }
+
+        /* --- IMMACULATE LAYOUT RESET --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        html { scroll-behavior: smooth; background: var(--bg); }
+        body { background: var(--bg); color: var(--fg); font-family: var(--font-body); -webkit-font-smoothing: antialiased; overflow-x: hidden; position: relative; }
+        body.no-scroll { overflow: hidden; height: 100vh; touch-action: none; }
+        ::selection { background: var(--accent); color: var(--fg); }
+
+        /* --- INTERACTIVE BACKGROUND ENGINE --- */
+        #canvas-matrix-grid { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.3; }
+        .grain-layer { position: fixed; inset: 0; z-index: 9998; pointer-events: none; opacity: 0.03; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
+        .dynamic-glow-orb { position: fixed; width: 50vw; height: 50vw; background: radial-gradient(circle, var(--accent-glow) 0%, rgba(3, 3, 6, 0) 70%); border-radius: 50%; pointer-events: none; z-index: 0; transform: translate(-50%, -50%); opacity: 0.5; mix-blend-mode: screen; filter: blur(60px); }
+        body::before { content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.04)); z-index: 9999; background-size: 100% 3px, 3px 100%; pointer-events: none; }
+
+        /* --- ADVANCED HUD SYSTEMS --- */
+        .scroll-progress-wire { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--neon-blue)); z-index: 10001; width: 0%; box-shadow: 0 0 15px var(--accent); }
+        .cursor-pixel { position: fixed; width: 6px; height: 6px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
+        .cursor-radar { position: fixed; width: 40px; height: 40px; border: 1px dashed var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width 0.4s var(--ease-out), height 0.4s var(--ease-out), background-color 0.4s, border-color 0.4s; animation: spinRadar 8s linear infinite; }
+        body.is-hovering .cursor-radar { width: 80px; height: 80px; background-color: rgba(255, 60, 0, 0.04); border-color: var(--neon-blue); border-style: solid; }
+        @keyframes spinRadar { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        @media (hover: none) and (pointer: coarse) {
+            * { cursor: auto !important; }
+            .cursor-pixel, .cursor-radar { display: none !important; }
+        }
+
+        .telemetry-node { position: fixed; top: 2.5vw; left: 3vw; display: flex; align-items: center; gap: 10px; z-index: 101; font-family: var(--font-code); font-size: 10px; color: var(--fg); text-transform: uppercase; letter-spacing: 2px; }
+        .telemetry-pulse { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: telemetryBlink 1s infinite; box-shadow: 0 0 8px var(--accent); }
+        @keyframes telemetryBlink { 0%, 100% { opacity: 0.2; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.2); } }
+
+        /* --- PRELOADER ANIMATION SYSTEM (SYNCED WITH INDEX) --- */
+        .preloader-count-frame { font-family: var(--font-head); font-size: clamp(80px, 20vw, 250px); line-height: 0.7; color: var(--fg); text-align: right; letter-spacing: -2px; font-weight: 900; background: linear-gradient(180deg, #fff, rgba(255,255,255,0.1)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .preloader-screen { position: fixed; inset: 0; background: #020204; z-index: 9000; display: flex; flex-direction: column; justify-content: flex-end; padding: 4vw; transition: transform 1.2s var(--ease-expo); }
+        .preloader-wire-rail { width: 100%; height: 2px; background: rgba(255,255,255,0.05); margin-top: 2vh; position: relative; overflow: hidden; }
+        .preloader-wire-active { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--neon-blue)); }
+        .preloader-screen.hide { transform: translateY(-100%); pointer-events: none; }
+        
+        .loading-text { font-family: var(--font-code); font-size: 14px; letter-spacing: 4px; color: var(--accent); margin-bottom: auto; text-transform: uppercase; }
+
+        /* --- CORE WRAPPER --- */
+        .main-wrapper { max-width: 1200px; margin: 0 auto; padding: 0 4vw; position: relative; z-index: 2; }
+        .matrix-header-tag { font-family: var(--font-code); font-size: 12px; color: var(--accent); margin-bottom: 4vh; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; gap: 15px; }
+        .matrix-header-tag::after { content: ''; height: 1px; flex-grow: 1; background: var(--line); }
+
+        /* --- VIEWPORT REVEAL LOGIC --- */
+        .mask-container { overflow: hidden; display: inline-block; vertical-align: bottom; }
+        .mask-node { display: inline-block; transform: translateY(115%); transition: transform 1.4s var(--ease-out); }
+        .mask-node.is-visible { transform: translateY(0); }
+        .reveal-node { opacity: 0; transform: translateY(50px); transition: opacity 1.2s var(--ease-out), transform 1.2s var(--ease-out); }
+        .reveal-node.is-visible { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.15s; }
+        .delay-2 { transition-delay: 0.3s; }
+        .delay-3 { transition-delay: 0.45s; }
+
+        /* --- NAVIGATION LAYOUT --- */
+        nav { position: fixed; top: 0; left: 0; width: 100%; padding: 2.5vw 4vw; display: flex; justify-content: space-between; align-items: center; z-index: 8999; mix-blend-mode: difference; }
+        .nav-logo { font-family: var(--font-head); font-size: clamp(24px, 2.5vw, 40px); letter-spacing: 1px; text-transform: uppercase; color: var(--fg); text-decoration: none;}
+        .nav-list { display: flex; gap: 3vw; list-style: none; }
+        .nav-list a { font-family: var(--font-code); font-size: 12px; color: var(--fg); text-decoration: none; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; transition: all 0.3s; }
+        .nav-list a:hover, .nav-list a.active { opacity: 1; color: var(--accent); text-shadow: 0 0 10px var(--accent-glow); }
+
+        /* --- ABOUT HERO SECTOR --- */
+        .about-hero { padding: 25vh 0 10vh; border-bottom: 1px solid var(--line); }
+        .about-headline { font-family: var(--font-head); font-size: clamp(50px, 9vw, 130px); line-height: 0.9; text-transform: uppercase; letter-spacing: -2px; margin-bottom: 6vh; color: var(--fg); }
+        .hero-statement { font-size: clamp(18px, 1.8vw, 28px); line-height: 1.6; font-weight: 300; color: var(--fg-muted); max-width: 900px; }
+        .hero-statement span.white { color: var(--fg); font-weight: 500; }
+
+        /* --- THE MANIFESTO CONTENT --- */
+        .manifesto-viewport { padding: 15vh 0; border-bottom: 1px solid var(--line); }
+        .manifesto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6vw; margin-top: 8vh; }
+        
+        .manifesto-block { display: flex; flex-direction: column; gap: 2vh; }
+        .mb-num { font-family: var(--font-code); font-size: 14px; color: var(--neon-blue); letter-spacing: 2px; }
+        .mb-title { font-family: var(--font-head); font-size: clamp(30px, 3.5vw, 50px); text-transform: uppercase; color: var(--fg); line-height: 1.1; }
+        .mb-desc { font-size: 16px; line-height: 1.8; color: var(--fg-muted); font-weight: 300; }
+
+        /* --- CORE OPERATORS (THE ARCHITECTS) --- */
+        .architects-viewport { padding: 15vh 0; border-bottom: 1px solid var(--line); }
+        .architects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4vw; margin-top: 6vh; }
+        
+        .arch-card { background: var(--bg-card); border: 1px solid var(--line); padding: 4vw; position: relative; overflow: hidden; display: flex; flex-direction: column; transition: border-color 0.4s; }
+        .arch-card:hover { border-color: rgba(255, 255, 255, 0.2); }
+        
+        .arch-meta { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2vh; margin-bottom: 4vh; }
+        .arch-node { font-family: var(--font-code); font-size: 12px; color: var(--accent); letter-spacing: 2px; }
+        .arch-status { display: flex; align-items: center; gap: 8px; font-family: var(--font-code); font-size: 10px; color: var(--neon-blue); letter-spacing: 1px; }
+        .arch-status .dot { width: 6px; height: 6px; background: var(--neon-blue); border-radius: 50%; box-shadow: 0 0 8px var(--neon-blue); animation: telemetryBlink 2s infinite; }
+
+        .arch-name { font-family: var(--font-head); font-size: clamp(40px, 5vw, 70px); text-transform: uppercase; color: var(--fg); margin-bottom: 1vh; line-height: 1; }
+        .arch-role { font-family: var(--font-code); font-size: 12px; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 3vh; display: block; }
+        
+        .arch-bio { font-size: 15px; line-height: 1.8; color: var(--fg-muted); font-weight: 300; margin-bottom: 4vh; flex-grow: 1; }
+        
+        .arch-skills { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 4vh; }
+        .skill-tag { padding: 8px 15px; border: 1px solid rgba(255,255,255,0.1); font-family: var(--font-code); font-size: 10px; color: var(--fg); text-transform: uppercase; letter-spacing: 1px; border-radius: 2px; background: rgba(255,255,255,0.02); }
+
+        .arch-btn { display: inline-flex; align-items: center; justify-content: space-between; padding: 20px 30px; border: 1px solid var(--line); color: var(--fg); font-family: var(--font-code); font-size: 11px; text-transform: uppercase; letter-spacing: 2px; text-decoration: none; transition: all 0.3s; background: transparent; }
+        .arch-btn:hover { background: var(--fg); color: #000; border-color: var(--fg); }
+        .arch-btn span.arrow { transition: transform 0.3s; }
+        .arch-btn:hover span.arrow { transform: translateX(5px); }
+
+        /* --- THE ARSENAL (TECH STACK) --- */
+        .stack-viewport { padding: 15vh 0; border-bottom: 1px solid var(--line); }
+        .stack-list { display: flex; flex-direction: column; }
+        .stack-row { display: grid; grid-template-columns: 0.5fr 2.5fr; gap: 4vw; padding: 4vh 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .stack-row:first-of-type { border-top: 1px solid rgba(255,255,255,0.05); }
+        
+        .stack-category { font-family: var(--font-head); font-size: clamp(24px, 3vw, 40px); color: var(--fg); text-transform: uppercase; }
+        .stack-items { font-family: var(--font-code); font-size: clamp(14px, 1.5vw, 18px); color: var(--fg-muted); text-transform: uppercase; letter-spacing: 1px; line-height: 1.6; }
+        .stack-items span { color: var(--accent); }
+
+        /* --- FOOTER SYSTEMS --- */
+        footer { padding: 5vh 0; }
+        .footer-flex-row { display: flex; justify-content: space-between; font-family: var(--font-code); font-size: 12px; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- RESPONSIVE LAPTOP & MOBILE --- */
+        @media(max-width: 1024px) {
+            .nav-list { display: none; }
+            .manifesto-grid, .architects-grid { grid-template-columns: 1fr; gap: 8vh; }
+            .stack-row { grid-template-columns: 1fr; gap: 2vh; }
+            .footer-flex-row { flex-direction: column; gap: 2vh; text-align: center; }
+        }
     </style>
 </head>
-<body>
-    <div class="custom-cursor"></div>
-    <div class="custom-cursor-follower"></div>
-    <div id="preloader">
-        <div class="preloader-wrap">
-            <div class="preloader-text">About.</div>
-        </div>
+<body class="no-scroll">
+
+    <!-- HUD COMPONENT ASSETS -->
+    <div class="scroll-progress-wire" id="wire-progress"></div>
+    <div class="telemetry-node">
+        <div class="telemetry-pulse"></div> 
+        <span>OZ_SYSTEM // ABOUT_MANIFESTO // SECURE</span>
     </div>
+    
+    <!-- DYNAMIC BACKGROUND LAYER -->
+    <canvas id="canvas-matrix-grid"></canvas>
+    <div class="grain-layer"></div>
+    <div class="dynamic-glow-orb" id="glow-orb"></div>
+    
+    <!-- MOUSE HUD CURSORS -->
+    <div class="cursor-pixel"></div>
+    <div class="cursor-radar"></div>
+
+    <!-- INITIALIZATION SCREEN -->
+    <div class="preloader-screen" id="preloader">
+        <div class="loading-text scramble" data-value="DECRYPTING MANIFESTO...">DECRYPTING MANIFESTO...</div>
+        <div class="preloader-count-frame" id="counter-box">00</div>
+        <div class="preloader-wire-rail"><div class="preloader-wire-active" id="progress-wire"></div></div>
+    </div>
+
+    <!-- NAVIGATION LAYOUT -->
     <nav>
-        <div class="logo">OZ<span>.</span></div>
-        <ul>
-            <li><a href="index.html">HOME</a></li>
-            <li><a href="about.html">ABOUT</a></li>
-            <li><a href="services.html">EXPERTISE</a></li>
-            <li><a href="contact.html">CONTACT</a></li>
+        <a href="index.html" class="nav-logo is-hoverable scramble" data-value="OZ.">OZ.</a>
+        <ul class="nav-list">
+            <li><a href="works.html" class="is-hoverable">Works</a></li>
+            <li><a href="about.html" class="active is-hoverable">About</a></li>
+            <li><a href="service.html" class="is-hoverable">Services</a></li>
+            <li><a href="contact.html" class="is-hoverable">Contact</a></li>
         </ul>
     </nav>
-    <div class="page-wrapper">
-        <h1 class="section-title">The Brains</h1>
-        <p class="section-subtitle">Meet the minds behind the code architecture and decentralized ecosystems we build.</p>
-        <div class="team-grid">
-            <a href="profile-naufal.html" class="team-card">
-                <img src="gambar/nftNopal.jpg" alt="Naufal" class="profile-img">
-                <h3>Naufal Aufaa</h3>
-                <p class="role">Full Stack Developer</p>
-                <p class="desc">An expert in building efficient and scalable web architectures, from frontend to backend.</p>
-            </a>
-            <a href="profile-reza.html" class="team-card">
-                <img src="gambar/nftReza.jpg" alt="Reza" class="profile-img">
-                <h3>Reza Dwi W.</h3>
-                <p class="role">Blockchain Developer</p>
-                <p class="desc">Specialist in smart contracts, Web3 integration, and DApp development.</p>
-            </a>
-        </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="main-wrapper">
+        
+        <!-- ABOUT HERO SECTOR -->
+        <section class="about-hero">
+            <h1 class="about-headline">
+                <span class="mask-container"><span class="mask-node boot-sequence">BEYOND</span></span><br>
+                <span class="mask-container"><span class="mask-node boot-sequence delay-1" style="color: transparent; -webkit-text-stroke: 1.5px var(--fg);">THE STANDARD.</span></span>
+            </h1>
+            <p class="hero-statement reveal-node delay-2">
+                We exist at the exact intersection of <span class="white">uncompromising blockchain logic</span> and <span class="white">cinematic visual architecture</span>. OZ Creative is not an agency; we are a specialized engineering syndicate dedicated to the digital avant-garde.
+            </p>
+        </section>
+
+        <!-- THE MANIFESTO CONTENT -->
+        <section class="manifesto-viewport">
+            <div class="matrix-header-tag reveal-node">[ STUDIO_PHILOSOPHY_MATRIX ]</div>
+            
+            <div class="manifesto-grid">
+                <div class="manifesto-block reveal-node">
+                    <span class="mb-num">// AXIOM_01</span>
+                    <h3 class="mb-title">Unyielding Architecture.</h3>
+                    <p class="mb-desc">A beautiful interface is irrelevant if the core logic is compromised. Our smart contracts and backend pipelines are architected with paranoia-level security protocols. We build decentralized infrastructures designed to handle massive throughput without degradation, ensuring absolute reliability in hostile environments.</p>
+                </div>
+                <div class="manifesto-block reveal-node delay-1">
+                    <span class="mb-num">// AXIOM_02</span>
+                    <h3 class="mb-title">Aesthetics as Function.</h3>
+                    <p class="mb-desc">We reject the notion that complex backend systems must suffer from brutalist, uninspired frontends. We believe that visual luxury is a core functional requirement. By leveraging advanced WebGL and precise kinetic typography, we ensure that every interaction feels meticulously engineered, elevating the perceived value of the underlying protocol.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CORE OPERATORS (PERFECTLY EQUAL) -->
+        <section class="architects-viewport">
+            <div class="matrix-header-tag reveal-node">[ THE_ARCHITECTS_NODES ]</div>
+            
+            <div class="architects-grid">
+                
+                <!-- OPERATOR: NAUFAL (WEB3 / BACKEND) -->
+                <div class="arch-card reveal-node">
+                    <div class="arch-meta">
+                        <span class="arch-node">// NODE_01</span>
+                        <div class="arch-status"><div class="dot"></div> SYSTEM SECURE</div>
+                    </div>
+                    <h3 class="arch-name">NAUFAL</h3>
+                    <span class="arch-role">Technical Director & Web3 Architect</span>
+                    
+                    <p class="arch-bio">
+                        Commanding the logical and decentralized infrastructure of OZ Creative. Naufal specializes in engineering impenetrable smart contracts. By architecting unyielding backend pipelines and optimizing algorithmic efficiency, he ensures that the foundational logic powering every digital reality remains absolutely secure, scalable, and flawless.
+                    </p>
+                    
+                    <div class="arch-skills">
+                        <span class="skill-tag">Solidity / Yul</span>
+                        <span class="skill-tag">Rust Architecture</span>
+                        <span class="skill-tag">Foundry Audit</span>
+                        <span class="skill-tag">Web3 Protocols</span>
+                    </div>
+                    
+                    <a href="profile-naufal.html" class="arch-btn is-hoverable">
+                        <span class="scramble" data-value="ACCESS CLASSIFIED RECORD">ACCESS CLASSIFIED RECORD</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </div>
+
+                <!-- OPERATOR: REZA (FRONTEND / VISUALS) -->
+                <div class="arch-card reveal-node delay-1">
+                    <div class="arch-meta">
+                        <span class="arch-node">// NODE_02</span>
+                        <div class="arch-status"><div class="dot"></div> SYSTEM SECURE</div>
+                    </div>
+                    <h3 class="arch-name">REZA</h3>
+                    <span class="arch-role">Creative Director & Frontend Architect</span>
+                    
+                    <p class="arch-bio">
+                        Directing the visual and kinetic trajectory of OZ Creative. Reza specializes in constructing hyper-immersive frontend environments. By pushing the boundaries of WebGL rendering and advanced user interface architectures, he transforms complex protocol data into seamless, premium digital experiences that command attention.
+                    </p>
+                    
+                    <div class="arch-skills">
+                        <span class="skill-tag">WebGL / Three.js</span>
+                        <span class="skill-tag">Advanced UI/UX</span>
+                        <span class="skill-tag">GSAP Kinetics</span>
+                        <span class="skill-tag">Next.js Core</span>
+                    </div>
+                    
+                    <a href="profile-reza.html" class="arch-btn is-hoverable">
+                        <span class="scramble" data-value="ACCESS CLASSIFIED RECORD">ACCESS CLASSIFIED RECORD</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- THE ARSENAL (TECH STACK) -->
+        <section class="stack-viewport">
+            <div class="matrix-header-tag reveal-node">[ INFRASTRUCTURE_ARSENAL ]</div>
+            
+            <div class="stack-list">
+                <div class="stack-row reveal-node">
+                    <h4 class="stack-category">Web3 &<br>Contracts</h4>
+                    <p class="stack-items">SOLIDITY <span>/</span> YUL <span>/</span> FOUNDRY <span>/</span> HARDHAT <span>/</span> ETHERS.JS <span>/</span> WAGMI <span>/</span> IPFS <span>/</span> THE GRAPH</p>
+                </div>
+                <div class="stack-row reveal-node delay-1">
+                    <h4 class="stack-category">Frontend &<br>Kinetics</h4>
+                    <p class="stack-items">NEXT.JS <span>/</span> REACT <span>/</span> THREE.JS (WEBGL) <span>/</span> GSAP <span>/</span> LENIS <span>/</span> TAILWIND CSS <span>/</span> FRAMER MOTION</p>
+                </div>
+                <div class="stack-row reveal-node delay-2">
+                    <h4 class="stack-category">Backend &<br>Systems</h4>
+                    <p class="stack-items">NODE.JS <span>/</span> RUST <span>/</span> POSTGRESQL <span>/</span> REDIS <span>/</span> AWS <span>/</span> DOCKER <span>/</span> VERCEL</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-flex-row">
+                <div>© 2026 OZ CREATIVE // ALL RIGHTS RESERVED. SECURE CONNECTION ESTABLISHED.</div>
+                <div id="telemetry-clock">00:00:00</div>
+            </div>
+        </footer>
+
     </div>
+
+    <!-- MAIN RUNTIME ENGINE JS -->
     <script>
-        window.addEventListener('load', () => {
-            setTimeout(() => { document.getElementById('preloader').style.transform = 'translateY(-100%)'; }, 1000);
+        // Preloader Logic Bootloader Sequence (Synced with Index)
+        let loadValueProgress = 0; 
+        const counterBox = document.getElementById('counter-box');
+        const progressWire = document.getElementById('progress-wire');
+        const preloaderFrame = document.getElementById('preloader');
+        
+        let bootSequenceTimer = setInterval(() => {
+            loadValueProgress += Math.floor(Math.random() * 6) + 4;
+            if(loadValueProgress >= 100) { 
+                loadValueProgress = 100; 
+                counterBox.innerText = loadValueProgress; 
+                progressWire.style.width = '100%'; 
+                clearInterval(bootSequenceTimer);
+                setTimeout(() => { 
+                    preloaderFrame.classList.add('hide'); 
+                    document.body.classList.remove('no-scroll');
+                    document.querySelectorAll('.boot-sequence').forEach(el => el.classList.add('is-visible')); 
+                }, 500);
+            } else { 
+                counterBox.innerText = loadValueProgress < 10 ? '0' + loadValueProgress : loadValueProgress; 
+                progressWire.style.width = loadValueProgress + '%'; 
+            }
+        }, 30);
+
+        // Canvas Data Lattice Particle Streams Animation Engine
+        const canvas = document.getElementById('canvas-matrix-grid');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class ParticleNode {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.speedX = (Math.random() - 0.5) * 0.4;
+                this.speedY = (Math.random() - 0.5) * 0.4;
+                this.size = Math.random() * 1.5 + 0.5;
+            }
+            update(mX, mY) {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = Math.random() > 0.95 ? '#00f3ff' : 'rgba(255, 255, 255, 0.1)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 70; i++) { particles.push(new ParticleNode()); }
+
+        // Precision Coordinate Mouse Tracker Physics Engine
+        const curPixel = document.querySelector('.cursor-pixel');
+        const curRadar = document.querySelector('.cursor-radar');
+        const glowOrbLayer = document.getElementById('glow-orb');
+        let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2, radarX = mouseX, radarY = mouseY;
+        
+        document.addEventListener('mousemove', event => { 
+            mouseX = event.clientX; 
+            mouseY = event.clientY; 
+            curPixel.style.left = mouseX + 'px'; 
+            curPixel.style.top = mouseY + 'px'; 
         });
-        const cursor = document.querySelector('.custom-cursor');
-        const follower = document.querySelector('.custom-cursor-follower');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
-            follower.style.left = e.clientX + 'px'; follower.style.top = e.clientY + 'px';
+        
+        function continuousGlobalAnimationLoop() { 
+            radarX += (mouseX - radarX) * 0.12; 
+            radarY += (mouseY - radarY) * 0.12; 
+            curRadar.style.left = radarX + 'px'; 
+            curRadar.style.top = radarY + 'px'; 
+            if(glowOrbLayer) { 
+                glowOrbLayer.style.left = radarX + 'px'; 
+                glowOrbLayer.style.top = radarY + 'px'; 
+            } 
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update(radarX, radarY);
+                p.draw();
+            });
+
+            ctx.strokeStyle = 'rgba(0, 243, 255, 0.015)';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    let dist = Math.sqrt(Math.pow(particles[i].x - particles[j].x, 2) + Math.pow(particles[i].y - particles[j].y, 2));
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(continuousGlobalAnimationLoop); 
+        }
+        continuousGlobalAnimationLoop();
+
+        // Wire progress timeline scroll tracker
+        const topScrollWire = document.getElementById('wire-progress');
+        window.addEventListener('scroll', () => {
+            const documentScrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercentage = (window.scrollY / documentScrollHeight) * 100;
+            topScrollWire.style.width = scrollPercentage + '%';
         });
-        document.querySelectorAll('a').forEach(link => {
-            link.addEventListener('mouseenter', () => document.body.classList.add('hovered'));
-            link.addEventListener('mouseleave', () => document.body.classList.remove('hovered'));
+        
+        document.querySelectorAll('.is-hoverable').forEach(nodeTrigger => {
+            nodeTrigger.addEventListener('mouseenter', () => document.body.classList.add('is-hovering'));
+            nodeTrigger.addEventListener('mouseleave', () => document.body.classList.remove('is-hovering'));
         });
+
+        // Cipher Scramble Text Loop FX
+        const alphaGlyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ/\\<>-_[]{}*^?#0123456789";
+        document.querySelectorAll('.scramble').forEach(targetNode => {
+            targetNode.addEventListener('mouseenter', e => {
+                let textIterations = 0; 
+                const originalValueString = e.target.dataset.value; 
+                if(!originalValueString) return;
+                
+                clearInterval(targetNode.scrambleId);
+                targetNode.scrambleId = setInterval(() => {
+                    e.target.innerText = originalValueString.split("").map((glyph, index) => {
+                        if(index < textIterations) return originalValueString[index];
+                        return alphaGlyphs[Math.floor(Math.random() * alphaGlyphs.length)];
+                    }).join("");
+                    if(textIterations >= originalValueString.length) { 
+                        clearInterval(targetNode.scrambleId); 
+                        e.target.innerText = originalValueString; 
+                    }
+                    textIterations += 1 / 2; 
+                }, 25);
+            });
+            targetNode.addEventListener('mouseleave', e => { 
+                clearInterval(targetNode.scrambleId); 
+                e.target.innerText = e.target.dataset.value; 
+            });
+        });
+
+        // Global Elements Scroll Inbound Observer
+        const textElementObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    entry.target.querySelectorAll('.mask-node').forEach(t => t.classList.add('is-visible'));
+                    textElementObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal-node').forEach(node => textElementObserver.observe(node));
+
+        // Real-time HUD Clock Sync
+        setInterval(() => {
+            document.getElementById('telemetry-clock').innerText = new Date().toLocaleTimeString('en-US', { hour12: false, timeZone: 'Asia/Jakarta' }) + ' WIB';
+        }, 1000);
     </script>
 </body>
 </html>

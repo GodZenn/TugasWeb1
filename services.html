@@ -3,348 +3,867 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expertise | OZ Creative Agency</title>
+    <title>Services // Digital Capability Matrix // OZ Creative</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syncopate:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- VARIABLES --- */
+        /* --- CORE CONFIGURATION ENGINE VARIABLES --- */
         :root {
-            --bg-dark: #020205; --surface: rgba(255, 255, 255, 0.02); --surface-border: rgba(255, 255, 255, 0.08);
-            --primary: #00f0ff; --secondary: #b026ff; --text-main: #ffffff; --text-dim: #94a3b8;
-            --font-head: 'Syncopate', sans-serif; --font-body: 'Space Grotesk', sans-serif;
+            --bg: #030306;
+            --bg-card: #08080f;
+            --fg: #ffffff;
+            --fg-muted: rgba(255, 255, 255, 0.5);
+            --accent: #ff3c00;
+            --accent-glow: rgba(255, 60, 0, 0.2);
+            --neon-blue: #00f3ff;
+            --line: rgba(255, 255, 255, 0.04);
+            --font-head: 'Anton', sans-serif;
+            --font-body: 'Manrope', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-expo: cubic-bezier(0.85, 0, 0.15, 1);
         }
 
-        html { scroll-behavior: smooth; background-color: var(--bg-dark); }
+        /* --- IMMACULATE LAYOUT RESET --- */
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        body { color: var(--text-main); font-family: var(--font-body); overflow-x: hidden; }
+        html { scroll-behavior: smooth; background: var(--bg); }
+        body { background: var(--bg); color: var(--fg); font-family: var(--font-body); -webkit-font-smoothing: antialiased; overflow-x: hidden; position: relative; }
+        body.no-scroll { overflow: hidden; height: 100vh; touch-action: none; }
+        ::selection { background: var(--accent); color: var(--fg); }
 
-        /* --- UTILITY CLASSES --- */
-        .delay-100 { transition-delay: 0.1s; } .delay-200 { transition-delay: 0.2s; }
-        .text-gradient { background: linear-gradient(90deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .text-dim { color: var(--text-dim); } .font-mono { font-family: monospace; letter-spacing: 1px; text-transform: uppercase; font-size: 0.9rem; }
-        .flex { display: flex; } .justify-between { justify-content: space-between; } .align-center { align-items: center; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
-        .mb-20 { margin-bottom: 20px; } .mb-40 { margin-bottom: 40px; }
-
-        /* --- BACKGROUND --- */
-        .mesh-bg { position: fixed; inset: 0; z-index: -2; background: var(--bg-dark); overflow: hidden; }
-        .mesh-orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.3; animation: float 20s infinite ease-in-out alternate; }
-        .orb-1 { width: 50vw; height: 50vw; background: var(--primary); top: -20%; left: -10%; }
-        .orb-2 { width: 40vw; height: 40vw; background: var(--secondary); bottom: -10%; right: -10%; animation-delay: -5s; }
-        .noise-overlay { position: fixed; inset: 0; z-index: -1; opacity: 0.05; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
-
-        /* --- CURSOR --- */
-        .cursor-dot { position: fixed; width: 6px; height: 6px; background: var(--text-main); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: background 0.2s; mix-blend-mode: difference; }
-        .cursor-ring { position: fixed; width: 40px; height: 40px; border: 1px solid var(--primary); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, background 0.3s; box-shadow: 0 0 15px rgba(0,240,255,0.3); }
-        body.hovering .cursor-ring { width: 80px; height: 80px; background: rgba(0,240,255,0.1); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
-        body.hovering .cursor-dot { opacity: 0; }
-
-        /* --- NAVBAR --- */
-        nav { position: fixed; top: 0; width: 100%; padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 900; transition: 0.4s; }
-        nav.scrolled { padding: 20px 5%; background: rgba(2, 2, 5, 0.7); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); border-bottom: 1px solid var(--surface-border); }
-        .logo { font-family: var(--font-head); font-size: 1.8rem; font-weight: 800; letter-spacing: -2px; text-transform: uppercase; }
-        nav ul { display: flex; gap: 40px; list-style: none; }
-        nav ul li a { color: var(--text-main); text-decoration: none; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; position: relative; padding-bottom: 5px; }
-        nav ul li a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 2px; background: var(--primary); transition: width 0.3s ease; box-shadow: 0 0 10px var(--primary); }
-        nav ul li a:hover::after { width: 100%; }
-
-        /* --- CONTAINER & ANIMATIONS --- */
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
-        .reveal { opacity: 0; transform: translateY(50px); transition: 1s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-        .section-title { font-family: var(--font-head); font-size: clamp(2.5rem, 5vw, 4rem); text-transform: uppercase; text-align: center; margin-bottom: 60px; }
-
-        /* --- HEADER --- */
-        .page-header { padding: 200px 0 100px; text-align: center; border-bottom: 1px solid var(--surface-border); }
-        .page-header h1 { font-family: var(--font-head); font-size: clamp(3rem, 7vw, 6rem); text-transform: uppercase; line-height: 1; margin-bottom: 30px; letter-spacing: -2px; }
-        .page-header p { color: var(--text-dim); font-size: 1.2rem; max-width: 800px; margin: 0 auto; line-height: 1.6; }
-
-        /* --- GLASSMORPHISM TECH GRID --- */
-        .tech-section { padding: 150px 0; }
-        .glass-box { background: var(--surface); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid var(--surface-border); border-radius: 20px; padding: 40px; transition: 0.4s; }
-        .glass-box:hover { border-color: var(--primary); transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,240,255,0.1); }
-        .glass-box h3 { font-family: var(--font-head); font-size: 1.5rem; margin-bottom: 20px; border-bottom: 1px solid var(--surface-border); padding-bottom: 15px; }
-        .glass-box ul { list-style: none; }
-        .glass-box ul li { color: var(--text-dim); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .glass-box ul li::before { content: '▹'; color: var(--primary); font-size: 1.2rem; }
-
-        /* --- INTERACTIVE TIMELINE --- */
-        .timeline-section { padding: 100px 0; }
-        .timeline { max-width: 900px; margin: 0 auto; border-left: 2px solid var(--surface-border); padding-left: 50px; position: relative; }
-        .time-step { position: relative; margin-bottom: 80px; transition: 0.4s; }
-        .time-step::before { content: ''; position: absolute; left: -61px; top: 0; width: 20px; height: 20px; background: var(--bg-dark); border: 2px solid var(--surface-border); border-radius: 50%; transition: 0.4s; }
-        .time-step.active::before { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 15px var(--primary); }
-        .time-num { font-family: var(--font-head); font-size: 3rem; color: rgba(255,255,255,0.1); position: absolute; top: -30px; right: 0; font-weight: 800; z-index: -1; }
-        .time-step h3 { font-size: 2rem; margin-bottom: 15px; color: var(--text-main); }
-        .time-step p { color: var(--text-dim); line-height: 1.7; font-size: 1.1rem; }
-
-        /* --- GLOWING PRICING CARDS --- */
-        .pricing-section { padding: 150px 0; }
-        .price-card { background: var(--surface); border: 1px solid var(--surface-border); border-radius: 30px; padding: 50px; display: flex; flex-direction: column; transition: 0.4s; position: relative; }
-        .price-card.premium { border-color: var(--secondary); transform: scale(1.05); box-shadow: 0 20px 50px rgba(176, 38, 255, 0.2); z-index: 2; }
-        .price-card:hover { border-color: var(--primary); transform: translateY(-10px); }
-        .price-card.premium:hover { border-color: var(--secondary); transform: scale(1.05) translateY(-10px); }
-        .price-card h4 { font-family: var(--font-head); font-size: 1.2rem; color: var(--primary); margin-bottom: 15px; }
-        .price-card.premium h4 { color: var(--secondary); }
-        .price-card h2 { font-size: 3.5rem; margin-bottom: 30px; font-weight: 700; }
-        .price-card ul { list-style: none; flex-grow: 1; margin-bottom: 40px; }
-        .price-card ul li { margin-bottom: 15px; color: var(--text-dim); display: flex; gap: 15px; align-items: flex-start; line-height: 1.5; }
-        .price-card ul li::before { content: '✓'; color: var(--primary); font-weight: bold; }
-        .price-card.premium ul li::before { color: var(--secondary); }
+        /* --- INTERACTIVE BACKGROUND ENGINE --- */
+        #canvas-matrix-grid { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.7; }
+        .grain-layer { position: fixed; inset: 0; z-index: 9998; pointer-events: none; opacity: 0.03; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
+        .dynamic-glow-orb { position: fixed; width: 50vw; height: 50vw; background: radial-gradient(circle, var(--accent-glow) 0%, rgba(3, 3, 6, 0) 70%); border-radius: 50%; pointer-events: none; z-index: 0; transform: translate(-50%, -50%); opacity: 0.7; mix-blend-mode: screen; filter: blur(40px); }
         
-        .btn-outline { display: block; width: 100%; padding: 18px; text-align: center; border: 1px solid var(--surface-border); border-radius: 50px; color: var(--text-main); text-decoration: none; font-family: var(--font-head); text-transform: uppercase; font-size: 0.9rem; transition: 0.3s; }
-        .price-card.premium .btn-outline { background: var(--secondary); border-color: var(--secondary); color: #fff; }
-        .btn-outline:hover { background: var(--primary); border-color: var(--primary); color: var(--bg-dark); box-shadow: 0 0 20px rgba(0,240,255,0.4); }
-        .price-card.premium .btn-outline:hover { background: #fff; color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.4); }
+        /* CRT Scanline simulation */
+        body::before { content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); z-index: 9999; background-size: 100% 3px, 3px 100%; pointer-events: none; }
 
-        /* --- FOOTER --- */
-        footer { padding: 100px 5% 40px; background: rgba(0,0,0,0.5); border-top: 1px solid var(--surface-border); position: relative; overflow: hidden; }
-        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 80px; max-width: 1400px; margin-left: auto; margin-right: auto; }
-        .footer-title { font-family: var(--font-head); font-size: 2rem; margin-bottom: 20px; line-height: 1; text-transform: uppercase; }
-        .footer-links h4 { font-family: monospace; color: var(--primary); margin-bottom: 25px; font-size: 1.1rem; }
-        .footer-links ul { list-style: none; }
-        .footer-links ul li { margin-bottom: 15px; }
-        .footer-links ul li a { color: var(--text-dim); text-decoration: none; transition: 0.3s; }
-        .footer-links ul li a:hover { color: var(--text-main); padding-left: 10px; }
-        .footer-bottom { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding-top: 30px; border-top: 1px solid var(--surface-border); color: var(--text-dim); font-size: 0.9rem; }
+        /* --- ADVANCED HUD SYSTEMS --- */
+        .scroll-progress-wire { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--neon-blue)); z-index: 10001; width: 0%; box-shadow: 0 0 15px var(--accent); }
+        .cursor-pixel { position: fixed; width: 6px; height: 6px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); mix-blend-mode: difference; }
+        .cursor-radar { position: fixed; width: 40px; height: 40px; border: 1px dashed var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width 0.4s var(--ease-out), height 0.4s var(--ease-out), background-color 0.4s, border-color 0.4s; animation: spinRadar 8s linear infinite; }
+        body.is-hovering .cursor-radar { width: 80px; height: 80px; background-color: rgba(255, 60, 0, 0.04); border-color: var(--neon-blue); border-style: solid; }
+        @keyframes spinRadar { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
 
-        @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(50px, 50px); } }
+        @media (hover: none) and (pointer: coarse) {
+            * { cursor: auto !important; }
+            .cursor-pixel, .cursor-radar { display: none !important; }
+        }
 
+        .hud-rotation-ring { position: fixed; right: -50px; top: 40%; width: 180px; height: 180px; border: 1px dashed rgba(255,255,255,0.05); border-radius: 50%; z-index: 1; pointer-events: none; animation: spinRadar 25s linear infinite; display: flex; align-items: center; justify-content: center; }
+        .hud-rotation-ring::before { content: ''; width: 140px; height: 140px; border: 1px solid rgba(255, 60, 0, 0.1); border-radius: 50%; border-left-color: transparent; animation: spinRadar 10s linear infinite reverse; }
+
+        .telemetry-node { position: fixed; top: 2.5vw; left: 3vw; display: flex; align-items: center; gap: 10px; z-index: 101; font-family: var(--font-code); font-size: 10px; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 2px; }
+        .telemetry-pulse { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: telemetryBlink 1s infinite; box-shadow: 0 0 8px var(--accent); }
+        @keyframes telemetryBlink { 0%, 100% { opacity: 0.2; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.2); } }
+
+        /* --- PRELOADER ANIMATION SYSTEM --- */
+        .preloader-count-frame { font-family: var(--font-head); font-size: 26vw; line-height: 0.7; color: var(--fg); text-align: right; letter-spacing: -6px; font-weight: 900; background: linear-gradient(180deg, #fff, rgba(255,255,255,0.1)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .preloader-screen { position: fixed; inset: 0; background: #020204; z-index: 9000; display: flex; flex-direction: column; justify-content: flex-end; padding: 4vw; transition: transform 1.2s var(--ease-expo); }
+        .preloader-wire-rail { width: 100%; height: 2px; background: rgba(255,255,255,0.03); margin-top: 2vh; position: relative; overflow: hidden; }
+        .preloader-wire-active { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--neon-blue)); }
+        .preloader-screen.hide { transform: translateY(-100%); pointer-events: none; }
+
+        /* --- CORE WRAPPER --- */
+        .main-wrapper { max-width: 95vw; margin: 0 auto; padding: 0 2vw; position: relative; z-index: 2; }
+        .matrix-header-tag { font-family: var(--font-code); font-size: 11px; color: var(--accent); margin-bottom: 5vh; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; gap: 15px; }
+        .matrix-header-tag::after { content: ''; height: 1px; flex-grow: 1; background: var(--line); }
+
+        /* --- VIEWPORT REVEAL LOGIC --- */
+        .mask-container { overflow: hidden; display: inline-block; vertical-align: bottom; }
+        .mask-node { display: inline-block; transform: translateY(115%); transition: transform 1.4s var(--ease-out); }
+        .mask-node.is-visible { transform: translateY(0); }
+        
+        .reveal-node { opacity: 0; transform: translateY(50px); transition: opacity 1.2s var(--ease-out), transform 1.2s var(--ease-out); }
+        .reveal-node.is-visible { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.15s; }
+        .delay-2 { transition-delay: 0.3s; }
+        .delay-3 { transition-delay: 0.45s; }
+
+        /* --- NAVIGATION LAYOUT --- */
+        nav { position: fixed; top: 0; left: 0; width: 100%; padding: 2.5vw 4vw; display: flex; justify-content: space-between; align-items: center; z-index: 8999; mix-blend-mode: difference; }
+        .nav-logo { font-family: var(--font-head); font-size: 2.2vw; letter-spacing: 0.5px; text-transform: uppercase; color: var(--fg); text-decoration: none;}
+        .nav-list { display: flex; gap: 3vw; list-style: none; }
+        .nav-list a { font-family: var(--font-code); font-size: 11px; color: var(--fg); text-decoration: none; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; transition: all 0.3s; }
+        .nav-list a.active, .nav-list a:hover { opacity: 1; color: var(--accent); text-shadow: 0 0 8px var(--accent-glow); }
+
+        /* --- HERO SECTOR --- */
+        .hero-viewport { min-height: 85vh; display: flex; flex-direction: column; justify-content: center; padding-top: 20vh; border-bottom: 1px solid var(--line); padding-bottom: 12vh; position: relative; }
+        .hero-headline { font-family: var(--font-head); font-size: 13vw; line-height: 0.85; text-transform: uppercase; letter-spacing: -3px; margin-bottom: 5vh; }
+        .hero-desc { font-size: 2vw; line-height: 1.5; font-weight: 300; color: var(--fg-muted); max-width: 75%; }
+
+        /* --- MARQUEE MANIFESTO TICKER --- */
+        .ticker-viewport { padding: 4vh 0; border-bottom: 1px solid var(--line); overflow: hidden; background: #000; width: 100vw; margin-left: calc(-50vw + 47.5vw); position: relative; }
+        .ticker-container { display: flex; white-space: nowrap; overflow: hidden; pointer-events: none; }
+        .ticker-track { display: flex; animation: tickerScroll 20s linear infinite; }
+        .ticker-item { font-family: var(--font-head); font-size: 6.5vw; text-transform: uppercase; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.06); padding: 0 2vw; display: flex; align-items: center; gap: 2vw; }
+        .ticker-item span.highlight { color: var(--fg); -webkit-text-stroke: none; text-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        @keyframes tickerScroll { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
+
+        /* --- MATRIX GRID W/ DEPTH PARALLAX --- */
+        .matrix-viewport { padding: 15vh 0; border-bottom: 1px solid var(--line); }
+        .matrix-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5vw; perspective: 1500px; }
+        
+        .matrix-card { background: var(--bg-card); border: 1px solid var(--line); padding: 3vw; border-radius: 4px; display: flex; flex-direction: column; justify-content: space-between; min-height: 460px; transition: border-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out); position: relative; transform-style: preserve-3d; overflow: hidden; }
+        .matrix-card:hover { border-color: rgba(255, 60, 0, 0.5); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+        
+        /* Shimmer Glass Effect Overlay */
+        .matrix-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle 300px at var(--g-x, 0px) var(--g-g, 0px), rgba(255, 60, 0, 0.08), transparent 80%); pointer-events: none; opacity: 0; transition: opacity 0.4s; z-index: 1; }
+        .matrix-card:hover::before { opacity: 1; }
+
+        .matrix-card-contents { transform: translateZ(40px); position: relative; z-index: 2; }
+        .card-telemetry-id { font-family: var(--font-code); font-size: 11px; color: var(--accent); margin-bottom: 4vh; display: block; letter-spacing: 1px; }
+        .card-headline { font-family: var(--font-head); font-size: 3.2vw; text-transform: uppercase; line-height: 0.95; margin-bottom: 2.5vh; letter-spacing: -0.5px; transition: color 0.3s; }
+        .matrix-card:hover .card-headline { color: var(--neon-blue); }
+        .card-body-text { font-size: 1.1vw; line-height: 1.6; color: var(--fg-muted); font-weight: 300; }
+        
+        /* Micro-Equalizer UI Inside Cards */
+        .card-equalizer-bar-group { display: flex; gap: 3px; height: 15px; align-items: flex-end; margin-top: 3vh; opacity: 0.3; transition: opacity 0.3s; }
+        .matrix-card:hover .card-equalizer-bar-group { opacity: 1; }
+        .eq-bar { width: 2px; height: 100%; background: var(--accent); animation: eqBounce 0.8s ease-in-out infinite alternate; transform-origin: bottom; }
+        .eq-bar:nth-child(2) { animation-delay: 0.15s; background: var(--neon-blue); }
+        .eq-bar:nth-child(3) { animation-delay: 0.3s; }
+        .eq-bar:nth-child(4) { animation-delay: 0.45s; background: var(--neon-blue); }
+        @keyframes eqBounce { from { transform: scaleY(0.2); } to { transform: scaleY(1); } }
+
+        .card-tech-footer { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin-top: 2vh; padding-top: 2.5vh; border-top: 1px dashed rgba(255,255,255,0.05); transform: translateZ(20px); }
+        .card-tech-footer li { font-family: var(--font-code); font-size: 10px; background: rgba(255,255,255,0.01); padding: 4px 10px; border: 1px solid var(--line); color: var(--fg); border-radius: 2px; transition: all 0.3s; }
+        .matrix-card:hover .card-tech-footer li { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.03); }
+
+        /* --- ESTIMATOR INTERFACE --- */
+        .estimator-viewport { padding: 15vh 0; border-bottom: 1px solid var(--line); }
+        .estimator-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 5vw; }
+        
+        .estimator-interactive-panel { display: flex; flex-direction: column; gap: 2vh; }
+        .estimator-node-row { background: var(--bg-card); border: 1px solid var(--line); padding: 2vw; border-radius: 4px; display: flex; align-items: center; justify-content: space-between; transition: all 0.3s var(--ease-out); }
+        .estimator-node-row.selected { border-color: var(--accent); background: rgba(255, 60, 0, 0.03); box-shadow: 0 0 20px rgba(255, 60, 0, 0.05); }
+        
+        .est-node-meta h4 { font-family: var(--font-head); font-size: 1.8vw; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5vh; transition: color 0.3s; }
+        .estimator-node-row.selected .est-node-meta h4 { color: var(--accent); }
+        .est-node-meta p { font-size: 0.95vw; color: var(--fg-muted); font-weight: 300; }
+        
+        .est-node-checkbox { width: 18px; height: 18px; border: 1px solid rgba(255,255,255,0.15); border-radius: 2px; transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
+        .estimator-node-row.selected .est-node-checkbox { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px var(--accent); transform: rotate(90deg); }
+        .estimator-node-row.selected .est-node-checkbox::after { content: '✓'; color: #fff; font-size: 11px; font-weight: bold; }
+
+        .gas-interface-container { margin-top: 3vh; border-top: 1px solid var(--line); padding-top: 3vh; }
+        .gas-title-label { font-family: var(--font-code); font-size: 11px; color: var(--fg-muted); margin-bottom: 2vh; display: block; }
+        .gas-toggle-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .gas-btn { background: rgba(255,255,255,0.01); border: 1px solid var(--line); padding: 15px; font-family: var(--font-code); font-size: 11px; color: var(--fg-muted); text-align: center; border-radius: 2px; transition: all 0.3s; }
+        .gas-btn:hover { border-color: rgba(255,255,255,0.2); color: #fff; }
+        .gas-btn.active { border-color: var(--neon-blue); background: rgba(0, 243, 255, 0.04); color: var(--neon-blue); font-weight: bold; box-shadow: 0 0 15px rgba(0, 243, 255, 0.05); }
+
+        /* Terminal Engine Screen Container */
+        .terminal-display-console { background: #030306; border: 1px solid var(--line); border-radius: 4px; padding: 2.5vw; font-family: var(--font-code); min-height: 450px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: inset 0 2px 15px rgba(0,0,0,0.9); position: relative; }
+        .terminal-dots-row { display: flex; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 1.5vh; margin-bottom: 2vh; }
+        
+        /* Utility CSS Classes */
+        .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27c93f; }
+        
+        .terminal-log-output { font-size: 0.9vw; line-height: 1.7; color: #818192; flex-grow: 1; overflow-y: hidden; }
+        .terminal-log-row { margin-bottom: 6px; animation: logFadeIn 0.3s var(--ease-out) forwards; opacity: 0; transform: translateY(5px); }
+        @keyframes logFadeIn { to { opacity: 1; transform: translateY(0); } }
+
+        .terminal-summary-block { border-top: 1px dashed rgba(255,255,255,0.06); padding-top: 2.5vh; margin-top: 2vh; }
+        .terminal-data-row { display: flex; justify-content: space-between; margin-bottom: 1vh; font-size: 11px; color: var(--fg-muted); }
+        .terminal-data-row.grand-total { font-family: var(--font-head); font-size: 2.4vw; color: var(--fg); text-transform: uppercase; margin-top: 1.5vh; letter-spacing: -0.5px; }
+        .neon-accent-text { color: var(--accent); text-shadow: 0 0 8px var(--accent-glow); }
+        .neon-blue-text { color: var(--neon-blue); }
+        .bold-white-text { color: #fff; font-weight: bold; }
+
+        /* --- THE OPERATIONAL PIPELINE TRACKER --- */
+        .pipeline-viewport { padding: 15vh 0; border-bottom: 1px solid var(--line); }
+        .pipeline-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 6vw; }
+        
+        .pipeline-sticky-column { position: sticky; top: 15vh; }
+        .pipeline-sticky-column h2 { font-family: var(--font-head); font-size: 6vw; text-transform: uppercase; line-height: 0.95; }
+        .pipeline-sticky-column p { font-size: 1.3vw; color: var(--fg-muted); line-height: 1.6; font-weight: 300; margin-top: 2.5vh; }
+        
+        .pipeline-flow-rail { display: flex; flex-direction: column; position: relative; }
+        .pipeline-flow-rail::after { content: ''; position: absolute; top: 8px; left: 4px; width: 1px; height: calc(100% - 40px); background: var(--line); z-index: 1; }
+        
+        .pipeline-laser-pointer { position: absolute; left: 4px; top: 8px; width: 1px; height: 0; background: linear-gradient(180deg, var(--accent), transparent); z-index: 2; transition: height 0.5s ease; box-shadow: 0 0 10px var(--accent); }
+
+        .pipeline-step-node { padding-left: 3vw; padding-bottom: 7vh; position: relative; z-index: 3; }
+        .pipeline-step-node:last-child { padding-bottom: 0; }
+        .pipeline-step-node::before { content: ''; width: 9px; height: 9px; background: var(--bg); border: 1px solid rgba(255,255,255,0.15); border-radius: 50%; position: absolute; left: 0px; top: 8px; transition: all 0.4s var(--ease-out); }
+        
+        .pipeline-step-node.active-node::before { background: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 12px var(--neon-blue); transform: scale(1.4); }
+        
+        .step-meta-id { font-family: var(--font-code); font-size: 11px; color: var(--accent); display: block; margin-bottom: 1.5vh; }
+        .step-headline { font-family: var(--font-head); font-size: 2.5vw; text-transform: uppercase; margin-bottom: 1.5vh; letter-spacing: 0.5px; }
+        .step-description { font-size: 1.1vw; color: var(--fg-muted); line-height: 1.6; font-weight: 300; }
+
+        /* --- TRANSMISSION ACTION MATRIX --- */
+        .cta-viewport { padding: 25vh 0 15vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border-bottom: 1px solid var(--line); position: relative; }
+        .cta-tagline { font-family: var(--font-code); font-size: 11px; color: var(--accent); text-transform: uppercase; margin-bottom: 3vh; letter-spacing: 2px; }
+        .cta-headline-link { font-family: var(--font-head); font-size: 11vw; text-transform: uppercase; line-height: 0.85; letter-spacing: -2px; color: var(--fg); text-decoration: none; transition: all 0.4s; position: relative; }
+        .cta-headline-link:hover { color: var(--neon-blue); text-shadow: 0 0 40px rgba(0,243,255,0.2); }
+
+        /* --- FOOTER SPEC SYSTEMS --- */
+        footer { padding: 5vh 0; }
+        .footer-flex-row { display: flex; justify-content: space-between; font-family: var(--font-code); font-size: 11px; color: rgba(255, 255, 255, 0.2); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- RESPONSIVE ENGINEERING ADAPTATIONS --- */
         @media(max-width: 1024px) {
-            .grid-4, .grid-3, .footer-grid { grid-template-columns: 1fr; }
-            .grid-4 { grid-template-columns: repeat(2, 1fr); }
-            .price-card.premium { transform: scale(1); }
+            nav { padding: 4vw 6vw; }
+            .nav-logo { font-size: 5vw; }
+            .nav-list { display: none; }
+            .hero-viewport { padding-top: 16vh; }
+            .hero-headline { font-size: 15vw; }
+            .hero-desc { font-size: 4vw; max-width: 100%; }
+            .matrix-header-tag, .card-telemetry-id, .step-meta-id, .cta-tagline, .gas-title-label, .gas-btn, .terminal-data-row, .footer-flex-row { font-size: 2.8vw; }
+            .ticker-item { font-size: 12vw; }
+            .matrix-grid { grid-template-columns: 1fr; gap: 4vh; }
+            
+            .matrix-card { min-height: 0; padding: 6vw; transform: none !important; }
+            .matrix-card::before { display: none; }
+            .card-headline { font-size: 8vw; }
+            .card-body-text { font-size: 3.8vw; }
+            .card-tech-footer li { font-size: 2.5vw; }
+            .estimator-grid, .pipeline-grid { grid-template-columns: 1fr; gap: 6vh; }
+            .est-node-meta h4 { font-size: 4.8vw; }
+            .est-node-meta p { font-size: 3vw; }
+            .gas-toggle-group { grid-template-columns: 1fr; }
+            
+            .terminal-display-console { min-height: 0; padding: 5vw; }
+            .terminal-log-output { font-size: 3.2vw; }
+            .terminal-data-row.grand-total { font-size: 6.5vw; }
+            .pipeline-sticky-column { position: relative; top: 0; }
+            .pipeline-sticky-column h2 { font-size: 10vw; }
+            .pipeline-sticky-column p { font-size: 4vw; }
+            .pipeline-step-node { padding-left: 6vw; padding-bottom: 5vh; }
+            .step-headline { font-size: 6vw; }
+            .step-description { font-size: 3.8vw; }
+            .cta-headline-link { font-size: 13vw; }
+            .footer-flex-row { flex-direction: column; gap: 2vh; text-align: center; }
+            .hud-rotation-ring { display: none; }
         }
     </style>
 </head>
-<body>
+<body class="no-scroll">
 
-    <div class="mesh-bg">
-        <div class="mesh-orb orb-1"></div>
-        <div class="mesh-orb orb-2"></div>
+    <!-- HUD COMPONENT ASSETS -->
+    <div class="scroll-progress-wire" id="wire-progress"></div>
+    <div class="telemetry-node">
+        <div class="telemetry-pulse"></div> 
+        <span>OZ MATRIX // CORE_ENGINE_V2.0 // SYSTEMS_STABLE</span>
     </div>
-    <div class="noise-overlay"></div>
+    
+    <!-- DYNAMIC BACKGROUND LAYER -->
+    <canvas id="canvas-matrix-grid"></canvas>
+    <div class="grain-layer"></div>
+    <div class="dynamic-glow-orb" id="glow-orb"></div>
+    <div class="hud-rotation-ring"></div>
+    
+    <!-- PRECISION MOUSE HUD CURSORS -->
+    <div class="cursor-pixel"></div>
+    <div class="cursor-radar"></div>
 
-    <div class="cursor-dot"></div>
-    <div class="cursor-ring"></div>
+    <!-- INITIALIZATION SCREEN -->
+    <div class="preloader-screen" id="preloader">
+        <div class="preloader-count-frame" id="counter-box">00</div>
+        <div class="preloader-wire-rail"><div class="preloader-wire-active" id="progress-wire"></div></div>
+    </div>
 
-    <nav id="nav">
-        <div class="logo hover-target">OZ<span class="text-primary">.</span></div>
-        <ul>
-            <li><a href="index.html" class="hover-target">Home</a></li>
-            <li><a href="about.html" class="hover-target">About</a></li>
-            <li><a href="services.html" class="hover-target">Expertise</a></li>
-            <li><a href="contact.html" class="hover-target">Contact</a></li>
+    <!-- NAVIGATION LAYOUT -->
+    <nav>
+        <a href="index.html" class="nav-logo is-hoverable scramble" data-value="OZ.">OZ.</a>
+        <ul class="nav-list">
+            <li><a href="index.html" class="is-hoverable">Portfolio</a></li>
+            <li><a href="about.html" class="is-hoverable">About</a></li>
+            <li><a href="service.html" class="is-hoverable active">Services</a></li>
+            <li><a href="contact.html" class="is-hoverable">Contact</a></li>
         </ul>
     </nav>
 
-    <header class="page-header container reveal active">
-        <h1>Engineering<br><span class="text-gradient">Capabilities</span></h1>
-        <p>Providing end-to-end solutions. From breathtaking high-fidelity Web2 frontends to mathematically verified Web3 Smart Contracts.</p>
-    </header>
-
-    <section class="tech-section container">
-        <h2 class="section-title reveal">Technology Stack</h2>
-        <div class="grid-4">
-            
-            <div class="glass-box reveal hover-target">
-                <h3>Frontend Architecture</h3>
-                <ul>
-                    <li>React & Next.js 14</li>
-                    <li>TypeScript Standard</li>
-                    <li>Framer Motion & GSAP</li>
-                    <li>Tailwind CSS</li>
-                </ul>
-            </div>
-
-            <div class="glass-box reveal delay-100 hover-target">
-                <h3>Backend Systems</h3>
-                <ul>
-                    <li>Node.js & Express</li>
-                    <li>PostgreSQL DB</li>
-                    <li>Redis Caching</li>
-                    <li>GraphQL / REST API</li>
-                </ul>
-            </div>
-
-            <div class="glass-box reveal delay-200 hover-target">
-                <h3>Web3 & Blockchain</h3>
-                <ul>
-                    <li>Solidity & Rust</li>
-                    <li>Hardhat & Foundry</li>
-                    <li>Ethers.js / Wagmi</li>
-                    <li>The Graph Indexing</li>
-                </ul>
-            </div>
-
-            <div class="glass-box reveal delay-300 hover-target">
-                <h3>DevOps & SecOps</h3>
-                <ul>
-                    <li>Docker & Kubernetes</li>
-                    <li>AWS / Vercel Cloud</li>
-                    <li>Smart Contract Audit</li>
-                    <li>CI/CD Pipelines</li>
-                </ul>
-            </div>
-
-        </div>
-    </section>
-
-    <section class="timeline-section container">
-        <h2 class="section-title reveal">Execution Blueprint</h2>
+    <!-- MAIN CONTAINER -->
+    <div class="main-wrapper">
         
-        <div class="timeline">
-            <div class="time-step trigger-scroll">
-                <div class="time-num">01</div>
-                <h3>Discovery & Architecture</h3>
-                <p>We analyze your requirements and engineer the Database schema (Web2) alongside the Smart Contract logic (Web3) to prevent vulnerabilities from day one.</p>
-            </div>
+        <!-- HERO SEGMENT -->
+        <section class="hero-viewport">
+            <h1 class="hero-headline">
+                <span class="mask-container"><span class="mask-node boot-sequence delay-1">SERVICES &</span></span><br>
+                <span class="mask-container"><span class="mask-node boot-sequence neon-accent-text delay-2">CAPABILITIES.</span></span>
+            </h1>
+            <p class="hero-desc reveal-node delay-3">
+                We transform digital ecosystems and Web3 architectures into premium, secure, high-performance interactive products. Our focus is on engineering cutting-edge technological solutions with an adaptive, uncompromising visual aesthetic.
+            </p>
+        </section>
 
-            <div class="time-step trigger-scroll">
-                <div class="time-num">02</div>
-                <h3>Prototyping & Motion</h3>
-                <p>Designing high-fidelity UI/UX. We define the brand aesthetics and micro-interactions. Zero code is written until the design is approved.</p>
+        <!-- RUNNING TICKER -->
+        <section class="ticker-viewport">
+            <div class="ticker-container">
+                <div class="ticker-track">
+                    <div class="ticker-item"><span>VISUAL LUXURY</span> • <span class="highlight">CODE IS ART</span> • <span>DECENTRALIZED CORE</span> • <span class="highlight">ULTRA ANIMATION</span> • </div>
+                    <div class="ticker-item"><span>VISUAL LUXURY</span> • <span class="highlight">CODE IS ART</span> • <span>DECENTRALIZED CORE</span> • <span class="highlight">ULTRA ANIMATION</span> • </div>
+                </div>
             </div>
+        </section>
 
-            <div class="time-step trigger-scroll">
-                <div class="time-num">03</div>
-                <h3>Parallel Development</h3>
-                <p>Frontend, Backend, and Blockchain development occur simultaneously in Agile sprints. Clients get weekly access to our staging servers to view live progress.</p>
-            </div>
+        <!-- CAPABILITIES MATRIX GRID -->
+        <section class="matrix-viewport">
+            <div class="matrix-header-tag">[ INTEGRAL_CAPABILITY_MATRIX ]</div>
+            <div class="matrix-grid">
+                
+                <!-- CARD 01 -->
+                <div class="matrix-card reveal-node is-hoverable tilt-node">
+                    <div class="matrix-card-contents">
+                        <span class="card-telemetry-id">// MODULE_01 // VISUAL</span>
+                        <h3 class="card-headline">PREMIUM FRONTEND<br>DEVELOPMENT</h3>
+                        <p class="card-body-text">Advanced user interface engineering leveraging WebGL, custom shader manipulation, and micro-animation optimization to deliver precise, ultra-responsive transitions.</p>
+                        <div class="card-equalizer-bar-group">
+                            <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <ul class="card-tech-footer">
+                            <li>GSAP Core</li>
+                            <li>Three.js / WebGL</li>
+                            <li>Next.js</li>
+                            <li>Vanilla TS</li>
+                        </ul>
+                    </div>
+                </div>
 
-            <div class="time-step trigger-scroll">
-                <div class="time-num">04</div>
-                <h3>Testnet & Security Audit</h3>
-                <p>Deployment to Testnet environments. Our security experts execute White-Hat penetration testing to guarantee zero bugs before the final launch.</p>
-            </div>
+                <!-- CARD 02 -->
+                <div class="matrix-card reveal-node delay-1 is-hoverable tilt-node">
+                    <div class="matrix-card-contents">
+                        <span class="card-telemetry-id">// MODULE_02 // CONTRACT</span>
+                        <h3 class="card-headline">SMART CONTRACT<br>ARCHITECTURE</h3>
+                        <p class="card-body-text">Design and implementation of secure, gas-optimized on-chain logic, verified through comprehensive fuzz testing protocols prior to final production validation.</p>
+                        <div class="card-equalizer-bar-group">
+                            <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <ul class="card-tech-footer">
+                            <li>Solidity / Yul</li>
+                            <li>Rust Language</li>
+                            <li>Foundry Suite</li>
+                            <li>Hardhat Audit</li>
+                        </ul>
+                    </div>
+                </div>
 
-            <div class="time-step trigger-scroll" style="margin-bottom: 0;">
-                <div class="time-num">05</div>
-                <h3>Mainnet Deployment</h3>
-                <p>Public launch. Our DevOps team configures load balancers and RPC nodes for maximum stability. We provide ongoing SLA maintenance.</p>
-            </div>
-        </div>
-    </section>
+                <!-- CARD 03 -->
+                <div class="matrix-card reveal-node delay-2 is-hoverable tilt-node">
+                    <div class="matrix-card-contents">
+                        <span class="card-telemetry-id">// MODULE_03 // ROUTING</span>
+                        <h3 class="card-headline">END-TO-END<br>WEB3 INTEGRATION</h3>
+                        <p class="card-body-text">Seamless orchestration between blockchain runtimes and the application layer. Engineered with secure, low-latency multi-wallet handlers and robust state-sync systems.</p>
+                        <div class="card-equalizer-bar-group">
+                            <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <ul class="card-tech-footer">
+                            <li>Viem / Wagmi</li>
+                            <li>Ethers.js Cores</li>
+                            <li>The Graph Protocol</li>
+                            <li>GraphQL APIs</li>
+                        </ul>
+                    </div>
+                </div>
 
-    <section class="pricing-section container">
-        <h2 class="section-title reveal">Engagement Tiers</h2>
-        
-        <div class="grid-3">
-            <div class="price-card reveal hover-target">
-                <h4>Web2 Premium</h4>
-                <h2>$8k<span class="text-dim font-mono" style="font-size: 1rem;">/proj</span></h2>
-                <ul>
-                    <li>Bespoke UI/UX Design</li>
-                    <li>Next.js Frontend Build</li>
-                    <li>Node.js API & Database</li>
-                    <li>Standard SEO Setup</li>
-                </ul>
-                <a href="contact.html" class="btn-outline hover-target">Inquire</a>
-            </div>
+                <!-- CARD 04 -->
+                <div class="matrix-card reveal-node is-hoverable tilt-node">
+                    <div class="matrix-card-contents">
+                        <span class="card-telemetry-id">// MODULE_04 // BACKEND</span>
+                        <h3 class="card-headline">SCALABLE BACKEND<br>INFRASTRUCTURE</h3>
+                        <p class="card-body-text">Architecting high-throughput server environments, specialized custom data indexers, and distributed, high-performance caching layer topologies.</p>
+                        <div class="card-equalizer-bar-group">
+                            <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <ul class="card-tech-footer">
+                            <li>Node.js / Go</li>
+                            <li>Redis Server</li>
+                            <li>PostgreSQL DB</li>
+                            <li>Docker Engine</li>
+                        </ul>
+                    </div>
+                </div>
 
-            <div class="price-card premium reveal delay-100 hover-target">
-                <h4>Full Protocol DApp</h4>
-                <h2>$18k<span class="text-dim font-mono" style="font-size: 1rem;">/proj</span></h2>
-                <ul>
-                    <li>All Web2 Premium Features</li>
-                    <li>Solidity Smart Contracts</li>
-                    <li>Wallet & On-Chain Integration</li>
-                    <li>Internal Security Audit</li>
-                    <li>Mainnet Launch Setup</li>
-                </ul>
-                <a href="contact.html" class="btn-outline hover-target">Start Project</a>
-            </div>
+                <!-- CARD 05 -->
+                <div class="matrix-card reveal-node delay-1 is-hoverable tilt-node">
+                    <div class="matrix-card-contents">
+                        <span class="card-telemetry-id">// MODULE_05 // DEFI</span>
+                        <h3 class="card-headline">DEFI SOLUTIONS &<br>MEV PROTECTION</h3>
+                        <p class="card-body-text">Engineering custom AMM logic architectures, liquidity routing optimization, and advanced transaction shielding to mitigate frontrunning and MEV bot exploits.</p>
+                        <div class="card-equalizer-bar-group">
+                            <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <ul class="card-tech-footer">
+                            <li>Flashbots Bundle</li>
+                            <li>Custom AMM Logic</li>
+                            <li>Arbitrage Shields</li>
+                            <li>Liquidity Pools</li>
+                        </ul>
+                    </div>
+                </div>
 
-            <div class="price-card reveal delay-200 hover-target">
-                <h4>Enterprise Retainer</h4>
-                <h2>$5k<span class="text-dim font-mono" style="font-size: 1rem;">/mo</span></h2>
-                <ul>
-                    <li>Dedicated Lead Developer</li>
-                    <li>Continuous Feature Upgrades</li>
-                    <li>24/7 DevOps Monitoring</li>
-                    <li>SLA Fix within 24 hours</li>
-                </ul>
-                <a href="contact.html" class="btn-outline hover-target">Contact Us</a>
-            </div>
-        </div>
-    </section>
+                <!-- CARD 06 -->
+                <div class="matrix-card reveal-node delay-2 is-hoverable tilt-node">
+                    <div class="matrix-card-contents">
+                        <span class="card-telemetry-id">// MODULE_06 // PRIVACY</span>
+                        <h3 class="card-headline">CRYPTOGRAPHIC PRIVACY<br>(ZKP) ENGINEERING</h3>
+                        <p class="card-body-text">Implementation of Zero-Knowledge cryptographic proofs to enforce absolute data privacy and sovereign ownership without compromising distributed network validation.</p>
+                        <div class="card-equalizer-bar-group">
+                            <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <ul class="card-tech-footer">
+                            <li>Circom Circuits</li>
+                            <li>SnarkJS Cores</li>
+                            <li>ZKP Handshakes</li>
+                            <li>Privacy Nodes</li>
+                        </ul>
+                    </div>
+                </div>
 
-    <footer>
-        <div class="footer-grid reveal">
-            <div>
-                <h2 class="footer-title">Ready to<br>Build?</h2>
-                <p class="text-dim mb-40">Let's create something extraordinary together.</p>
             </div>
-            
-            <div class="footer-links">
-                <h4>Navigation</h4>
-                <ul>
-                    <li><a href="index.html" class="hover-target">Home</a></li>
-                    <li><a href="about.html" class="hover-target">About Us</a></li>
-                    <li><a href="services.html" class="hover-target">Expertise</a></li>
-                    <li><a href="contact.html" class="hover-target">Contact</a></li>
-                </ul>
-            </div>
+        </section>
 
-            <div class="footer-links">
-                <h4>Connect</h4>
-                <ul>
-                    <li><a href="#" class="hover-target">Twitter (X)</a></li>
-                    <li><a href="#" class="hover-target">LinkedIn</a></li>
-                    <li><a href="#" class="hover-target">GitHub</a></li>
-                </ul>
-            </div>
+        <!-- ESTIMATOR INTERFACE -->
+        <section class="estimator-viewport reveal-node">
+            <div class="matrix-header-tag">[ PROJECT_SIMULATION_CALCULATOR ]</div>
+            <div class="estimator-grid">
+                
+                <div class="estimator-interactive-panel">
+                    <div class="estimator-node-row is-hoverable" data-cost="5000" data-time="14" data-label="CREATIVE_FRONTEND">
+                        <div class="est-node-meta">
+                            <h4>Creative Frontend Layer</h4>
+                            <p>Premium WebGL interactions, GSAP core sequence orchestration, and adaptive animation layout architectures.</p>
+                        </div>
+                        <div class="est-node-checkbox"></div>
+                    </div>
 
-            <div class="footer-links">
-                <h4>Location</h4>
-                <ul class="text-dim">
-                    <li>Jambi, Indonesia</li>
-                    <li>Serving Global Clients</li>
-                    <li class="mt-40 text-primary">Status: Available</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <div>© 2026 OZ Creative Agency. All Rights Reserved.</div>
-            <div class="font-mono">WEB3 DEVELOPMENT STUDIO</div>
-        </div>
-    </footer>
+                    <div class="estimator-node-row is-hoverable" data-cost="6500" data-time="20" data-label="SMART_CONTRACT_CORE">
+                        <div class="est-node-meta">
+                            <h4>Smart Contract Security</h4>
+                            <p>Bytecode compilation optimization utilizing Solidity/Rust alongside rigorous Foundry framework testing suites.</p>
+                        </div>
+                        <div class="est-node-checkbox"></div>
+                    </div>
 
+                    <div class="estimator-node-row is-hoverable" data-cost="3500" data-time="10" data-label="WEB3_BRIDGE_SYNC">
+                        <div class="est-node-meta">
+                            <h4>Fullstack Web3 Integration</h4>
+                            <p>Multi-wallet connection authentication, state synchronization, and high-performance subgraph indexer optimization.</p>
+                        </div>
+                        <div class="est-node-checkbox"></div>
+                    </div>
+
+                    <div class="estimator-node-row is-hoverable" data-cost="5000" data-time="15" data-label="HIGH_LOAD_PIPELINES">
+                        <div class="est-node-meta">
+                            <h4>High-Load Data Pipelines</h4>
+                            <p>Real-time distributed ledger synchronization, distributed microservices architectures, and localized Redis cache engines.</p>
+                        </div>
+                        <div class="est-node-checkbox"></div>
+                    </div>
+
+                    <!-- Gas Controls Configuration -->
+                    <div class="gas-interface-container">
+                        <span class="gas-title-label">// SELECT EXECUTION PRIORITY (GAS PRIORITY)</span>
+                        <div class="gas-toggle-group">
+                            <div class="gas-btn is-hoverable" id="gas-eco" data-multiplier="0.9" data-speed="-2">EFFICIENT (LOW)</div>
+                            <div class="gas-btn is-hoverable active" id="gas-standard" data-multiplier="1.0" data-speed="0">STANDARD</div>
+                            <div class="gas-btn is-hoverable" id="gas-overdrive" data-multiplier="1.15" data-speed="4">ACCELERATED (FAST)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Console Display Screen -->
+                <div class="terminal-display-console is-hoverable">
+                    <div class="terminal-dots-row">
+                        <div class="terminal-dot red"></div>
+                        <div class="terminal-dot yellow"></div>
+                        <div class="terminal-dot green"></div>
+                    </div>
+                    <div class="terminal-log-output" id="console-logs">
+                        <div class="terminal-log-row">> SYSTEM READY: Select any capability module from the left panel to simulate resource budgets and deployment timelines...</div>
+                    </div>
+                    <div class="terminal-summary-block">
+                        <div class="terminal-data-row">
+                            <span>ESTIMATED RUNTIME:</span>
+                            <span id="output-days" class="bold-white-text">0 Days</span>
+                        </div>
+                        <div class="terminal-data-row grand-total">
+                            <span>TOTAL BUDGET:</span>
+                            <span id="output-price" class="neon-accent-text">$0.00 USD</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- OPERATIONAL PIPELINE MODULE -->
+        <section class="pipeline-viewport">
+            <div class="matrix-header-tag">[ DEPLOYMENT_PIPELINE_METHODOLOGY ]</div>
+            <div class="pipeline-grid">
+                
+                <div class="pipeline-sticky-column reveal-node">
+                    <h2>OUR<br><span class="neon-blue-text">PIPELINE.</span></h2>
+                    <p>A meticulously engineered framework designed to transition abstract concepts into battle-tested architectures deployed seamlessly on the Mainnet.</p>
+                </div>
+                
+                <div class="pipeline-flow-rail" id="pipeline-rail">
+                    <div class="pipeline-laser-pointer" id="laser-line"></div>
+                    
+                    <div class="pipeline-step-node is-hoverable reveal-node">
+                        <span class="step-meta-id">PHASE 01 // ANALYSIS</span>
+                        <h3 class="step-headline">Architectural Blueprinting</h3>
+                        <p class="step-description">Deep-dive analysis of comprehensive technical specifications, tokenomics mapping, distributed database topography, and network gas ceiling optimization limits.</p>
+                    </div>
+
+                    <div class="pipeline-step-node is-hoverable reveal-node">
+                        <span class="step-meta-id">PHASE 02 // DEVELOPMENT</span>
+                        <h3 class="step-headline">Parallel Engineering</h3>
+                        <p class="step-description">Blockchain engineers architect highly modular, secure smart contract layers in parallel with frontend visual synthesis and micro-interaction wiring.</p>
+                    </div>
+
+                    <div class="pipeline-step-node is-hoverable reveal-node">
+                        <span class="step-meta-id">PHASE 03 // EVALUATION</span>
+                        <h3 class="step-headline">Testing & Cryptographic Audit</h3>
+                        <p class="step-description">Executing extreme transaction stress-testing, compilation runtime optimization to slash network fees, and multi-layered internal security audits.</p>
+                    </div>
+
+                    <div class="pipeline-step-node is-hoverable reveal-node">
+                        <span class="step-meta-id">PHASE 04 // DEPLOYMENT</span>
+                        <h3 class="step-headline">Mainnet Production Launch</h3>
+                        <p class="step-description">Production-grade smart contract deployment, integrating live real-time telemetry nodes, globally distributed CDN optimization, and complete technical handbook handovers.</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CALL TO ACTION -->
+        <section class="cta-viewport">
+            <span class="cta-tagline">[ INITIATE_COLLABORATION_PROTOCOL ]</span>
+            <a href="contact.html" class="cta-headline-link is-hoverable scramble" data-value="INITIALIZE PROJECT.">INITIALIZE PROJECT.</a>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-flex-row">
+                <div>© 2026 OZ CREATIVE // ALL RIGHTS RESERVED. INTRINSIC SYSTEMS FUNCTIONING STABLE.</div>
+                <div id="telemetry-clock">00:00:00</div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- MAIN INTERACTIVE ANIMATION RUNTIME ENGINE JS -->
     <script>
-        // Custom Cursor
-        const cursorDot = document.querySelector('.cursor-dot'), cursorRing = document.querySelector('.cursor-ring');
-        let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-        document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; cursorDot.style.left = mouseX + 'px'; cursorDot.style.top = mouseY + 'px'; });
-        function animateCursor() { ringX += (mouseX - ringX) * 0.15; ringY += (mouseY - ringY) * 0.15; cursorRing.style.left = ringX + 'px'; cursorRing.style.top = ringY + 'px'; requestAnimationFrame(animateCursor); }
-        animateCursor();
+        // Preloader Logic Bootloader Sequence
+        let loadValueProgress = 0; 
+        const counterBox = document.getElementById('counter-box');
+        const progressWire = document.getElementById('progress-wire');
+        const preloaderFrame = document.getElementById('preloader');
+        
+        let bootSequenceTimer = setInterval(() => {
+            loadValueProgress += Math.floor(Math.random() * 6) + 4;
+            if(loadValueProgress >= 100) { 
+                loadValueProgress = 100; 
+                counterBox.innerText = loadValueProgress; 
+                progressWire.style.width = '100%'; 
+                clearInterval(bootSequenceTimer);
+                setTimeout(() => { 
+                    preloaderFrame.classList.add('hide'); 
+                    document.body.classList.remove('no-scroll');
+                    document.querySelectorAll('.boot-sequence').forEach(el => el.classList.add('is-visible')); 
+                }, 500);
+            } else { 
+                counterBox.innerText = loadValueProgress < 10 ? '0' + loadValueProgress : loadValueProgress; 
+                progressWire.style.width = loadValueProgress + '%'; 
+            }
+        }, 30);
 
-        document.querySelectorAll('.hover-target').forEach(el => {
-            el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+        // Canvas Data Lattice Particle Streams Animation Engine
+        const canvas = document.getElementById('canvas-matrix-grid');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class ParticleNode {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.speedX = (Math.random() - 0.5) * 0.6;
+                this.speedY = (Math.random() - 0.5) * 0.6;
+                this.size = Math.random() * 1.5 + 0.5;
+            }
+            update(mX, mY) {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+
+                let dx = mX - this.x;
+                let dy = mY - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 200) {
+                    this.x += dx * 0.002;
+                    this.y += dy * 0.002;
+                }
+            }
+            draw() {
+                ctx.fillStyle = Math.random() > 0.98 ? '#ff3c00' : 'rgba(255, 255, 255, 0.15)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 90; i++) { particles.push(new ParticleNode()); }
+
+        // Precision Coordinate Mouse Tracker Physics Engine
+        const curPixel = document.querySelector('.cursor-pixel');
+        const curRadar = document.querySelector('.cursor-radar');
+        const glowOrbLayer = document.getElementById('glow-orb');
+        let mouseX = 0, mouseY = 0, radarX = 0, radarY = 0;
+        
+        document.addEventListener('mousemove', event => { 
+            mouseX = event.clientX; 
+            mouseY = event.clientY; 
+            curPixel.style.left = mouseX + 'px'; 
+            curPixel.style.top = mouseY + 'px'; 
         });
+        
+        function continuousGlobalAnimationLoop() { 
+            radarX += (mouseX - radarX) * 0.12; 
+            radarY += (mouseY - radarY) * 0.12; 
+            curRadar.style.left = radarX + 'px'; 
+            curRadar.style.top = radarY + 'px'; 
+            if(glowOrbLayer) { 
+                glowOrbLayer.style.left = radarX + 'px'; 
+                glowOrbLayer.style.top = radarY + 'px'; 
+            } 
 
-        // Scroll Nav
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update(radarX, radarY);
+                p.draw();
+            });
+
+            ctx.strokeStyle = 'rgba(255, 60, 0, 0.02)';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    let dist = Math.sqrt(Math.pow(particles[i].x - particles[j].x, 2) + Math.pow(particles[i].y - particles[j].y, 2));
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(continuousGlobalAnimationLoop); 
+        }
+        continuousGlobalAnimationLoop();
+
+        // Wire progress timeline scroll tracker
+        const topScrollWire = document.getElementById('wire-progress');
         window.addEventListener('scroll', () => {
-            if(window.scrollY > 50) document.getElementById('nav').classList.add('scrolled');
-            else document.getElementById('nav').classList.remove('scrolled');
+            const documentScrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercentage = (window.scrollY / documentScrollHeight) * 100;
+            topScrollWire.style.width = scrollPercentage + '%';
+
+            const railNode = document.getElementById('pipeline-rail');
+            if (railNode) {
+                const railBounds = railNode.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                if (railBounds.top < windowHeight && railBounds.bottom > 0) {
+                    let laserHeight = ((windowHeight - railBounds.top) / railBounds.height) * 100;
+                    if(laserHeight > 100) laserHeight = 100;
+                    if(laserHeight < 0) laserHeight = 0;
+                    document.getElementById('laser-line').style.height = laserHeight + '%';
+                }
+            }
+        });
+        
+        document.querySelectorAll('.is-hoverable').forEach(nodeTrigger => {
+            nodeTrigger.addEventListener('mouseenter', () => document.body.classList.add('is-hovering'));
+            nodeTrigger.addEventListener('mouseleave', () => document.body.classList.remove('is-hovering'));
         });
 
-        // Standard Reveal Observer
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => { if(entry.isIntersecting) { entry.target.classList.add('active'); observer.unobserve(entry.target); }});
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        // 3D Card Tilt Depth Parallax System Logic
+        if (window.innerWidth > 1024) {
+            document.querySelectorAll('.tilt-node').forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const boundingBox = card.getBoundingClientRect();
+                    const x = e.clientX - boundingBox.left; 
+                    const y = e.clientY - boundingBox.top; 
+                    const rotX = ((boundingBox.height / 2) - y) / 10; 
+                    const rotY = (x - (boundingBox.width / 2)) / 10;
+                    card.style.transform = `perspective(1500px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.03, 1.03, 1.03)`;
+                    card.style.setProperty('--g-x', `${x}px`);
+                    card.style.setProperty('--g-g', `${y}px`);
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1500px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                });
+            });
+        }
 
-        // Timeline Scroll Indicator Observer
-        const timelineObserver = new IntersectionObserver((entries) => { 
-            entries.forEach(entry => { if(entry.isIntersecting) { entry.target.classList.add('active'); }}); 
-        }, { threshold: 0.6, rootMargin: "0px" });
-        document.querySelectorAll('.trigger-scroll').forEach(el => timelineObserver.observe(el));
+        // Real-Time Terminal Script Compile Sequence Automation
+        const estRows = document.querySelectorAll('.estimator-node-row');
+        const gasBtns = document.querySelectorAll('.gas-btn');
+        const consoleLogs = document.getElementById('console-logs');
+        const outputDays = document.getElementById('output-days');
+        const outputPrice = document.getElementById('output-price');
+        
+        let selectedGasMultiplier = 1.0;
+        let selectedGasSpeedModifier = 0;
+
+        estRows.forEach(row => {
+            row.addEventListener('click', () => {
+                row.classList.toggle('selected');
+                executeSequentialTerminalCompilation();
+            });
+        });
+
+        gasBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                gasBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedGasMultiplier = parseFloat(btn.getAttribute('data-multiplier'));
+                selectedGasSpeedModifier = parseInt(btn.getAttribute('data-speed'));
+                executeSequentialTerminalCompilation();
+            });
+        });
+
+        function createTerminalLine(text, className = '') {
+            const div = document.createElement('div');
+            div.className = `terminal-log-row ${className}`;
+            div.innerHTML = text;
+            return div;
+        }
+
+        function executeSequentialTerminalCompilation() {
+            let activeBaseCost = 0;
+            let activeBaseTime = 0;
+            let loggedModules = [];
+
+            estRows.forEach(row => {
+                if(row.classList.contains('selected')) {
+                    activeBaseCost += parseInt(row.getAttribute('data-cost'));
+                    activeBaseTime += parseInt(row.getAttribute('data-time'));
+                    loggedModules.push(row.getAttribute('data-label'));
+                }
+            });
+
+            if(loggedModules.length === 0) {
+                consoleLogs.innerHTML = `<div class="terminal-log-row">> SYSTEM READY: Please select a service module from the left panel...</div>`;
+                outputDays.innerText = `0 Days`;
+                outputPrice.innerText = `$0.00 USD`;
+                return;
+            }
+
+            let calculatedCost = Math.round(activeBaseCost * selectedGasMultiplier);
+            let calculatedTime = activeBaseTime - selectedGasSpeedModifier;
+            if(calculatedTime < 4) calculatedTime = 4;
+
+            const simulatedGwei = (selectedGasMultiplier * 52).toFixed(0);
+            const ethEquivalent = (calculatedCost / 3300).toFixed(2);
+
+            consoleLogs.innerHTML = '';
+            const logScripts = [
+                { t: `> INITIALIZING DEVELOPMENT STRATEGY MATRIX...`, c: 'neon-accent-text' },
+                { t: `> MODULES SUCCESSFULLY CONFIGURING: [${loggedModules.join(' // ')}]`, c: '' },
+                { t: `> NETWORK FEE SYNCHRONIZATION: Syncing Base Fee at ${simulatedGwei} Gwei...`, c: 'neon-blue-text' },
+                { t: `> SIMULATION SEQUENCE COMPLETE: Runtime estimation ready for execution.`, c: 'neon-accent-text' }
+            ];
+
+            logScripts.forEach((line, index) => {
+                setTimeout(() => {
+                    consoleLogs.appendChild(createTerminalLine(line.t, line.c));
+                }, index * 120);
+            });
+            
+            outputDays.innerText = `${calculatedTime} Days`;
+            outputPrice.innerText = `$${calculatedCost.toLocaleString()} USD (~${ethEquivalent} ETH)`;
+        }
+
+        // Cipher Scramble Text Loop FX
+        const alphaGlyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ/\\<>-_[]{}*^?#0123456789";
+        document.querySelectorAll('.scramble').forEach(targetNode => {
+            targetNode.addEventListener('mouseenter', e => {
+                let textIterations = 0; 
+                const originalValueString = e.target.dataset.value; 
+                if(!originalValueString) return;
+                
+                clearInterval(targetNode.scrambleId);
+                targetNode.scrambleId = setInterval(() => {
+                    e.target.innerText = originalValueString.split("").map((glyph, index) => {
+                        if(index < textIterations) return originalValueString[index];
+                        return alphaGlyphs[Math.floor(Math.random() * alphaGlyphs.length)];
+                    }).join("");
+                    if(textIterations >= originalValueString.length) { 
+                        clearInterval(targetNode.scrambleId); 
+                        e.target.innerText = originalValueString; 
+                    }
+                    textIterations += 1 / 2; 
+                }, 25);
+            });
+            targetNode.addEventListener('mouseleave', e => { 
+                clearInterval(targetNode.scrambleId); 
+                e.target.innerText = e.target.dataset.value; 
+            });
+        });
+
+        // Pipeline Step Progress Intersection Spy Observer
+        const flowStepNodes = document.querySelectorAll('.pipeline-step-node');
+        const activeNodeObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    flowStepNodes.forEach(node => node.classList.remove('active-node'));
+                    entry.target.classList.add('active-node');
+                }
+            });
+        }, { threshold: 0.6, rootMargin: "-10% 0px -40% 0px" });
+        flowStepNodes.forEach(stepNode => activeNodeObserver.observe(stepNode));
+
+        // Global Elements Scroll Inbound Observer
+        const textElementObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    entry.target.querySelectorAll('.mask-node').forEach(t => t.classList.add('is-visible'));
+                    textElementObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal-node').forEach(node => textElementObserver.observe(node));
+
+        // Real-time HUD Clock Sync
+        setInterval(() => {
+            document.getElementById('telemetry-clock').innerText = new Date().toLocaleTimeString('en-US', { hour12: false, timeZone: 'Asia/Jakarta' }) + ' WIB';
+        }, 1000);
     </script>
 </body>
 </html>
